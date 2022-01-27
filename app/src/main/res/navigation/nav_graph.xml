@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeViewFragment">
+
+    <fragment
+        android:id="@+id/homeViewFragment"
+        android:name="fr.jaetan.jbudget.HomeViewFragment"
+        android:label="fragment_home_view"
+        tools:layout="@layout/fragment_home_view">
+        <action
+            android:id="@+id/action_homeViewFragment_to_settingsViewFragment"
+            app:destination="@id/settingsViewFragment" />
+        <action
+            android:id="@+id/action_homeViewFragment_to_modalBudgetFragment"
+            app:destination="@id/modalBudgetFragment">
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/modalBudgetFragment"
+        android:name="fr.jaetan.jbudget.ModalBudgetFragment"
+        android:label="fragment_modal_budget"
+        tools:layout="@layout/fragment_modal_budget" >
+        <action
+            android:id="@+id/action_modalBudgetFragment_to_homeViewFragment"
+            app:destination="@id/homeViewFragment"/>
+        <argument
+            android:name="budgetId"
+            app:argType="integer"
+            app:nullable="false"
+            android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_modalBudgetFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsViewFragment"
+        android:name="fr.jaetan.jbudget.SettingsViewFragment"
+        android:label="fragment_settings_view"
+        tools:layout="@layout/fragment_settings_view" >
+        <action
+            android:id="@+id/action_settingsViewFragment_to_homeViewFragment"
+            app:destination="@id/homeViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="fr.jaetan.jbudget.HistoryFragment"
+        android:label="fragment_history_view"
+        tools:layout="@layout/fragment_history_view" >
+        <action
+            android:id="@+id/action_historyFragment_to_modalBudgetFragment"
+            app:destination="@id/modalBudgetFragment" />
+        <argument
+            android:name="budgetId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+</navigation>

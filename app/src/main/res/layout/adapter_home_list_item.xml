@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/list_item_budget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/card_border_radius_ripple_effect"
+        android:clickable="true"
+        android:focusable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/title_budget"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_weight="2"
+                android:text="@string/desc"/>
+
+            <ImageButton
+                android:id="@+id/remove_budget_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@drawable/card_image_btn_ripple_effect"
+                android:src="@drawable/ic_baseline_delete_forever"
+                android:contentDescription="@string/desc" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/list_budget_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/home_list_item_total_spent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/total_depense" />
+
+            <TextView
+                android:id="@+id/home_list_item_total_remaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="10sp"
+                android:text="@string/total_restant" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

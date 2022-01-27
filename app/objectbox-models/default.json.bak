@@ -1,0 +1,129 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6997560754151235629",
+      "lastPropertyId": "3:2685095596052896428",
+      "name": "Budget",
+      "properties": [
+        {
+          "id": "1:6525007248605404003",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6882414029125265713",
+          "name": "title",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "3:9004182650065017395",
+          "name": "history",
+          "targetId": "4:7482625908516719392"
+        },
+        {
+          "id": "4:5762182532574959037",
+          "name": "items",
+          "targetId": "2:8577682143141788100"
+        }
+      ]
+    },
+    {
+      "id": "2:8577682143141788100",
+      "lastPropertyId": "4:4546629273074361262",
+      "name": "BudgetItem",
+      "properties": [
+        {
+          "id": "1:1573402034827156070",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4163818465598914740",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:8343216633372629025",
+          "name": "value",
+          "type": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:6708415504936011252",
+      "lastPropertyId": "2:2975265353406609943",
+      "name": "BudgetTitle",
+      "properties": [
+        {
+          "id": "1:4456088074003962609",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2975265353406609943",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:7482625908516719392",
+      "lastPropertyId": "6:5264820845777939083",
+      "name": "BudgetHistory",
+      "properties": [
+        {
+          "id": "1:5640479238197900211",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "4:7733058169667833401",
+          "name": "value",
+          "type": 8
+        },
+        {
+          "id": "5:6483056750149569395",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "6:5264820845777939083",
+          "name": "done",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:7482625908516719392",
+  "lastIndexId": "0:0",
+  "lastRelationId": "5:1405221205119040755",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    2685095596052896428,
+    1039527453152655512,
+    2649745215797556300,
+    4546629273074361262
+  ],
+  "retiredRelationUids": [
+    5806561584966943131,
+    3488632529545084616,
+    1405221205119040755
+  ],
+  "version": 1
+}

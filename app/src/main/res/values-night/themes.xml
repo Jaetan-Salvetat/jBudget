@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.JBudget" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/cyan</item>
+        <item name="colorPrimaryVariant">@color/cyan</item>
+        <item name="colorOnPrimary">#121212</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/cyan</item>
+        <item name="colorSecondaryVariant">#2C2C2C</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">#121212</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

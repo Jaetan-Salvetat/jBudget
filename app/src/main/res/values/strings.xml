@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">jBudget</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name">Name</string>
+    <string name="desc">TODO</string>
+    <string name="title_appbar_home">Mes Budgets</string>
+    <string name="no_budget_home"><![CDATA[Pas encore de budget ajouté.\nPour en ajouter un:\nParamètre > \'+\'.]]></string>
+    <string name="save">Sauvegarder</string>
+    <string name="title_appbar_settings">Paramètres</string>
+    <string name="total_depense">Total dépensé: 0€</string>
+    <string name="total_restant">Total restant: 0€</string>
+    <string name="create_budget">Créer un budget</string>
+    <string name="add_budget_type">Ajouter un type de budget</string>
+    <string name="name_type_budget">nom du type de budget</string>
+    <string name="_0">0</string>
+    <string name="euro">€</string>
+    <string name="history">Historique</string>
+</resources>

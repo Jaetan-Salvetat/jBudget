@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/dev/project/jBudget/app/src/main/res/layout/adapter_home_list_item.xml" value="0.22780797101449277" />
+        <entry key="..\:/dev/project/jBudget/app/src/main/res/layout/adapter_modal_budget_list_item.xml" value="0.3625" />
+        <entry key="..\:/dev/project/jBudget/app/src/main/res/layout/fragment_home_view.xml" value="0.22780797101449277" />
+        <entry key="..\:/dev/project/jBudget/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.37864583333333335" />
+        <entry key="..\:/dev/project/jBudget/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.37864583333333335" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/card_border_radius.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/card_image_btn_ripple_effect.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/edit_text_style.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/focus_edit_text_style.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/focused_edittext_title_budget.xml" value="0.26197916666666665" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/ic_baseline_auto_fix_high.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/radius_100.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/ripple_effect.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/ripple_effect_btn_add_item_modal_budget.xml" value="0.37864583333333335" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/sample_edit_text_style.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/sample_edittext_title_budget.xml" value="0.26197916666666665" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/selector_edit_text.xml" value="0.26614583333333336" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/drawable/selector_edittext_title_budget.xml" value="0.26197916666666665" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout-v31/fragment_home_view.xml" value="0.14945652173913043" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/activity_main.xml" value="0.12708333333333333" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/adapter_history_list_item.xml" value="0.2" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/adapter_home_list_item.xml" value="0.1" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/adapter_modal_budget_list_item.xml" value="0.3625" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/adapter_settings_list_item.xml" value="0.4" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/fragment_history_view.xml" value="0.12760416666666666" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/fragment_home_view.xml" value="0.1" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/fragment_modal_budget.xml" value="0.264" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/fragment_settings_view.xml" value="0.264" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/home_item_list.xml" value="0.12708333333333333" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/home_view.xml" value="0.12708333333333333" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/modal_budget.xml" value="0.12708333333333333" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/settings_footer_listview.xml" value="0.14266304347826086" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/settings_item_list.xml" value="0.12708333333333333" />
+        <entry key="..\:/dev/test/jBudget/app/src/main/res/layout/settings_view.xml" value="0.12708333333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
