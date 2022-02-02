@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:background="@drawable/ripple_effect"
+            android:background="@drawable/error_icon_btn_ripple_effect"
             android:src="@drawable/ic_baseline_delete_forever"
             android:contentDescription="@string/desc" />
 

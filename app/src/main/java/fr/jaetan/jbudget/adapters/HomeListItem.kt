@@ -39,8 +39,8 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val budget = getItem(position)
 
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
-        view.findViewById<TextView>(R.id.home_list_item_total_spent).text = "Total dépensé: ${budget.totalSpent}€"
-        view.findViewById<TextView>(R.id.home_list_item_total_remaining).text = "Total restant: ${budget.total - budget.totalSpent}€"
+        view.findViewById<TextView>(R.id.home_list_item_total_spent).text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
+        view.findViewById<TextView>(R.id.home_list_item_total_remaining).text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
 
         if(budget.items.isEmpty()) {
             val text = TextView(context)
@@ -52,7 +52,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         }else{
             for(item in budget.items){
                 val text = TextView(view.context)
-                text.text = "${item.name}: ${item.value}€"
+                text.text = "${item.name}: ${String.format("%.2f", item.value)}€"
                 text.textSize = 16f
 
                 view.findViewById<LinearLayout>(R.id.list_budget_items).addView(text)

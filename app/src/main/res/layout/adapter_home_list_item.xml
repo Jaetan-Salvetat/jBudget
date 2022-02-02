@@ -15,26 +15,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/title_budget"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
                 android:layout_weight="2"
-                android:text="@string/desc"/>
+                android:text="@string/desc"
+                android:textSize="25sp" />
 
             <ImageButton
                 android:id="@+id/remove_budget_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_icon_btn_ripple_effect"
+                android:clickable="true"
+                android:contentDescription="@string/desc"
                 android:padding="10dp"
-                android:background="@drawable/card_image_btn_ripple_effect"
-                android:src="@drawable/ic_baseline_delete_forever"
-                android:contentDescription="@string/desc" />
+                android:src="@drawable/ic_baseline_delete_forever" />
 
         </LinearLayout>
 
