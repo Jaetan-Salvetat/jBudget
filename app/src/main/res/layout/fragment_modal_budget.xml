@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
-                android:background="@drawable/selector_edittext_title_budget"
+                android:background="@drawable/title_budget_edit_text_selector"
                 android:paddingHorizontal="7dp"
                 android:hint="@string/name"
                 android:layout_marginStart="10dp"

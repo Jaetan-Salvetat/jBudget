@@ -28,7 +28,7 @@
             android:id="@+id/edittext_budget_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/selector_edittext_title_budget"
+            android:background="@drawable/title_budget_edit_text_selector"
             android:hint="@string/_0"
             android:layout_weight="1"
             android:textAlignment="textEnd"

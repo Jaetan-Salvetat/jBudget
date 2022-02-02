@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name_type_budget"
-            android:background="@drawable/selector_edit_text"
+            android:background="@drawable/sample_edit_text_selector"
             android:layout_marginTop="20dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="20dp"
