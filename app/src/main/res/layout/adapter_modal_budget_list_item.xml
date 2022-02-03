@@ -33,7 +33,6 @@
             android:layout_weight="1"
             android:textAlignment="textEnd"
             android:paddingHorizontal="7dp"
-            android:inputType="numberDecimal"
             android:maxLength="10"/>
 
 

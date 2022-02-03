@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6997560754151235629",
-      "lastPropertyId": "3:2685095596052896428",
+      "lastPropertyId": "5:2521681017797235399",
       "name": "Budget",
       "properties": [
         {
@@ -18,6 +18,16 @@
           "id": "2:6882414029125265713",
           "name": "title",
           "type": 9
+        },
+        {
+          "id": "4:6211626967256273916",
+          "name": "total",
+          "type": 8
+        },
+        {
+          "id": "5:2521681017797235399",
+          "name": "totalSpent",
+          "type": 8
         }
       ],
       "relations": [
