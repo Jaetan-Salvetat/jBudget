@@ -68,7 +68,7 @@ class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
         editText.addTextChangedListener {
 
             val value = try {
-                editText.text.toString().replace(",", ".").replace(" ", "").toDouble()
+                editText.text.toString().replace(",", ".").toDouble()
             }catch (e: Exception){
                 0.0
             }

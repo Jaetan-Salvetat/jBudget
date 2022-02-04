@@ -35,7 +35,8 @@
             android:paddingHorizontal="7dp"
             android:maxLength="10"
             android:autofillHints=""
-            android:inputType="number" />
+            android:digits="123456789."
+            android:inputType="number|numberDecimal|numberSigned" />
 
 
         <Space
