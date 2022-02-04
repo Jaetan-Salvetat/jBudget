@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.misc.UiMisc
+import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
 
-class SettingsListItem (context: Context) : BaseAdapter() {
+class SettingsListItem (private val context: Context) : BaseAdapter() {
     private var dataSource = Database.store.boxFor(BudgetTitle::class.java).all
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -34,8 +36,12 @@ class SettingsListItem (context: Context) : BaseAdapter() {
 
         //TODO: Events
         view.findViewById<ImageButton>(R.id.remove_budget_item).setOnClickListener {
-            Database.store.boxFor(BudgetTitle::class.java).remove(getItem(position))
-            update()
+            UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
+                callback = { dialog, _ ->
+                    Database.store.boxFor(BudgetTitle::class.java).remove(getItem(position))
+                    update()
+                    dialog.cancel()
+                })
         }
 
 

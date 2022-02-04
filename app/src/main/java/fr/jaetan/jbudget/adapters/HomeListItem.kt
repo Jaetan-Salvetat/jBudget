@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import fr.jaetan.jbudget.HomeViewFragmentDirections
 import fr.jaetan.jbudget.ModalBudgetFragmentDirections
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
 
@@ -63,8 +64,12 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
 
         //TODO: Events
         view.findViewById<ImageButton>(R.id.remove_budget_btn).setOnClickListener {
-            Database.store.boxFor(Budget::class.java).remove(getItem(id))
-            update()
+            UiMisc.alertDialog(this.context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
+                callback = { dialog, _ ->
+                    Database.store.boxFor(Budget::class.java).remove(getItem(id))
+                    update()
+                    dialog.cancel()
+                })
         }
         view.findViewById<LinearLayout>(R.id.list_item_budget).setOnClickListener {
             val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)

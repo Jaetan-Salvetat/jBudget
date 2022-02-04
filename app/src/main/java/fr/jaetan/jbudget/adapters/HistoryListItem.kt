@@ -10,6 +10,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
@@ -44,25 +45,29 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
 
         //TODO: Events
         removeBtn.setOnClickListener {
-            val budget = Database.store.boxFor(Budget::class.java).all[budgetId]
+            UiMisc.alertDialog(this.context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
+                callback = { dialog, _ ->
+                    val budget = Database.store.boxFor(Budget::class.java).all[budgetId]
 
-            if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
-                budget.total -= historyItem.value
-            }else{
-                for(i in budget.items.indices){
-                    if(budget.items[i].name.lowercase() == historyItem.name.lowercase()){
-                        budget.totalSpent -= historyItem.value
-                        budget.items[i].value -= historyItem.value
-                        break
+                    if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
+                        budget.total -= historyItem.value
+                    }else{
+                        for(i in budget.items.indices){
+                            if(budget.items[i].name.lowercase() == historyItem.name.lowercase()){
+                                budget.totalSpent -= historyItem.value
+                                budget.items[i].value -= historyItem.value
+                                break
+                            }
+                        }
                     }
-                }
-            }
 
-            Database.store.boxFor(Budget::class.java).put(budget)
-            Database.store.boxFor(BudgetItem::class.java).put(budget.items)
-            Database.store.boxFor(BudgetHistory::class.java).remove(historyItem)
+                    Database.store.boxFor(Budget::class.java).put(budget)
+                    Database.store.boxFor(BudgetItem::class.java).put(budget.items)
+                    Database.store.boxFor(BudgetHistory::class.java).remove(historyItem)
 
-            update()
+                    update()
+                    dialog.cancel()
+                })
         }
 
 
