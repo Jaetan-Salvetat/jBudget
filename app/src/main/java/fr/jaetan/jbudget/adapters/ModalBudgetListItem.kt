@@ -3,6 +3,8 @@ package fr.jaetan.jbudget.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.InputType.TYPE_CLASS_NUMBER
+import android.text.InputType.TYPE_NUMBER_VARIATION_NORMAL
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +46,8 @@ class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
         var spinnerId = 0
 
         spinnerItems = budgetTitles
-        editText.inputType = TYPE_CLASS_NUMBER
+
+
 
         spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, spinnerItems)
 

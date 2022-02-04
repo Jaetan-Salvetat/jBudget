@@ -6,7 +6,7 @@ import android.content.DialogInterface
 
 class UiMisc {
     companion object {
-        public fun alertDialog(context: Context, callback: DialogInterface.OnClickListener, title: String = "", text: String = ""){
+        fun alertDialog(context: Context, callback: DialogInterface.OnClickListener, title: String = "", text: String = ""){
             val dialogBuilder = AlertDialog.Builder(context)
 
             dialogBuilder.setMessage(text)
