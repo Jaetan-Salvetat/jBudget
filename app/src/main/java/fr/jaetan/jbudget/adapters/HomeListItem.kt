@@ -35,8 +35,9 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
         //TODO: Init
+        val id = budgets.count() - position - 1
         val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
-        val budget = getItem(position)
+        val budget = getItem(id)
 
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
         view.findViewById<TextView>(R.id.home_list_item_total_spent).text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
@@ -62,11 +63,11 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
 
         //TODO: Events
         view.findViewById<ImageButton>(R.id.remove_budget_btn).setOnClickListener {
-            Database.store.boxFor(Budget::class.java).remove(getItem(position))
+            Database.store.boxFor(Budget::class.java).remove(getItem(id))
             update()
         }
         view.findViewById<LinearLayout>(R.id.list_item_budget).setOnClickListener {
-            val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(getItemId(position).toInt())
+            val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
             Navigation.findNavController(view).navigate(action)
         }
 
