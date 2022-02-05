@@ -2,6 +2,7 @@ package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,10 +43,20 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val id = budgets.count() - position - 1
         val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
         val budget = getItem(id)
+        val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
+        val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
 
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
-        view.findViewById<TextView>(R.id.home_list_item_total_spent).text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
-        view.findViewById<TextView>(R.id.home_list_item_total_remaining).text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
+        totalSpent.text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
+        totalRemaining.text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
+
+        if(budget.total - budget.totalSpent > 0.0){
+            totalRemaining.setTextColor(Color.parseColor("#32CD32"))//ff0000
+            totalSpent.setTextColor(Color.parseColor("#32CD32"))//ff0000
+        }else if(budget.total - budget.totalSpent < 0.0){
+            totalRemaining.setTextColor(Color.parseColor("#ff0000"))//ff0000
+            totalSpent.setTextColor(Color.parseColor("#ff0000"))//ff0000
+        }
 
         if(budget.items.isEmpty()) {
             val text = TextView(context)

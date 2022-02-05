@@ -60,7 +60,6 @@
                 android:id="@+id/home_list_item_total_spent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ff0000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="@string/total_depense" />
@@ -69,7 +68,6 @@
                 android:id="@+id/home_list_item_total_remaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ff0000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="@string/total_restant" />

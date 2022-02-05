@@ -47,7 +47,6 @@ class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
         var spinnerId = 0
 
         spinnerItems = budgetTitles
-        val mm: TransformationMethod
 
 
         spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, spinnerItems)
