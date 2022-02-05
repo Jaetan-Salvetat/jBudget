@@ -49,7 +49,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
             view = inflater.inflate(R.layout.adapter_history_list_item_without_title, parent, false)
         }
 
-        view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}: ${historyItem.value}€"
+        view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}: ${String.format("%.2f", historyItem.value)}€"
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
 
 
@@ -91,21 +91,17 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
 
     @SuppressLint("SetTextI18n")
     private fun dateManager(date: String?, view: View){
-        val dateArray = date?.split('-')
-        val day: String = dateArray?.get(0) ?: "null"
-        val month: String = FuncMisc.getStringMonth((date?.split('-')?.get(1)?.toInt() ?: -1) -1)
-        val year: String = dateArray?.get(2) ?: "null"
+        if(date == null){
+            view.findViewById<TextView>(R.id.title_date).text = "Aucune date enregistré"
+            return
+        }
+
+
+        val dateArray = date.split('-')
+        val day: String = dateArray[0]
+        val month: String = FuncMisc.getStringMonth((date.split('-')[1].toInt()) -1)
+        val year: String = dateArray[2]
 
         view.findViewById<TextView>(R.id.title_date).text = "$day $month $year"
     }
 }
-
-/*
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="15dp"
-                android:background="@android:color/darker_gray"/>
-*/
