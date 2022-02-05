@@ -6,26 +6,43 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="10dp">
+        android:paddingHorizontal="10dp"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/history_item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:text="@string/desc"/>
+        <!--<LinearLayout
+            android:id="@+id/history_item_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/remove_history_item_btn"
-            android:layout_width="wrap_content"
+
+
+        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@drawable/error_icon_btn_ripple_effect"
-            android:src="@drawable/ic_baseline_delete_forever"
-            android:contentDescription="@string/desc" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/history_item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/desc"/>
+
+            <ImageButton
+                android:id="@+id/remove_history_item_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@drawable/error_icon_btn_ripple_effect"
+                android:src="@drawable/ic_baseline_delete_forever"
+                android:contentDescription="@string/desc" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
