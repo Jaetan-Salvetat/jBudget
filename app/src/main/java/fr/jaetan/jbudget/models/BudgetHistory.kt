@@ -12,5 +12,5 @@ data class BudgetHistory (
     var value: Double = 0.0,
     var name: String = "",
     var done: Boolean = false,
-    var date: String? = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+    var date: String?,
 )

@@ -2,9 +2,6 @@ package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +9,14 @@ import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginTop
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.misc.FuncMisc
 import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
 import io.objectbox.relation.ToMany
-import java.text.FieldPosition
 
 class HistoryListItem(private val context: Context, private var budgetHistory: ToMany<BudgetHistory>, private val budgetId: Int): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -42,17 +38,19 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
     @SuppressLint("ViewHolder", "SetTextI18n")
     override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
         //TODO: Init
-        val view = inflater.inflate(R.layout.adapter_history_list_item, parent, false)
         val historyItem = getItem(count - position - 1)
+        var view: View
+
+        if(position > 0 && historyItem.date != getItem(count - position).date || position == 0){
+            view = inflater.inflate(R.layout.adapter_history_list_item_with_title, parent, false)
+
+            dateManager(historyItem.date, view)
+        }else{
+            view = inflater.inflate(R.layout.adapter_history_list_item_without_title, parent, false)
+        }
 
         view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}: ${historyItem.value}€"
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
-
-        /*if(position == 0 && historyItem.date != null){
-            createDateLayoutWidget(historyItem.date, view.findViewById(R.id.history_item_date))
-        }else if(position > 0 && historyItem.date != getItem(count - position).date){
-            createDateLayoutWidget(historyItem.date, view.findViewById(R.id.history_item_date))
-        }*/
 
 
         //TODO: Events
@@ -91,21 +89,14 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         notifyDataSetChanged()
     }
 
-    private fun createDateLayoutWidget(date: String?, parent: LinearLayout){
-        val dateText = TextView(context)
-        dateText.text = date
-        dateText.textSize = 25f
+    @SuppressLint("SetTextI18n")
+    private fun dateManager(date: String?, view: View){
+        val dateArray = date?.split('-')
+        val day: String = dateArray?.get(0) ?: "null"
+        val month: String = FuncMisc.getStringMonth((date?.split('-')?.get(1)?.toInt() ?: -1) -1)
+        val year: String = dateArray?.get(2) ?: "null"
 
-        val divider = View(context)
-        divider.minimumHeight = 1
-        divider.layoutParams.height = 1
-        divider.top = 5
-        divider.right = 15
-        divider.bottom = 15
-        divider.setBackgroundColor(0xa9a9a9)
-
-        parent.addView(dateText)
-        parent.addView(divider)
+        view.findViewById<TextView>(R.id.title_date).text = "$day $month $year"
     }
 }
 

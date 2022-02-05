@@ -15,6 +15,8 @@ import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -121,7 +123,8 @@ class ModalBudgetFragment : Fragment() {
                     }
                 }
                 if(!containsHistory){
-                    history.add(BudgetHistory(value = item.value, name = item.name))
+                    history.add(BudgetHistory(value = item.value, name = item.name, date = LocalDate.now().format(
+                        DateTimeFormatter.ofPattern("dd-MM-yyyy"))))
                 }
             }
 
