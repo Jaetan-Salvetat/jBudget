@@ -1,6 +1,7 @@
 package fr.jaetan.jbudget
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -17,7 +18,6 @@ import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -83,6 +83,22 @@ class ModalBudgetFragment : Fragment() {
             val action = ModalBudgetFragmentDirections.actionModalBudgetFragmentToHistoryFragment(args.budgetId)
             Navigation.findNavController(view).navigate(action)
         }
+        view.findViewById<ImageButton>(R.id.share_budget).setOnClickListener {
+            var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
+                    "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
+
+            for(item in budget.items){
+                res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
+            }
+
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, res)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, "Title")
+            startActivity(shareIntent)
+        }
         view.findViewById<Button>(R.id.save_update_budget_btn).setOnClickListener {
             val budgetItems = adapter?.getValues() ?: return@setOnClickListener
             val history: ArrayList<BudgetHistory> = arrayListOf()
@@ -141,6 +157,7 @@ class ModalBudgetFragment : Fragment() {
         textEdit.addTextChangedListener {
             budget.title = it.toString()
         }
+
 
 
         return view
