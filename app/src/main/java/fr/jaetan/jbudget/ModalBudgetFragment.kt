@@ -96,7 +96,7 @@ class ModalBudgetFragment : Fragment() {
                 putExtra(Intent.EXTRA_TEXT, res)
                 type = "text/plain"
             }
-            val shareIntent = Intent.createChooser(sendIntent, "Title")
+            val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
         view.findViewById<Button>(R.id.save_update_budget_btn).setOnClickListener {
