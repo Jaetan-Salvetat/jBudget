@@ -12,14 +12,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.HomeViewFragmentDirections
-import fr.jaetan.jbudget.ModalBudgetFragmentDirections
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class HomeListItem(private var context: Context, private  val changeView: (Long) -> Unit) : BaseAdapter() {
     private var budgets: ArrayList<Budget> = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
@@ -37,7 +33,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         return p0.toLong()
     }
 
-    @SuppressLint("ViewHolder", "SetTextI18n")
+    @SuppressLint("ViewHolder", "SetTextI18n", "ClickableViewAccessibility")
     override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
         //TODO: Init
         val id = budgets.count() - position - 1
@@ -46,7 +42,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
 
-        view.findViewById<TextView>(R.id.title_budget).text = budget.title
+        //view.findViewById<TextView>(R.id.title_budget).text = budget.title
         totalSpent.text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
         totalRemaining.text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
 
@@ -89,7 +85,6 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
             val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
             Navigation.findNavController(view).navigate(action)
         }
-
 
         return view
     }
