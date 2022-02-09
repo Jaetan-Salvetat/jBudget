@@ -139,8 +139,7 @@ class ModalBudgetFragment : Fragment() {
                     }
                 }
                 if(!containsHistory){
-                    history.add(BudgetHistory(value = item.value, name = item.name, cashFlow = item.cashFlow, date = LocalDate.now().format(
-                        DateTimeFormatter.ofPattern("dd-MM-yyyy"))))
+                    history.add(BudgetHistory(value = item.value, name = item.name, cashFlow = item.cashFlow))
                 }
             }
 

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.misc.FuncMisc
@@ -21,7 +20,6 @@ import io.objectbox.relation.ToMany
 
 class HistoryListItem(private val context: Context, private var budgetHistory: ToMany<BudgetHistory>, private val budgetId: Int): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private var lastDate: String? = ""
 
 
     override fun getCount(): Int {
@@ -53,7 +51,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         val textValueItem = view.findViewById<TextView>(R.id.history_item_value)
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
 
-        view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}:"
+        view.findViewById<TextView>(R.id.history_item_name).text = historyItem.name
 
         if(historyItem.cashFlow || historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
             textValueItem.text = " +${String.format("%.2f", historyItem.value)}"
