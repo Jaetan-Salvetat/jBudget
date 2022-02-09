@@ -99,7 +99,7 @@ class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
         }
 
         val name = budgetTitles[0]
-        budgetItems.add(BudgetItem(name = name))
+        budgetItems.add(BudgetItem(name = name, cashFlow = name.lowercase() == "Rentrée d'argent".lowercase()))
         notifyDataSetChanged()
     }
 

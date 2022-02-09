@@ -111,7 +111,7 @@ class ModalBudgetFragment : Fragment() {
 
                 for(j in budget.items.indices){
                     if(budget.items[j].name.lowercase() == item.name.lowercase()){
-                        if (item.name.lowercase() == "Rentrée d'argent".lowercase()){
+                        if (item.cashFlow){
                             budget.total += item.value
                         }else{
                             budget.items[j].value += item.value
@@ -123,7 +123,7 @@ class ModalBudgetFragment : Fragment() {
                 }
 
                 if(!containsItem){
-                    if (item.name.lowercase() == "Rentrée d'argent".lowercase()){
+                    if (item.cashFlow){
                         budget.total += item.value
                     }else{
                         budget.totalSpent += item.value
@@ -139,7 +139,7 @@ class ModalBudgetFragment : Fragment() {
                     }
                 }
                 if(!containsHistory){
-                    history.add(BudgetHistory(value = item.value, name = item.name, date = LocalDate.now().format(
+                    history.add(BudgetHistory(value = item.value, name = item.name, cashFlow = item.cashFlow, date = LocalDate.now().format(
                         DateTimeFormatter.ofPattern("dd-MM-yyyy"))))
                 }
             }

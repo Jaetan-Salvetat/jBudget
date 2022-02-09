@@ -2,6 +2,7 @@ package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,8 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
     override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
         //TODO: Init
         val historyItem = getItem(count - position - 1)
-        var view: View
+        var cashFlowModified = false
+        val view: View
 
         if(position > 0 && historyItem.date != getItem(count - position).date || position == 0){
             view = inflater.inflate(R.layout.adapter_history_list_item_with_title, parent, false)
@@ -48,10 +50,24 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         }else{
             view = inflater.inflate(R.layout.adapter_history_list_item_without_title, parent, false)
         }
-
-        view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}: ${String.format("%.2f", historyItem.value)}€"
+        val textValueItem = view.findViewById<TextView>(R.id.history_item_value)
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
 
+        view.findViewById<TextView>(R.id.history_item_name).text = "${historyItem.name}:"
+
+        if(historyItem.cashFlow || historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
+            textValueItem.text = " +${String.format("%.2f", historyItem.value)}"
+            textValueItem.setTextColor(Color.parseColor("#32CD32"))//ff0000
+        }else{
+            textValueItem.text = " -${String.format("%.2f", historyItem.value)}"
+            textValueItem.setTextColor(Color.parseColor("#ff0000"))//ff0000
+        }
+
+        //clean value cashFlow in BudgetHistory database
+        if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
+            historyItem.cashFlow = true
+            cashFlowModified = true
+        }
 
         //TODO: Events
         removeBtn.setOnClickListener {
@@ -59,7 +75,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
                 callback = { dialog, _ ->
                     val budget = Database.store.boxFor(Budget::class.java).all[budgetId]
 
-                    if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
+                    if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase() || historyItem.cashFlow){
                         budget.total -= historyItem.value
                     }else{
                         for(i in budget.items.indices){
@@ -80,6 +96,9 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
                 })
         }
 
+        if(cashFlowModified){
+            Database.store.boxFor(BudgetHistory::class.java).put(historyItem)
+        }
 
         return view
     }

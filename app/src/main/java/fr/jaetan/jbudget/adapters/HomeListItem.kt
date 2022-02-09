@@ -42,7 +42,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
 
-        //view.findViewById<TextView>(R.id.title_budget).text = budget.title
+        view.findViewById<TextView>(R.id.title_budget).text = budget.title
         totalSpent.text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
         totalRemaining.text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
 

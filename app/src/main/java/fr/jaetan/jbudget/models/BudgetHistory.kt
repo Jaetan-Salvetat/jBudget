@@ -12,5 +12,6 @@ data class BudgetHistory (
     var value: Double = 0.0,
     var name: String = "",
     var done: Boolean = false,
+    var cashFlow: Boolean = false,
     var date: String?,
 )

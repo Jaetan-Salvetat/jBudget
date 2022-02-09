@@ -45,7 +45,7 @@
     },
     {
       "id": "2:8577682143141788100",
-      "lastPropertyId": "4:4546629273074361262",
+      "lastPropertyId": "5:6023224292306198830",
       "name": "BudgetItem",
       "properties": [
         {
@@ -63,6 +63,11 @@
           "id": "3:8343216633372629025",
           "name": "value",
           "type": 8
+        },
+        {
+          "id": "5:6023224292306198830",
+          "name": "cashFlow",
+          "type": 1
         }
       ],
       "relations": []
@@ -88,7 +93,7 @@
     },
     {
       "id": "4:7482625908516719392",
-      "lastPropertyId": "7:4166814696813807978",
+      "lastPropertyId": "8:8906141908581440922",
       "name": "BudgetHistory",
       "properties": [
         {
@@ -116,6 +121,11 @@
           "id": "7:4166814696813807978",
           "name": "date",
           "type": 9
+        },
+        {
+          "id": "8:8906141908581440922",
+          "name": "cashFlow",
+          "type": 1
         }
       ],
       "relations": []
