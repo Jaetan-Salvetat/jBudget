@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.adapters.SettingsListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetTitle
@@ -52,7 +53,7 @@ class SettingsViewFragment : Fragment() {
         listView.addFooterView(footer)
 
         //TODO: Events
-        view.findViewById<ImageButton>(R.id.back_to_home).setOnClickListener {
+        view.findViewById<MaterialToolbar>(R.id.top_app_bar_settings).setNavigationOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_settingsViewFragment_to_homeViewFragment)
         }
         view.findViewById<Button>(R.id.create_budget_btn).setOnClickListener {

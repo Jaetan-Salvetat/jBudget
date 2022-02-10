@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/share_budget"
+        android:title="@string/desc"
+        android:contentDescription="@string/desc"
+        android:icon="@drawable/ic_baseline_share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/go_to_history"
+        android:title="@string/desc"
+        android:contentDescription="@string/desc"
+        android:icon="@drawable/ic_baseline_history"
+        app:showAsAction="ifRoom" />
+
+</menu>

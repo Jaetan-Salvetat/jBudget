@@ -1,17 +1,13 @@
 package fr.jaetan.jbudget
 
-import android.media.Image
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import fr.jaetan.jbudget.adapters.HomeListItem
 import fr.jaetan.jbudget.models.Budget
-import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,11 +48,24 @@ class HomeViewFragment : Fragment() {
         updateView(Database.store.boxFor(Budget::class.java).count())
 
         //TODO: Events
-        view.findViewById<ImageButton>(R.id.go_to_settings_btn).setOnClickListener {
+        /*view.findViewById<ImageButton>(R.id.go_to_settings_btn).setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
+        }*/
+        view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.go_to_settings -> {
+                    Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
+                    true
+                }
+                else -> false
+            }
         }
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private var updateView = { count: Long ->

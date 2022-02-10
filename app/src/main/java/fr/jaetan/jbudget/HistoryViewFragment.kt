@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.Toolbar
 import androidx.navigation.Navigation
+import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.adapters.HistoryListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
@@ -62,7 +64,8 @@ class HistoryFragment : Fragment() {
 
 
         //TODO: Events
-        view.findViewById<ImageButton>(R.id.back_to_modal_budget).setOnClickListener {
+        //back to budget
+        view.findViewById<MaterialToolbar>(R.id.top_app_bar_history).setNavigationOnClickListener {
             val action = HistoryFragmentDirections.actionHistoryFragmentToModalBudgetFragment(budgetId)
             Navigation.findNavController(view).navigate(action)
         }

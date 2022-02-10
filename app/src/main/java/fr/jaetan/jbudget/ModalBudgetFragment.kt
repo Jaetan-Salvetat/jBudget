@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.adapters.ModalBudgetListItem
@@ -54,6 +55,7 @@ class ModalBudgetFragment : Fragment() {
         val bumble = arguments
         val textEdit = view.findViewById<EditText>(R.id.modal_title_budget)
         val listView = view.findViewById<ListView>(R.id.listview_modal)
+        val topAppBar = view.findViewById<Toolbar>(R.id.top_app_bar_budget)
         val btnAddItem = LinearLayout(this.context)
         val textBtnAddItem = TextView(this.context)
         val adapter = this.context?.let { ModalBudgetListItem(it) }
@@ -76,29 +78,26 @@ class ModalBudgetFragment : Fragment() {
 
 
         //TODO: Events
-        view.findViewById<ImageButton>(R.id.back_to_home).setOnClickListener {
+        //Back to home
+        topAppBar.setNavigationOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_modalBudgetFragment_to_homeViewFragment)
         }
-        view.findViewById<ImageButton>(R.id.go_to_history).setOnClickListener {
-            val action = ModalBudgetFragmentDirections.actionModalBudgetFragmentToHistoryFragment(args.budgetId)
-            Navigation.findNavController(view).navigate(action)
-        }
-        view.findViewById<ImageButton>(R.id.share_budget).setOnClickListener {
-            var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
-                    "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
-
-            for(item in budget.items){
-                res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
+        //Right Menu
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.share_budget -> {
+                    shareBudget()
+                    true
+                }
+                R.id.go_to_history -> {
+                    val action = ModalBudgetFragmentDirections.actionModalBudgetFragmentToHistoryFragment(args.budgetId)
+                    Navigation.findNavController(view).navigate(action)
+                    true
+                }
+                else -> false
             }
-
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, res)
-                type = "text/plain"
-            }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
         }
+        //save budget && back to home
         view.findViewById<Button>(R.id.save_update_budget_btn).setOnClickListener {
             val budgetItems = adapter?.getValues() ?: return@setOnClickListener
             val history: ArrayList<BudgetHistory> = arrayListOf()
@@ -162,6 +161,23 @@ class ModalBudgetFragment : Fragment() {
         return view
     }
 
+    private fun shareBudget(){
+        var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
+                "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
+
+        for(item in budget.items){
+            res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
+        }
+
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, res)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -182,3 +198,27 @@ class ModalBudgetFragment : Fragment() {
             }
     }
 }
+
+/*view.findViewById<ImageButton>(R.id.back_to_home).setOnClickListener {
+    Navigation.findNavController(view).navigate(R.id.action_modalBudgetFragment_to_homeViewFragment)
+}
+view.findViewById<ImageButton>(R.id.go_to_history).setOnClickListener {
+    val action = ModalBudgetFragmentDirections.actionModalBudgetFragmentToHistoryFragment(args.budgetId)
+    Navigation.findNavController(view).navigate(action)
+}
+view.findViewById<ImageButton>(R.id.share_budget).setOnClickListener {
+    var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
+            "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
+
+    for(item in budget.items){
+        res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
+    }
+
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, res)
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    startActivity(shareIntent)
+}*/
