@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">#efefef</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#FFFFFF</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#FFFBFE</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
