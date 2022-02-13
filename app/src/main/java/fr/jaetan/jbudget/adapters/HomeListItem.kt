@@ -3,6 +3,7 @@ package fr.jaetan.jbudget.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,12 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val budget = getItem(id)
         val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
+        val container = view.findViewById<LinearLayout>(R.id.list_item_budget)
 
+        UiMisc.scaleAnimation(container) {
+            val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
+            Navigation.findNavController(view).navigate(action)
+        }
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
         totalSpent.text = String.format("%.2f", budget.totalSpent)
         totalRemaining.text = String.format("%.2f", budget.total - budget.totalSpent)
@@ -57,25 +63,38 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
             text.textSize = 16f
             text.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
-            view.findViewById<LinearLayout>(R.id.list_item_budget).addView(text)
+            container.addView(text)
         }else{
-            /*for(item in budget.items){
-                val text = TextView(view.context)
-                text.text = "${item.name}: ${String.format("%.2f", item.value)}€"
-                text.textSize = 16f
+            for(item in budget.items){
+                val layout = LinearLayout(context)
+                val layoutName = LinearLayout(context)
+                val name = TextView(context)
+                val value = TextView(context)
+                val euro = TextView(context)
 
-                view.findViewById<LinearLayout>(R.id.list_budget_items).addView(text)
-            }*/
-            val layout = view.findViewById<LinearLayout>(R.id.list_item_budget)
-            val list = ListView(context)
+                layoutName.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                name.text = item.name
+                name.textSize = 18f
+                value.text = item.value.toString()
+                value.textSize = 18f
+                value.setTypeface(null, Typeface.BOLD)
+                euro.text = "€"
+                euro.textSize = 18f
+
+                layoutName.addView(name)
+                layout.addView(layoutName)
+                layout.addView(value)
+                layout.addView(euro)
+                view.findViewById<LinearLayout>(R.id.container_budget_items).addView(layout)
+            }
+            /*val list = ListView(context)
             val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 60 * budget.items.count())
 
             list.adapter = HomeBudgetListItem(context, budget.items)
             list.layoutParams = layoutParams
             list.divider = null
             list.scrollBarSize = 0
-            layout.addView(list)
-
+            container.addView(list)*/
         }
 
 
@@ -88,10 +107,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
                     dialog.cancel()
                 })
         }
-        view.findViewById<LinearLayout>(R.id.list_item_budget).setOnClickListener {
-            val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
-            Navigation.findNavController(view).navigate(action)
-        }
+
 
         return view
     }
