@@ -78,6 +78,7 @@ class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 budgetItems[position].name = spinnerItems[p2]
+                budgetItems[position].cashFlow = budgetItems[position].name.lowercase() == "Rentrée d'argent".lowercase()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

@@ -6,10 +6,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.HomeViewFragmentDirections
 import fr.jaetan.jbudget.R
@@ -43,8 +40,8 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
 
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
-        totalSpent.text = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€"
-        totalRemaining.text = "Total restant: ${String.format("%.2f", budget.total - budget.totalSpent)}€"
+        totalSpent.text = String.format("%.2f", budget.totalSpent)
+        totalRemaining.text = String.format("%.2f", budget.total - budget.totalSpent)
 
         if(budget.total - budget.totalSpent > 0.0){
             totalRemaining.setTextColor(Color.parseColor("#32CD32"))//ff0000
@@ -60,15 +57,25 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
             text.textSize = 16f
             text.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
-            view.findViewById<LinearLayout>(R.id.list_budget_items).addView(text)
+            view.findViewById<LinearLayout>(R.id.list_item_budget).addView(text)
         }else{
-            for(item in budget.items){
+            /*for(item in budget.items){
                 val text = TextView(view.context)
                 text.text = "${item.name}: ${String.format("%.2f", item.value)}€"
                 text.textSize = 16f
 
                 view.findViewById<LinearLayout>(R.id.list_budget_items).addView(text)
-            }
+            }*/
+            val layout = view.findViewById<LinearLayout>(R.id.list_item_budget)
+            val list = ListView(context)
+            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 60 * budget.items.count())
+
+            list.adapter = HomeBudgetListItem(context, budget.items)
+            list.layoutParams = layoutParams
+            list.divider = null
+            list.scrollBarSize = 0
+            layout.addView(list)
+
         }
 
 
