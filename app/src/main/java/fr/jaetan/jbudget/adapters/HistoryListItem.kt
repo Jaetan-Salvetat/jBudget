@@ -3,12 +3,11 @@ package fr.jaetan.jbudget.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.misc.FuncMisc
 import fr.jaetan.jbudget.misc.UiMisc
@@ -49,9 +48,11 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
             view = inflater.inflate(R.layout.adapter_history_list_item_without_title, parent, false)
         }
         val textValueItem = view.findViewById<TextView>(R.id.history_item_value)
+        val textNameItem = view.findViewById<TextView>(R.id.history_item_name)
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
+        val checkbox = view.findViewById<CheckBox>(R.id.history_item_checked)
 
-        view.findViewById<TextView>(R.id.history_item_name).text = historyItem.name
+        textNameItem.text = historyItem.name
 
         if(historyItem.cashFlow || historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
             textValueItem.text = " +${String.format("%.2f", historyItem.value)}"
@@ -67,7 +68,18 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
             cashFlowModified = true
         }
 
+        if(historyItem.done){
+            checkbox.isChecked = true
+            checkedStyleManager(true, textValueItem, textNameItem, view.findViewById<TextView>(R.id.euro), view.findViewById<LinearLayout>(R.id.container))
+        }
+
         //TODO: Events
+        checkbox.setOnCheckedChangeListener { _, checked ->
+            historyItem.done = checked
+            checkedStyleManager(checked, textValueItem, textNameItem, view.findViewById<TextView>(R.id.euro), view.findViewById<LinearLayout>(R.id.container))
+            Database.store.boxFor(BudgetHistory::class.java).put(historyItem)
+        }
+
         removeBtn.setOnClickListener {
             UiMisc.alertDialog(this.context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
                 callback = { dialog, _ ->
@@ -104,6 +116,20 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
     private fun update(){
         budgetHistory = Database.store.boxFor(Budget::class.java).all[budgetId].history
         notifyDataSetChanged()
+    }
+
+    private fun checkedStyleManager(checked: Boolean, textValue: TextView, textName: TextView, textEuro: TextView, container: LinearLayout){
+        if(checked){
+            textValue.setTypeface(null, Typeface.BOLD_ITALIC)
+            textName.setTypeface(null, Typeface.ITALIC)
+            textEuro.setTypeface(null, Typeface.ITALIC)
+            container.setBackgroundResource(R.drawable.history_item_done)
+            return
+        }
+        textValue.setTypeface(null, Typeface.BOLD)
+        textName.setTypeface(null, Typeface.NORMAL)
+        textEuro.setTypeface(null, Typeface.NORMAL)
+        container.background = null
     }
 
     @SuppressLint("SetTextI18n")
