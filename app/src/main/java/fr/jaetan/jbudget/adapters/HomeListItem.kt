@@ -87,14 +87,6 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
                 layout.addView(euro)
                 view.findViewById<LinearLayout>(R.id.container_budget_items).addView(layout)
             }
-            /*val list = ListView(context)
-            val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 60 * budget.items.count())
-
-            list.adapter = HomeBudgetListItem(context, budget.items)
-            list.layoutParams = layoutParams
-            list.divider = null
-            list.scrollBarSize = 0
-            container.addView(list)*/
         }
 
 

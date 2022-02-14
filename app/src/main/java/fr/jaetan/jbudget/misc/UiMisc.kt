@@ -27,23 +27,24 @@ class UiMisc {
             element.setOnTouchListener { _, event ->
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        element.animate().scaleX(0.9f)
-                        element.animate().scaleY(0.9f)
+                        scale(element, .9f, 300)
                     }
-                    MotionEvent.ACTION_MOVE -> {
-                        element.animate().scaleX(1f)
-                        element.animate().scaleY(1f)
+                    MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL -> {
+                        scale(element, 1f, 300)
                     }
-
                     MotionEvent.ACTION_UP -> {
-                        element.animate().scaleX(1f)
-                        element.animate().scaleY(1f)
+                        scale(element, 1f, 300)
                         callback()
                     }
                 }
 
                 true
             }
+        }
+
+        private fun scale(element: ViewGroup, scale: Float, duration: Long) {
+            element.animate().scaleX(scale).duration = duration
+            element.animate().scaleY(scale).duration = duration
         }
     }
 }
