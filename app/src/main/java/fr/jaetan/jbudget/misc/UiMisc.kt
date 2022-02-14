@@ -5,12 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
-import android.widget.LinearLayout
-import java.time.Duration
 
 class UiMisc {
     companion object {
@@ -32,8 +27,8 @@ class UiMisc {
             element.setOnTouchListener { _, event ->
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        element.animate().scaleX(0.95f)
-                        element.animate().scaleY(0.95f)
+                        element.animate().scaleX(0.9f)
+                        element.animate().scaleY(0.9f)
                     }
                     MotionEvent.ACTION_MOVE -> {
                         element.animate().scaleX(1f)
