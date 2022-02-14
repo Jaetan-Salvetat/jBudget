@@ -20,8 +20,6 @@ import io.objectbox.relation.ToMany
 
 class HistoryListItem(private val context: Context, private var budgetHistory: ToMany<BudgetHistory>, private val budgetId: Int): BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    //private var nbrItemCheck = 0
-
 
     override fun getCount(): Int {
         return budgetHistory.count()
@@ -52,7 +50,6 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         val textValueItem = view.findViewById<TextView>(R.id.history_item_value)
         val textNameItem = view.findViewById<TextView>(R.id.history_item_name)
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
-        val checkbox = view.findViewById<CheckBox>(R.id.history_item_checked)
         val container = view.findViewById<LinearLayout>(R.id.container)
 
         textNameItem.text = historyItem.name
@@ -72,20 +69,13 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         }
 
         if(historyItem.done){
-            checkbox.isChecked = true
-            checkedStyleManager(true, textValueItem, textNameItem, view.findViewById(R.id.euro), container)
+            checkedStyleManager(true, view)
         }
 
         //TODO: Events
-        /*container.setOnLongClickListener {
-            true
-        }
         container.setOnClickListener {
-            if(nbrItemCheck == 0) return@setOnClickListener
-        }*/
-        checkbox.setOnCheckedChangeListener { _, checked ->
-            historyItem.done = checked
-            checkedStyleManager(checked, textValueItem, textNameItem, view.findViewById(R.id.euro), container)
+            historyItem.done = !historyItem.done
+            checkedStyleManager(historyItem.done, view)
             Database.store.boxFor(BudgetHistory::class.java).put(historyItem)
         }
 
@@ -127,18 +117,18 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         notifyDataSetChanged()
     }
 
-    private fun checkedStyleManager(checked: Boolean, textValue: TextView, textName: TextView, textEuro: TextView, container: LinearLayout){
+    private fun checkedStyleManager(checked: Boolean, view: View){
         if(checked){
-            textValue.setTypeface(null, Typeface.BOLD_ITALIC)
-            textName.setTypeface(null, Typeface.ITALIC)
-            textEuro.setTypeface(null, Typeface.ITALIC)
-            container.foreground = AppCompatResources.getDrawable(context, R.drawable.history_item_done)
+            view.findViewById<TextView>(R.id.history_item_value).setTypeface(null, Typeface.BOLD_ITALIC)
+            view.findViewById<TextView>(R.id.history_item_name).setTypeface(null, Typeface.ITALIC)
+            view.findViewById<TextView>(R.id.euro).setTypeface(null, Typeface.ITALIC)
+            view.findViewById<LinearLayout>(R.id.container).foreground = AppCompatResources.getDrawable(context, R.drawable.history_item_done)
             return
         }
-        textValue.setTypeface(null, Typeface.BOLD)
-        textName.setTypeface(null, Typeface.NORMAL)
-        textEuro.setTypeface(null, Typeface.NORMAL)
-        container.foreground = null
+        view.findViewById<TextView>(R.id.history_item_value).setTypeface(null, Typeface.BOLD)
+        view.findViewById<TextView>(R.id.history_item_name).setTypeface(null, Typeface.NORMAL)
+        view.findViewById<TextView>(R.id.euro).setTypeface(null, Typeface.NORMAL)
+        view.findViewById<LinearLayout>(R.id.container).foreground = null
     }
 
     @SuppressLint("SetTextI18n")

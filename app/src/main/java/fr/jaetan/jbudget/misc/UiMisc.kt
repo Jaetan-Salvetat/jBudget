@@ -27,7 +27,7 @@ class UiMisc {
             element.setOnTouchListener { _, event ->
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        scale(element, .9f, 300)
+                        scale(element, .95f, 300)
                     }
                     MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL -> {
                         scale(element, 1f, 300)
