@@ -75,7 +75,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
                 layoutName.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
                 name.text = item.name
                 name.textSize = 18f
-                value.text = item.value.toString()
+                value.text = String.format("%.2f", item.value)
                 value.textSize = 18f
                 value.setTypeface(null, Typeface.BOLD)
                 euro.text = "€"
@@ -92,7 +92,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
 
         //TODO: Events
         view.findViewById<ImageButton>(R.id.remove_budget_btn).setOnClickListener {
-            UiMisc.alertDialog(this.context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
+            UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
                 callback = { dialog, _ ->
                     Database.store.boxFor(Budget::class.java).remove(getItem(id))
                     update()
