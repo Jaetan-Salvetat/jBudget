@@ -2,10 +2,9 @@ package fr.jaetan.jbudget
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toolbar
@@ -14,6 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.adapters.HistoryListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
+import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
 import io.objectbox.relation.ToMany
 import kotlin.properties.Delegates
@@ -34,6 +34,9 @@ class HistoryFragment : Fragment() {
     private var param2: String? = null
     private lateinit var args: HistoryFragmentArgs
     private lateinit var historyItems: ToMany<BudgetHistory>
+    private lateinit var budgetItems: ToMany<BudgetItem>
+    private var adapter: HistoryListItem? = null
+    private lateinit var historyActualItems: ToMany<BudgetHistory>
     private var budgetId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,22 +53,52 @@ class HistoryFragment : Fragment() {
     ): View? {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_history_view, container, false)
+        val appBar = view.findViewById<MaterialToolbar>(R.id.top_app_bar_history)
         val bumble = arguments
         val listview = view.findViewById<ListView>(R.id.listview_history)
-        var adapter: HistoryListItem?
 
         if(bumble != null){
             args = HistoryFragmentArgs.fromBundle(bumble)
             historyItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].history
+            historyActualItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].history
+            budgetItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].items
             budgetId = args.budgetId
             adapter = this.context?.let { HistoryListItem(it, historyItems, budgetId) }
             listview.adapter = adapter
         }
 
 
+
+        appBar.setOnMenuItemClickListener{ menuItem ->
+            val data: ToMany<BudgetHistory> = when(menuItem.itemId){
+                R.id.sort_by_done -> {
+                    val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
+                    temp.clear()
+                    for(item in historyItems){
+                        if(item.done) temp.add(item)
+                    }
+                    temp
+                }
+                R.id.sort_by_not_done -> {
+                    val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
+                    temp.clear()
+                    for(item in historyItems){
+                        if(!item.done) temp.add(item)
+                    }
+                    temp
+                }
+                R.id.sort_by_default -> historyItems
+                else -> historyActualItems
+            }
+
+            historyActualItems = data
+            adapter?.update(data)
+
+            true
+        }
+
         //TODO: Events
-        //back to budget
-        view.findViewById<MaterialToolbar>(R.id.top_app_bar_history).setNavigationOnClickListener {
+        appBar.setNavigationOnClickListener {
             val action = HistoryFragmentDirections.actionHistoryFragmentToModalBudgetFragment(budgetId)
             Navigation.findNavController(view).navigate(action)
         }

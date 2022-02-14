@@ -13,7 +13,7 @@ android {
         applicationId "fr.jaetan.jbudget"
         minSdk 26
         targetSdk 32
-        versionCode 26
+        versionCode 28
         versionName "1.0.17"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

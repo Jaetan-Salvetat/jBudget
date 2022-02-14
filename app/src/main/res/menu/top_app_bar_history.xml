@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="Trier"
+        android:icon="@drawable/ic_baseline_filter_list">
+
+        <menu>
+
+            <item
+                android:id="@+id/sort_by_default"
+                android:title="Par défaut"
+                android:contentDescription="@string/desc">
+            </item>
+            <item
+                android:id="@+id/sort_by_done"
+                android:title="Items sélectionné"
+                android:contentDescription="@string/desc">
+            </item>
+            <item
+                android:id="@+id/sort_by_not_done"
+                android:title="Items pas sélectionné"
+                android:contentDescription="@string/desc">
+            </item>
+
+        </menu>
+
+    </item>
+</menu>

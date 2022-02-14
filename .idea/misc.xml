@@ -13,6 +13,8 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_image_btn_ripple_effect.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/error_icon_btn_ripple_effect.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/focus_edit_text_style.xml" value="0.3015" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_done.xml" value="0.232" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_not_done.xml" value="0.232" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_selected.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_selector.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_unselected.xml" value="0.3015" />
@@ -33,6 +35,8 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/fragment_home_view.xml" value="0.3625" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/fragment_modal_budget.xml" value="0.1" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/fragment_settings_view.xml" value="0.18541666666666667" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/menu/top_app_bar_budget.xml" value="0.3625" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/menu/top_app_bar_history.xml" value="0.3625" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/menu/top_app_bar_home.xml" value="0.3625" />
         <entry key="..\:/dev/project/jBudget/app/src/main/res/layout/adapter_home_list_item.xml" value="0.22780797101449277" />
         <entry key="..\:/dev/project/jBudget/app/src/main/res/layout/adapter_modal_budget_list_item.xml" value="0.3625" />
