@@ -13,6 +13,11 @@
                 android:contentDescription="@string/desc">
             </item>
             <item
+                android:id="@+id/sort_by_name"
+                android:title="Par type de budget"
+                android:contentDescription="@string/desc">
+            </item>
+            <item
                 android:id="@+id/sort_by_done"
                 android:title="Items sélectionné"
                 android:contentDescription="@string/desc">
@@ -24,6 +29,5 @@
             </item>
 
         </menu>
-
     </item>
 </menu>

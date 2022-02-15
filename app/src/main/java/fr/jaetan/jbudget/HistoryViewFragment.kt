@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment
 import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.jaetan.jbudget.adapters.HistoryListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
+import fr.jaetan.jbudget.widgets.HistoryBottomSheet
 import io.objectbox.relation.ToMany
 import kotlin.properties.Delegates
 
@@ -35,8 +38,9 @@ class HistoryFragment : Fragment() {
     private lateinit var args: HistoryFragmentArgs
     private lateinit var historyItems: ToMany<BudgetHistory>
     private lateinit var budgetItems: ToMany<BudgetItem>
-    private var adapter: HistoryListItem? = null
     private lateinit var historyActualItems: ToMany<BudgetHistory>
+    private var bottomSheet: HistoryBottomSheet? = null
+    private var adapter: HistoryListItem? = null
     private var budgetId by Delegates.notNull<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +91,11 @@ class HistoryFragment : Fragment() {
                     }
                     temp
                 }
+                R.id.sort_by_name -> {
+                    bottomSheet = context?.let { HistoryBottomSheet(it, Database.store.boxFor(Budget::class.java).all[budgetId].items, sortByName)}
+                    bottomSheet?.show(parentFragmentManager, "TAG")
+                    historyItems
+                }
                 R.id.sort_by_default -> historyItems
                 else -> historyActualItems
             }
@@ -105,6 +114,17 @@ class HistoryFragment : Fragment() {
         
 
         return view
+    }
+
+    private val sortByName: (String) -> Unit = { name ->
+        val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
+        temp.clear()
+        for(item in historyItems){
+            if(item.name == name) temp.add(item)
+        }
+        historyActualItems = temp
+        adapter?.update(historyActualItems)
+        bottomSheet?.dismiss()
     }
 
     companion object {
