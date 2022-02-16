@@ -111,7 +111,12 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
     }
 
     fun update(history: Collection<BudgetHistory>? = null){
-        budgetHistory = history as ToMany<BudgetHistory>? ?: Database.store.boxFor(Budget::class.java).all[budgetId].history
+        if(history == null){
+            budgetHistory = Database.store.boxFor(Budget::class.java).all[budgetId].history
+        }else{
+            budgetHistory.clear()
+            budgetHistory.addAll(history)
+        }
         notifyDataSetChanged()
     }
 

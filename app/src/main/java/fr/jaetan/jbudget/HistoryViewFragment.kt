@@ -1,21 +1,16 @@
 package fr.jaetan.jbudget
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
-import android.widget.ImageButton
 import android.widget.ListView
-import android.widget.Toolbar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.jaetan.jbudget.adapters.HistoryListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
+import fr.jaetan.jbudget.models.SortType
 import fr.jaetan.jbudget.services.Database
 import fr.jaetan.jbudget.widgets.HistoryBottomSheet
 import io.objectbox.relation.ToMany
@@ -39,7 +34,8 @@ class HistoryFragment : Fragment() {
     private lateinit var historyItems: ToMany<BudgetHistory>
     private lateinit var budgetItems: ToMany<BudgetItem>
     private lateinit var historyActualItems: ToMany<BudgetHistory>
-    private var bottomSheet: HistoryBottomSheet? = null
+    private lateinit var bottomSheet: HistoryBottomSheet
+    //private var bottomSheet: HistoryBottomSheet? = null
     private var adapter: HistoryListItem? = null
     private var budgetId by Delegates.notNull<Int>()
 
@@ -74,36 +70,14 @@ class HistoryFragment : Fragment() {
 
 
         appBar.setOnMenuItemClickListener{ menuItem ->
-            val data: ToMany<BudgetHistory> = when(menuItem.itemId){
-                R.id.sort_by_done -> {
-                    val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
-                    temp.clear()
-                    for(item in historyItems){
-                        if(item.done) temp.add(item)
-                    }
-                    temp
+            when(menuItem.itemId){
+                R.id.sort -> {
+                    bottomSheet = context?.let { HistoryBottomSheet(it, budgetId, generateMapOfSort(), sort)}!!
+                    bottomSheet.show(parentFragmentManager, "TAG")
+                    true
                 }
-                R.id.sort_by_not_done -> {
-                    val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
-                    temp.clear()
-                    for(item in historyItems){
-                        if(!item.done) temp.add(item)
-                    }
-                    temp
-                }
-                R.id.sort_by_name -> {
-                    bottomSheet = context?.let { HistoryBottomSheet(it, Database.store.boxFor(Budget::class.java).all[budgetId].items, sortByName)}
-                    bottomSheet?.show(parentFragmentManager, "TAG")
-                    historyItems
-                }
-                R.id.sort_by_default -> historyItems
-                else -> historyActualItems
+                else -> false
             }
-
-            historyActualItems = data
-            adapter?.update(data)
-
-            true
         }
 
         //TODO: Events
@@ -116,14 +90,22 @@ class HistoryFragment : Fragment() {
         return view
     }
 
-    private val sortByName: (String) -> Unit = { name ->
-        val temp = Database.store.boxFor(Budget::class.java).all[budgetId].history
-        temp.clear()
-        for(item in historyItems){
-            if(item.name == name) temp.add(item)
+    private fun generateMapOfSort(): ArrayList<Map<String, SortType>>{
+        val res: ArrayList<Map<String, SortType>> = arrayListOf()
+        res += mapOf("défaut" to SortType.Default)
+        res += mapOf("item sélectionné" to SortType.Done)
+        res += mapOf("item pas sélectionné" to SortType.NotDone)
+        res += mapOf("Rentrée d'argent" to SortType.Name)
+
+        for(item in budgetItems){
+            res += mapOf(item.name to SortType.Name)
         }
-        historyActualItems = temp
-        adapter?.update(historyActualItems)
+
+        return res
+    }
+
+    private val sort: (Collection<BudgetHistory>) -> Unit = {items ->
+        adapter?.update(items)
         bottomSheet?.dismiss()
     }
 

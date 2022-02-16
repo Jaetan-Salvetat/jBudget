@@ -16,4 +16,5 @@
     <string name="_0">0</string>
     <string name="euro">€</string>
     <string name="history">Historique</string>
+    <string name="by_budget_type">Par type de budget</string>
 </resources>
