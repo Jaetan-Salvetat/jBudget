@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.os.CountDownTimer
 import android.view.MotionEvent
 import android.view.ViewGroup
+import android.view.animation.ScaleAnimation
 
 class UiMisc {
     companion object {
@@ -27,24 +29,26 @@ class UiMisc {
             element.setOnTouchListener { _, event ->
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        scale(element, .95f, 300)
+                        scale(element, .95f)
+                        true
                     }
                     MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL -> {
-                        scale(element, 1f, 300)
+                        scale(element, 1f)
+                        true
                     }
                     MotionEvent.ACTION_UP -> {
-                        scale(element, 1f, 300)
+                        scale(element, 1f)
                         callback()
+                        true
                     }
+                    else -> false
                 }
-
-                true
             }
         }
 
-        private fun scale(element: ViewGroup, scale: Float, duration: Long) {
-            element.animate().scaleX(scale).duration = duration
-            element.animate().scaleY(scale).duration = duration
+        private fun scale(element: ViewGroup, scale: Float) {
+            element.animate().scaleX(scale).duration = 300
+            element.animate().scaleY(scale).duration = 300
         }
     }
 }

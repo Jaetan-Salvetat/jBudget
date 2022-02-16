@@ -45,12 +45,11 @@
 
         </LinearLayout>
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/darker_gray" />
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -122,12 +121,11 @@
         </LinearLayout>
 
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginHorizontal="10dp"
-            android:background="@android:color/darker_gray" />
+            android:layout_marginHorizontal="10dp" />
 
         <LinearLayout
             android:id="@+id/container_budget_items"

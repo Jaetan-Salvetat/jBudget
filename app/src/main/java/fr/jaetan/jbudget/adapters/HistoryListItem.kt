@@ -42,8 +42,8 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
 
         if(position > 0 && historyItem.date != getItem(count - position).date || position == 0){
             view = inflater.inflate(R.layout.adapter_history_list_item_with_title, parent, false)
-
             dateManager(historyItem.date, view)
+            view.findViewById<LinearLayout>(R.id.container_date).removeAllViewsInLayout()
         }else{
             view = inflater.inflate(R.layout.adapter_history_list_item_without_title, parent, false)
         }
