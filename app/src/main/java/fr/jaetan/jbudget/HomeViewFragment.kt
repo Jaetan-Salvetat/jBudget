@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import android.widget.*
@@ -35,22 +36,25 @@ class HomeViewFragment : Fragment() {
         }
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
+        val adapter = this.context?.let { HomeListItem(it, updateView) }
+
         listview = view.findViewById(R.id.listview_home_budgets)
         noBudgetText = view.findViewById(R.id.home_no_budgets)
-        listview.adapter = this.context?.let { HomeListItem(it, updateView) }
+        listview.adapter = adapter
+        if (adapter != null) {
+            listview.addHeaderView(adapter.getView(-1, null, null))
+        }
 
         updateView(Database.store.boxFor(Budget::class.java).count())
 
         //TODO: Events
-        /*view.findViewById<ImageButton>(R.id.go_to_settings_btn).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
-        }*/
         view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
@@ -62,10 +66,6 @@ class HomeViewFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private var updateView = { count: Long ->

@@ -16,15 +16,15 @@ import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
 
 class HomeListItem(private var context: Context, private  val changeView: (Long) -> Unit) : BaseAdapter() {
-    private var budgets: ArrayList<Budget> = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
-        return budgets.count()
+        return Database.store.boxFor(Budget::class.java).count().toInt() - 1
     }
 
     override fun getItem(p0: Int): Budget {
-        return budgets[p0]
+        if(p0 == -1) return Database.store.boxFor(Budget::class.java).all[p0]
+        return Database.store.boxFor(Budget::class.java).all[p0]
     }
 
     override fun getItemId(p0: Int): Long {
@@ -34,12 +34,14 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     @SuppressLint("ViewHolder", "SetTextI18n", "ClickableViewAccessibility")
     override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
         //TODO: Init
-        val id = budgets.count() - position - 1
-        val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
+        val id = count - position - 1
         val budget = getItem(id)
+
+        val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
         val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
         val container = view.findViewById<LinearLayout>(R.id.list_item_budget)
+
 
         UiMisc.scaleAnimation(container) {
             val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
@@ -55,6 +57,10 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         }else if(budget.total - budget.totalSpent < 0.0){
             totalRemaining.setTextColor(Color.parseColor("#ff0000"))//ff0000
             totalSpent.setTextColor(Color.parseColor("#ff0000"))//ff0000
+        }
+
+        if(position != -1){
+            view.findViewById<LinearLayout>(R.id.divider).removeAllViewsInLayout()
         }
 
         if(budget.items.isEmpty()) {
@@ -105,8 +111,8 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     }
 
     private fun update(){
-        budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
+        //budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
         notifyDataSetChanged()
-        changeView(budgets.count().toLong())
+        changeView(count.toLong())
     }
 }

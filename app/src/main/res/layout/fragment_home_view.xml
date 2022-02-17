@@ -26,16 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
+        android:dividerHeight="0dp"
         android:layout_marginTop="60dp"
-        android:paddingHorizontal="10dp"
         android:layout_marginBottom="20dp"/>
 
     <LinearLayout
         android:id="@+id/home_no_budgets"
         android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="10dp"
         android:gravity="center"
         android:paddingHorizontal="40dp"
         android:orientation="vertical">
