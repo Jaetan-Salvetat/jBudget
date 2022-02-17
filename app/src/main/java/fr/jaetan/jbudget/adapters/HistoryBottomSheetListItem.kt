@@ -2,6 +2,7 @@ package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,12 +38,11 @@ class HistoryBottomSheetListItem(context: Context, private val budgetId: Int, pr
         val btnContainer = view.findViewById<LinearLayout>(R.id.btn_container)
         historyItems = Database.store.boxFor(Budget::class.java).all[budgetId].history
 
-        /*if(titles[p0].keys.first().lowercase() != "rentrée d'argent"){
+        if(p0 == 0 || titles[p0].values.first() == titles[p0 - 1].values.first()){
             view.findViewById<LinearLayout>(R.id.container_title).removeAllViewsInLayout()
-        }*/
-        view.findViewById<LinearLayout>(R.id.container_title).removeAllViewsInLayout()
+        }
 
-        view.findViewById<TextView>(R.id.btn_text).text = "Par ${titles[p0].keys.first()}"
+        view.findViewById<TextView>(R.id.btn_text).text = titles[p0].keys.first()
 
         btnContainer.setOnClickListener {_ ->
 

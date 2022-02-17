@@ -92,9 +92,9 @@ class HistoryFragment : Fragment() {
 
     private fun generateMapOfSort(): ArrayList<Map<String, SortType>>{
         val res: ArrayList<Map<String, SortType>> = arrayListOf()
-        res += mapOf("défaut" to SortType.Default)
-        res += mapOf("item sélectionné" to SortType.Done)
-        res += mapOf("item pas sélectionné" to SortType.NotDone)
+        res += mapOf("Par défaut" to SortType.Default)
+        res += mapOf("Par item sélectionné" to SortType.Done)
+        res += mapOf("Par item pas sélectionné" to SortType.NotDone)
         res += mapOf("Rentrée d'argent" to SortType.Name)
 
         for(item in budgetItems){
