@@ -1,7 +1,6 @@
 package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -9,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.AppOpsManagerCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.HomeViewFragmentDirections
 import fr.jaetan.jbudget.R
@@ -122,6 +118,6 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     private fun update(){
         budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
         notifyDataSetChanged()
-        changeView(count.toLong())
+        changeView((count + 1).toLong())
     }
 }
