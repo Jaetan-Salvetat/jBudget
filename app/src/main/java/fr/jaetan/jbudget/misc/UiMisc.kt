@@ -4,10 +4,14 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.os.CountDownTimer
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
+import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import androidx.core.view.updateLayoutParams
+import kotlinx.coroutines.*
 
 class UiMisc {
     companion object {
@@ -25,19 +29,18 @@ class UiMisc {
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        fun scaleAnimation(element: ViewGroup, callback: () -> Unit){
-            element.setOnTouchListener { _, event ->
+        fun scaleAnimation(element: ViewGroup, callback: () -> Unit){element.setOnTouchListener { _, event ->
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        scale(element, .95f)
+                        scale(element, .95f, 1f)
                         true
                     }
-                    MotionEvent.ACTION_MOVE, MotionEvent.ACTION_CANCEL -> {
-                        scale(element, 1f)
+                    MotionEvent.ACTION_CANCEL -> {
+                        scale(element, 1f, .95f)
                         true
                     }
                     MotionEvent.ACTION_UP -> {
-                        scale(element, 1f)
+                        scale(element, 1f, .95f)
                         callback()
                         true
                     }
@@ -46,9 +49,12 @@ class UiMisc {
             }
         }
 
-        private fun scale(element: ViewGroup, scale: Float) {
-            element.animate().scaleX(scale).duration = 300
-            element.animate().scaleY(scale).duration = 300
+        private fun scale(element: ViewGroup, scaleTo: Float, scaleFrom: Float) {
+            val anim = ScaleAnimation(scaleFrom, scaleTo, scaleFrom, scaleTo, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            anim.duration = 300
+            anim.isFillEnabled = true
+            anim.fillAfter = true
+            element.startAnimation(anim)
         }
     }
 }

@@ -11,11 +11,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_app_bar_home"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/title_appbar_home"
-            app:menu="@menu/top_app_bar_home" />
+                android:id="@+id/top_app_bar_home"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/title_appbar_home"
+                app:menu="@menu/top_app_bar_home"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -27,25 +27,26 @@
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="65dp"/>
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_no_budgets"
-        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:gravity="center"
-        android:paddingHorizontal="40dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/no_budget_home"
             android:textAlignment="center"
-            android:textStyle="italic"
             android:textSize="18sp"
-            android:text="@string/no_budget_home"/>
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

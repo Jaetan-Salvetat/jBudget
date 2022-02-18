@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.adapters.HomeListItem
 import fr.jaetan.jbudget.models.Budget
@@ -26,7 +28,9 @@ class HomeViewFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var listview: ListView
-    private lateinit var noBudgetText: LinearLayout
+    private lateinit var noBudgetText: ConstraintLayout
+    private var headerView: View? = null
+    private var adapter: HomeListItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +47,11 @@ class HomeViewFragment : Fragment() {
     ): View {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
-        val adapter = this.context?.let { HomeListItem(it, updateView) }
+        adapter = this.context?.let { HomeListItem(it, updateView) }
 
         listview = view.findViewById(R.id.listview_home_budgets)
         noBudgetText = view.findViewById(R.id.home_no_budgets)
         listview.adapter = adapter
-        if (adapter != null) {
-            listview.addHeaderView(adapter.getView(-1, null, null))
-        }
 
         updateView(Database.store.boxFor(Budget::class.java).count())
 
@@ -70,6 +71,11 @@ class HomeViewFragment : Fragment() {
 
     private var updateView = { count: Long ->
         if(count > 0){
+            if (adapter != null) {
+                listview.removeHeaderView(headerView)
+                headerView = adapter?.getView(-1, null, listview)
+                listview.addHeaderView(headerView)
+            }
             listview.visibility = View.VISIBLE
             noBudgetText.visibility = View.INVISIBLE
         }else{

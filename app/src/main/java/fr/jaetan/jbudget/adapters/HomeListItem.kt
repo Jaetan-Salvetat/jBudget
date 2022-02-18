@@ -1,6 +1,7 @@
 package fr.jaetan.jbudget.adapters
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -8,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AppOpsManagerCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import fr.jaetan.jbudget.HomeViewFragmentDirections
 import fr.jaetan.jbudget.R
@@ -17,14 +21,14 @@ import fr.jaetan.jbudget.services.Database
 
 class HomeListItem(private var context: Context, private  val changeView: (Long) -> Unit) : BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var budgets: ArrayList<Budget> = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
 
     override fun getCount(): Int {
-        return Database.store.boxFor(Budget::class.java).count().toInt() - 1
+        return budgets.count() - 1
     }
 
     override fun getItem(p0: Int): Budget {
-        if(p0 == -1) return Database.store.boxFor(Budget::class.java).all[p0]
-        return Database.store.boxFor(Budget::class.java).all[p0]
+        return budgets[p0]
     }
 
     override fun getItemId(p0: Int): Long {
@@ -32,12 +36,21 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     }
 
     @SuppressLint("ViewHolder", "SetTextI18n", "ClickableViewAccessibility")
-    override fun getView(position: Int, p1: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, p1: View?, parent: ViewGroup?): View? {
         //TODO: Init
-        val id = count - position - 1
+        val id: Int
+        val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
+
+        if(position == -1){
+            id = count
+        }else{
+            id = count - position - 1
+            view.findViewById<LinearLayout>(R.id.divider).removeAllViewsInLayout()
+        }
+
+
         val budget = getItem(id)
 
-        val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
         val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
         val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
         val container = view.findViewById<LinearLayout>(R.id.list_item_budget)
@@ -57,10 +70,6 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         }else if(budget.total - budget.totalSpent < 0.0){
             totalRemaining.setTextColor(Color.parseColor("#ff0000"))//ff0000
             totalSpent.setTextColor(Color.parseColor("#ff0000"))//ff0000
-        }
-
-        if(position != -1){
-            view.findViewById<LinearLayout>(R.id.divider).removeAllViewsInLayout()
         }
 
         if(budget.items.isEmpty()) {
@@ -98,7 +107,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
 
         //TODO: Events
         view.findViewById<ImageButton>(R.id.remove_budget_btn).setOnClickListener {
-            UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
+            UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ?",
                 callback = { dialog, _ ->
                     Database.store.boxFor(Budget::class.java).remove(getItem(id))
                     update()
@@ -111,7 +120,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
     }
 
     private fun update(){
-        //budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
+        budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
         notifyDataSetChanged()
         changeView(count.toLong())
     }
