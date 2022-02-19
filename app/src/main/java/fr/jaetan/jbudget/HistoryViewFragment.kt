@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.ListView
+import android.widget.TextView
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.history.HistoryListItem
@@ -35,6 +36,8 @@ class HistoryFragment : Fragment() {
     private lateinit var budgetItems: ToMany<BudgetItem>
     private lateinit var historyActualItems: ToMany<BudgetHistory>
     private lateinit var bottomSheet: HistoryBottomSheet
+    private lateinit var textNoHistory: TextView
+    private lateinit var listview: ListView
     //private var bottomSheet: HistoryBottomSheet? = null
     private var adapter: HistoryListItem? = null
     private var budgetId by Delegates.notNull<Int>()
@@ -55,7 +58,8 @@ class HistoryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_history_view, container, false)
         val appBar = view.findViewById<MaterialToolbar>(R.id.top_app_bar_history)
         val bumble = arguments
-        val listview = view.findViewById<ListView>(R.id.listview_history)
+        listview = view.findViewById<ListView>(R.id.listview_history)
+        textNoHistory = view.findViewById<TextView>(R.id.text_no_history)
 
         if(bumble != null){
             args = HistoryFragmentArgs.fromBundle(bumble)
@@ -67,7 +71,7 @@ class HistoryFragment : Fragment() {
             listview.adapter = adapter
         }
 
-
+        updateListVisibility()
 
         appBar.setOnMenuItemClickListener{ menuItem ->
             when(menuItem.itemId){
@@ -106,7 +110,18 @@ class HistoryFragment : Fragment() {
 
     private val sort: (Collection<BudgetHistory>) -> Unit = {items ->
         adapter?.update(items)
-        bottomSheet?.dismiss()
+        bottomSheet.dismiss()
+        updateListVisibility()
+    }
+
+    private fun updateListVisibility(){
+        if(adapter?.count!! <= 0L){
+            textNoHistory.visibility = ViewGroup.VISIBLE
+            listview.visibility = ViewGroup.INVISIBLE
+        }else{
+            textNoHistory.visibility = ViewGroup.INVISIBLE
+            listview.visibility = ViewGroup.VISIBLE
+        }
     }
 
     companion object {
