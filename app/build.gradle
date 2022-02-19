@@ -45,6 +45,8 @@ apply plugin: "kotlin-android"
 apply plugin: "kotlin-kapt"
 apply plugin: "io.objectbox"
 
+android.defaultConfig.ndk.debugSymbolLevel = 'FULL'
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
