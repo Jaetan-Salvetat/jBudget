@@ -47,16 +47,18 @@ class HomeViewFragment : Fragment() {
     ): View {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
-        adapter = this.context?.let { HomeListItem(it, updateView) }
+        val topAppBar = inflater.inflate(R.layout.home_top_app_bar, container, false)
 
-        listview = view.findViewById(R.id.listview_home_budgets)
+        adapter = this.context?.let { HomeListItem(it, updateView) }
         noBudgetText = view.findViewById(R.id.home_no_budgets)
+        listview = view.findViewById(R.id.listview_home_budgets)
+        listview.addHeaderView(topAppBar)
         listview.adapter = adapter
 
         updateView(Database.store.boxFor(Budget::class.java).count())
 
         //TODO: Events
-        view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
+        topAppBar.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
                     Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
