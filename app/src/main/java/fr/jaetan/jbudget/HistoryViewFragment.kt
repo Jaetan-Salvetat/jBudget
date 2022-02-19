@@ -6,13 +6,13 @@ import androidx.fragment.app.Fragment
 import android.widget.ListView
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
-import fr.jaetan.jbudget.adapters.HistoryListItem
+import fr.jaetan.jbudget.history.HistoryListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.models.SortType
 import fr.jaetan.jbudget.services.Database
-import fr.jaetan.jbudget.widgets.HistoryBottomSheet
+import fr.jaetan.jbudget.history.HistoryBottomSheet
 import io.objectbox.relation.ToMany
 import kotlin.properties.Delegates
 
@@ -72,7 +72,7 @@ class HistoryFragment : Fragment() {
         appBar.setOnMenuItemClickListener{ menuItem ->
             when(menuItem.itemId){
                 R.id.sort -> {
-                    bottomSheet = context?.let { HistoryBottomSheet(it, budgetId, generateMapOfSort(), sort)}!!
+                    bottomSheet = context?.let { HistoryBottomSheet(it, budgetId, generateMapOfSort(), sort) }!!
                     bottomSheet.show(parentFragmentManager, "TAG")
                     true
                 }

@@ -1,18 +1,12 @@
-package fr.jaetan.jbudget.adapters
+package fr.jaetan.jbudget.budget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.InputType.TYPE_CLASS_NUMBER
-import android.text.InputType.TYPE_NUMBER_VARIATION_NORMAL
-import android.text.method.TransformationMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.contains
 import androidx.core.widget.addTextChangedListener
-import com.google.android.material.navigation.NavigationBarView
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.models.BudgetTitle
@@ -20,7 +14,7 @@ import fr.jaetan.jbudget.services.Database
 import java.lang.Exception
 import java.util.ArrayList
 
-class ModalBudgetListItem(private val context: Context) : BaseAdapter(){
+class BudgetListItem(private val context: Context) : BaseAdapter(){
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var budgetTitles: ArrayList<String> = arrayListOf()
     private var spinnerItems: ArrayList<String> = arrayListOf()

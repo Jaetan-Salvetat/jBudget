@@ -1,4 +1,4 @@
-package fr.jaetan.jbudget.adapters
+package fr.jaetan.jbudget.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.*
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.misc.UiMisc
-import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
 

@@ -1,4 +1,4 @@
-package fr.jaetan.jbudget.adapters
+package fr.jaetan.jbudget.history
 
 import android.annotation.SuppressLint
 import android.content.Context

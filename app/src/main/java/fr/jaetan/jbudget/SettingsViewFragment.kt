@@ -9,7 +9,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
-import fr.jaetan.jbudget.adapters.SettingsListItem
+import fr.jaetan.jbudget.settings.SettingsListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database

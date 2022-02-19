@@ -1,4 +1,4 @@
-package fr.jaetan.jbudget.adapters
+package fr.jaetan.jbudget.home
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,7 +15,7 @@ import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
 
-class HomeListItem(private var context: Context, private  val changeView: (Long) -> Unit) : BaseAdapter() {
+class HomeListItem(private var context: Context, private  val changeView: () -> Unit) : BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private var budgets: ArrayList<Budget> = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
 
@@ -106,7 +106,7 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
             UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ?",
                 callback = { dialog, _ ->
                     Database.store.boxFor(Budget::class.java).remove(getItem(id))
-                    update()
+                    changeView()
                     dialog.cancel()
                 })
         }
@@ -115,9 +115,8 @@ class HomeListItem(private var context: Context, private  val changeView: (Long)
         return view
     }
 
-    private fun update(){
+    fun update(){
         budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
         notifyDataSetChanged()
-        changeView((count + 1).toLong())
     }
 }

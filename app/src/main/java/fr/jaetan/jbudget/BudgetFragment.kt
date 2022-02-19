@@ -12,13 +12,11 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.Navigation
-import fr.jaetan.jbudget.adapters.ModalBudgetListItem
+import fr.jaetan.jbudget.budget.BudgetListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -58,7 +56,7 @@ class ModalBudgetFragment : Fragment() {
         val topAppBar = view.findViewById<Toolbar>(R.id.top_app_bar_budget)
         val btnAddItem = LinearLayout(this.context)
         val textBtnAddItem = TextView(this.context)
-        val adapter = this.context?.let { ModalBudgetListItem(it) }
+        val adapter = this.context?.let { BudgetListItem(it) }
 
         listView.adapter = adapter
         listView.addFooterView(btnAddItem)

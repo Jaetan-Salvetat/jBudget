@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.MaterialToolbar android:id="@+id/top_app_bar_home"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/top_app_bar_home"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/title_appbar_home"
-        app:menu="@menu/top_app_bar_home"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="?attr/actionBarSize"
+    app:title="@string/title_appbar_home"
+    app:menu="@menu/top_app_bar_home"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

@@ -1,24 +1,16 @@
-package fr.jaetan.jbudget.widgets
+package fr.jaetan.jbudget.history
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebHistoryItem
-import android.widget.LinearLayout
 import android.widget.ListView
-import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.adapters.HistoryBottomSheetListItem
+import fr.jaetan.jbudget.history.HistoryBottomSheetListItem
 import fr.jaetan.jbudget.models.BudgetHistory
-import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.models.SortType
-import io.objectbox.relation.ToMany
-import kotlin.reflect.KProperty0
 
 class HistoryBottomSheet(private val c: Context, private val budgetId: Int, private val titles: ArrayList<Map<String, SortType>>, private val callback: (Collection<BudgetHistory>) -> Unit) : BottomSheetDialogFragment() {
     override fun onCreateView(

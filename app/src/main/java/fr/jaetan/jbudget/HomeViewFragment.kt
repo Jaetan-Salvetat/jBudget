@@ -2,16 +2,19 @@ package fr.jaetan.jbudget
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
-import fr.jaetan.jbudget.adapters.HomeListItem
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import fr.jaetan.jbudget.home.HomeListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
+import java.time.LocalDate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,10 +58,11 @@ class HomeViewFragment : Fragment() {
         listview.addHeaderView(topAppBar)
         listview.adapter = adapter
 
-        updateView(Database.store.boxFor(Budget::class.java).count())
+        updateView()
 
         //TODO: Events
         topAppBar.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
+            Log.d("XXXXXXXXXXXXX", "XXXXXXXXXXXX")
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
                     Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
@@ -67,12 +71,20 @@ class HomeViewFragment : Fragment() {
                 else -> false
             }
         }
+        view.findViewById<ExtendedFloatingActionButton>(R.id.add_budget_btn).setOnClickListener {
+            val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
+            Database.store.boxFor(Budget::class.java).put(Budget(title = title))
+            Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
+            updateView()
+        }
 
         return view
     }
 
-    private var updateView = { count: Long ->
+    private var updateView = {
+        val count = Database.store.boxFor(Budget::class.java).count()
         if(count > 0){
+            adapter?.update()
             if (adapter != null) {
                 listview.removeHeaderView(headerView)
                 headerView = adapter?.getView(-1, null, listview)
