@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.ListView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.history.HistoryListItem
@@ -58,8 +59,10 @@ class HistoryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_history_view, container, false)
         val appBar = view.findViewById<MaterialToolbar>(R.id.top_app_bar_history)
         val bumble = arguments
-        listview = view.findViewById<ListView>(R.id.listview_history)
-        textNoHistory = view.findViewById<TextView>(R.id.text_no_history)
+        listview = view.findViewById(R.id.listview_history)
+        textNoHistory = view.findViewById(R.id.text_no_history)
+
+        ViewCompat.setNestedScrollingEnabled(listview, true)
 
         if(bumble != null){
             args = HistoryFragmentArgs.fromBundle(bumble)
