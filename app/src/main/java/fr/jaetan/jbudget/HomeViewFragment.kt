@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import fr.jaetan.jbudget.home.HomeListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
@@ -51,6 +50,7 @@ class HomeViewFragment : Fragment() {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
         val topAppBar = inflater.inflate(R.layout.home_top_app_bar, container, false)
+        val addBtn = view.findViewById<ExtendedFloatingActionButton>(R.id.add_budget_btn)
 
         adapter = this.context?.let { HomeListItem(it, updateView) }
         noBudgetText = view.findViewById(R.id.home_no_budgets)
@@ -62,7 +62,6 @@ class HomeViewFragment : Fragment() {
 
         //TODO: Events
         topAppBar.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
-            Log.d("XXXXXXXXXXXXX", "XXXXXXXXXXXX")
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
                     Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
@@ -71,12 +70,40 @@ class HomeViewFragment : Fragment() {
                 else -> false
             }
         }
-        view.findViewById<ExtendedFloatingActionButton>(R.id.add_budget_btn).setOnClickListener {
+        addBtn.setOnClickListener {
             val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
             Database.store.boxFor(Budget::class.java).put(Budget(title = title))
             Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
             updateView()
         }
+
+        listview.setOnScrollChangeListener(object: View.OnScrollChangeListener{
+            override fun onScrollChange(v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                Log.d("XXXXXXXXXXXXX", "$scrollX, $scrollY, $oldScrollX, $oldScrollY")
+            }
+
+        })
+        listview.setOnScrollListener(object: AbsListView.OnScrollListener{
+            var oldState = 0
+            override fun onScrollStateChanged(p0: AbsListView?, actualState: Int) {
+                /*if(actualState == 0 && addBtn.isExtended) addBtn.shrink()
+                if(oldState >= 1 && !addBtn.isExtended) addBtn.extend()
+                oldState = actualState
+
+                Log.d("XXXXXXXXXXXXXXXXX", "$actualState, $oldState")*/
+            }
+
+            override fun onScroll(p0: AbsListView?, actualState: Int, p2: Int, p3: Int) {
+                if (oldState < actualState) {
+                    addBtn.shrink()
+                }
+                if (oldState > actualState) {
+                    addBtn.extend()
+                }
+                oldState = actualState
+            }
+
+        })
 
         return view
     }
