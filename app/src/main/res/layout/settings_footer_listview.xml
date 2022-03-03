@@ -25,7 +25,7 @@
             android:id="@+id/add_budget_type_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Theme.OutlinedButton"
             android:text="@string/add_budget_type"/>
 
         <View
@@ -36,7 +36,7 @@
             android:id="@+id/create_budget_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Theme.OutlinedButton"
             android:text="@string/create_budget"/>
 
 

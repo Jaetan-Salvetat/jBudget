@@ -11,11 +11,9 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:backgroundTint="?attr/colorOnPrimary"
             android:id="@+id/top_app_bar_home"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSecondary"
             app:title="@string/title_appbar_home"
             app:menu="@menu/top_app_bar_home"
             app:layout_scrollFlags="scroll|enterAlways" />
@@ -27,7 +25,6 @@
         android:id="@+id/listview_home_budgets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/home_tool_bar"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:visibility="invisible"
@@ -39,7 +36,6 @@
         android:id="@+id/home_no_budgets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/home_tool_bar"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

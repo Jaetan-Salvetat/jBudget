@@ -1,17 +1,35 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.JBudget" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/cyan</item>
-        <item name="colorPrimaryVariant">@color/cyan</item>
-        <item name="colorOnPrimary">#FFFBFE</item>
-        <item name="android:textColorPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
+        <!-- Primary color. -->
+        <item name="colorPrimary">@color/light_grey</item>
+        <item name="colorOnPrimary">@color/dark_grey</item>
+        <item name="android:colorPrimaryDark">@color/light_grey</item> <!-- statusBar -->
+
+        <!-- Secondary color. -->
         <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">#efefef</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#FFFBFE</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondaryVariant">@color/light_pink</item>
+
+        <!-- Surface color. -->
+        <item name="colorSurface">@color/light_grey</item> <!-- toolbar -->
+
+        <!-- Background color. -->
+        <item name="backgroundColor">@color/light_grey</item>
+
+        <!-- Control color. -->
+        <item name="colorControlHighlight">@color/dark_cyan</item> <!-- ripple color -->
+    </style>
+
+
+
+    <style name="Theme.ElevatedButton" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="backgroundTint">@color/cyan</item>
+        <item name="rippleColor">@color/light_cyan</item>
+    </style>
+
+    <style name="Theme.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/cyan</item>
+        <item name="android:textColor">@color/cyan</item>
+        <item name="rippleColor">@color/cyan</item>
     </style>
 </resources>
