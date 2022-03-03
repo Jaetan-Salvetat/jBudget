@@ -36,6 +36,10 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
         //TODO: Init
         val id: Int
         val view = inflater.inflate(R.layout.adapter_home_list_item, parent, false)
+        val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
+        val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
+        val container = view.findViewById<LinearLayout>(R.id.list_item_budget)
+        val removeBtn = view.findViewById<ImageButton>(R.id.remove_budget_btn)
 
         if(position == -1){
             id = count
@@ -47,15 +51,11 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
 
         val budget = getItem(id)
 
-        val totalRemaining = view.findViewById<TextView>(R.id.home_list_item_total_remaining)
-        val totalSpent = view.findViewById<TextView>(R.id.home_list_item_total_spent)
-        val container = view.findViewById<LinearLayout>(R.id.list_item_budget)
-
-
         UiMisc.scaleAnimation(container) {
             val action = HomeViewFragmentDirections.actionHomeViewFragmentToModalBudgetFragment(id)
             Navigation.findNavController(view).navigate(action)
         }
+
         view.findViewById<TextView>(R.id.title_budget).text = budget.title
         totalSpent.text = String.format("%.2f", budget.totalSpent)
         totalRemaining.text = String.format("%.2f", budget.total - budget.totalSpent)
@@ -102,7 +102,7 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
 
 
         //TODO: Events
-        view.findViewById<ImageButton>(R.id.remove_budget_btn).setOnClickListener {
+        removeBtn.setOnClickListener {
             UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ?",
                 callback = { dialog, _ ->
                     Database.store.boxFor(Budget::class.java).remove(getItem(id))

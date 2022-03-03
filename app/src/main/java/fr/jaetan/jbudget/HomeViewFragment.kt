@@ -2,11 +2,13 @@ package fr.jaetan.jbudget
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -30,7 +32,7 @@ class HomeViewFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var listview: ListView
-    private lateinit var noBudgetText: ConstraintLayout
+    private lateinit var noBudgetText: LinearLayout
     private var headerView: View? = null
     private var adapter: HomeListItem? = null
 
@@ -49,19 +51,22 @@ class HomeViewFragment : Fragment() {
     ): View {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
-        val topAppBar = inflater.inflate(R.layout.home_top_app_bar, container, false)
         val addBtn = view.findViewById<ExtendedFloatingActionButton>(R.id.add_budget_btn)
+
+        val topDivider = View(context)
+        topDivider.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 40)
 
         adapter = this.context?.let { HomeListItem(it, updateView) }
         noBudgetText = view.findViewById(R.id.home_no_budgets)
         listview = view.findViewById(R.id.listview_home_budgets)
-        listview.addHeaderView(topAppBar)
         listview.adapter = adapter
+        listview.addHeaderView(topDivider)
 
         updateView()
+        ViewCompat.setNestedScrollingEnabled(listview, true)
 
         //TODO: Events
-        topAppBar.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
+        view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
                     Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
@@ -76,21 +81,9 @@ class HomeViewFragment : Fragment() {
             Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
             updateView()
         }
-
-        listview.setOnScrollChangeListener(object: View.OnScrollChangeListener{
-            override fun onScrollChange(v: View, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-                Log.d("XXXXXXXXXXXXX", "$scrollX, $scrollY, $oldScrollX, $oldScrollY")
-            }
-
-        })
         listview.setOnScrollListener(object: AbsListView.OnScrollListener{
             var oldState = 0
             override fun onScrollStateChanged(p0: AbsListView?, actualState: Int) {
-                /*if(actualState == 0 && addBtn.isExtended) addBtn.shrink()
-                if(oldState >= 1 && !addBtn.isExtended) addBtn.extend()
-                oldState = actualState
-
-                Log.d("XXXXXXXXXXXXXXXXX", "$actualState, $oldState")*/
             }
 
             override fun onScroll(p0: AbsListView?, actualState: Int, p2: Int, p3: Int) {

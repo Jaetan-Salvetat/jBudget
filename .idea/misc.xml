@@ -13,6 +13,7 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_icon_btn_ripple_effect_unselected.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_image_btn_ripple_effect.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/error_icon_btn_ripple_effect.xml" value="0.3015" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/first_card_icon_btn_ripple_effect.xml" value="0.1105" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/focus_edit_text_style.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_done.xml" value="0.232" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_not_done.xml" value="0.232" />
@@ -25,6 +26,8 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_card_ripple_effect.xml" value="0.121" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_edit_text_focused.xml" value="0.121" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_edit_text_selector.xml" value="0.121" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_first_card.xml" value="0.1105" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_first_card_style.xml" value="0.174" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_icon_btn_ripple_effect_selected.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/test.xml" value="0.232" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/adapter_history_bottom_sheet.xml" value="0.25416666666666665" />

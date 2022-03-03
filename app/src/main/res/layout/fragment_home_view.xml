@@ -1,79 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeViewFragment">
 
-
-    <!--<LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/statusBarBackground">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar_home"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="10dp"
-            android:background="@drawable/home_tool_bar">
+            android:background="?attr/colorOnSecondary"
+            app:title="@string/title_appbar_home"
+            app:menu="@menu/top_app_bar_home"
+            app:layout_scrollFlags="scroll|enterAlways" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:text="@string/title_appbar_home"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/go_to_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_baseline_settings"
-                android:clickable="true"
-                android:focusable="true"/>
-
-        </LinearLayout>
-
-    </LinearLayout> -->
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <ListView
         android:id="@+id/listview_home_budgets"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/home_tool_bar"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="@drawable/home_tool_bar"/>
+        android:visibility="invisible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="61dp" />
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/home_no_budgets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/home_tool_bar"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
             android:text="@string/no_budget_home"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="italic" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/add_budget_btn"
@@ -83,7 +64,6 @@
         android:layout_marginBottom="20dp"
         android:text="@string/create_budget"
         app:icon="@drawable/ic_baseline_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_gravity="bottom|end"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
