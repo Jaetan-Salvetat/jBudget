@@ -11,10 +11,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:backgroundTint="?attr/colorOnPrimary"
             android:id="@+id/top_app_bar_home"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorOnSecondary"
+            android:background="?attr/colorSecondary"
             app:title="@string/title_appbar_home"
             app:menu="@menu/top_app_bar_home"
             app:layout_scrollFlags="scroll|enterAlways" />

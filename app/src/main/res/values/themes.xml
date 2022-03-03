@@ -9,9 +9,8 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">#efefef</item>
-        <item name="colorOnSecondary">#efefef</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">#efefef</item>
+        <item name="android:statusBarColor" tools:targetApi="l">#FFFBFE</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
     </style>
