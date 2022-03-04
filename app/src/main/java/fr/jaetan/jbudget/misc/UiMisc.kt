@@ -4,28 +4,25 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.view.ViewPropertyAnimator
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
-import androidx.core.view.updateLayoutParams
-import kotlinx.coroutines.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import fr.jaetan.jbudget.R
 
 class UiMisc {
     companion object {
         fun alertDialog(context: Context, callback: DialogInterface.OnClickListener, title: String = "", text: String = ""){
-            val dialogBuilder = AlertDialog.Builder(context)
-
-            dialogBuilder.setMessage(text)
+            MaterialAlertDialogBuilder(ContextThemeWrapper(context, R.style.Theme_Dialog))
+                .setMessage(text)
                 .setTitle(title)
                 .setPositiveButton("continuer", callback)
                 .setNegativeButton("annuler") { dialog, _ ->
                     dialog.cancel()
                 }
-
-            dialogBuilder.create().show()
+                .show()
         }
 
         @SuppressLint("ClickableViewAccessibility")

@@ -23,13 +23,13 @@
 
 
     <style name="Theme.ElevatedButton" parent="Widget.Material3.Button.ElevatedButton">
-        <item name="backgroundTint">@color/cyan</item>
-        <item name="rippleColor">@color/light_cyan</item>
+        <item name="backgroundTint">@color/dark_cyan</item>
+        <item name="rippleColor">@color/dark_pink</item>
     </style>
 
     <style name="Theme.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="strokeColor">@color/cyan</item>
-        <item name="android:textColor">@color/cyan</item>
-        <item name="rippleColor">@color/cyan</item>
+        <item name="strokeColor">@color/dark_cyan</item>
+        <item name="android:textColor">@color/dark_cyan</item>
+        <item name="rippleColor">@color/light_cyan</item>
     </style>
 </resources>
