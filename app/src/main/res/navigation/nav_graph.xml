@@ -17,15 +17,15 @@
             android:id="@+id/action_homeViewFragment_to_modalBudgetFragment"
             app:destination="@id/modalBudgetFragment">
         </action>
+        <action
+            android:id="@+id/action_homeViewFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
     <fragment
         android:id="@+id/modalBudgetFragment"
         android:name="fr.jaetan.jbudget.ModalBudgetFragment"
         android:label="fragment_modal_budget"
         tools:layout="@layout/fragment_modal_budget" >
-        <action
-            android:id="@+id/action_modalBudgetFragment_to_homeViewFragment"
-            app:destination="@id/homeViewFragment"/>
         <argument
             android:name="budgetId"
             app:argType="integer"
@@ -39,19 +39,12 @@
         android:id="@+id/settingsViewFragment"
         android:name="fr.jaetan.jbudget.SettingsViewFragment"
         android:label="fragment_settings_view"
-        tools:layout="@layout/fragment_settings_view" >
-        <action
-            android:id="@+id/action_settingsViewFragment_to_homeViewFragment"
-            app:destination="@id/homeViewFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_settings_view" />
     <fragment
         android:id="@+id/historyFragment"
         android:name="fr.jaetan.jbudget.HistoryFragment"
         android:label="fragment_history_view"
         tools:layout="@layout/fragment_history_view" >
-        <action
-            android:id="@+id/action_historyFragment_to_modalBudgetFragment"
-            app:destination="@id/modalBudgetFragment" />
         <argument
             android:name="budgetId"
             app:argType="integer"

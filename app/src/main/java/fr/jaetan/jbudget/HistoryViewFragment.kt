@@ -89,8 +89,7 @@ class HistoryFragment : Fragment() {
 
         //TODO: Events
         appBar.setNavigationOnClickListener {
-            val action = HistoryFragmentDirections.actionHistoryFragmentToModalBudgetFragment(budgetId)
-            Navigation.findNavController(view).navigate(action)
+            Navigation.findNavController(view).popBackStack()
         }
         
 

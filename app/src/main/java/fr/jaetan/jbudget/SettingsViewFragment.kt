@@ -54,7 +54,7 @@ class SettingsViewFragment : Fragment() {
 
         //TODO: Events
         view.findViewById<MaterialToolbar>(R.id.top_app_bar_settings).setNavigationOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_settingsViewFragment_to_homeViewFragment)
+            Navigation.findNavController(view).popBackStack()
         }
         view.findViewById<Button>(R.id.create_budget_btn).setOnClickListener {
             val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"

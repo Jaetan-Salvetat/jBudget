@@ -110,6 +110,10 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
                     dialog.cancel()
                 })
         }
+        view.findViewById<ImageButton>(R.id.go_to_history).setOnClickListener {
+            val action = HomeViewFragmentDirections.actionHomeViewFragmentToHistoryFragment(id)
+            Navigation.findNavController(view).navigate(action)
+        }
 
 
         return view

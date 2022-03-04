@@ -78,7 +78,7 @@ class ModalBudgetFragment : Fragment() {
         //TODO: Events
         //Back to home
         topAppBar.setNavigationOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_modalBudgetFragment_to_homeViewFragment)
+            Navigation.findNavController(view).popBackStack()
         }
         //Right Menu
         topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -145,7 +145,7 @@ class ModalBudgetFragment : Fragment() {
             Database.store.boxFor(BudgetItem::class.java).put(budget.items)
             Database.store.boxFor(BudgetHistory::class.java).put(budget.history)
 
-            Navigation.findNavController(view).navigate(R.id.action_modalBudgetFragment_to_homeViewFragment)
+            Navigation.findNavController(view).popBackStack()
         }
         btnAddItem.setOnClickListener {
             adapter?.update()
