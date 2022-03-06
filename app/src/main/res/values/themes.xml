@@ -18,6 +18,9 @@
 
         <!-- Control color. -->
         <item name="colorControlHighlight">@color/dark_cyan</item> <!-- ripple color -->
+
+        <!-- Other -->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 

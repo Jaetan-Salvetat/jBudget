@@ -19,8 +19,10 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
     private var budgetTitles: ArrayList<String> = arrayListOf()
     private var spinnerItems: ArrayList<String> = arrayListOf()
     private var budgetItems: ArrayList<BudgetItem> = arrayListOf()
+    private var firstload = true;
 
     override fun getCount(): Int {
+        init()
         return budgetItems.count()
     }
 
@@ -53,9 +55,16 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         }
 
         spinner.setSelection(spinnerId)
+
         if(budgetItems[position].value > 0.0){
             editText.setText(budgetItems[position].value.toString())
         }
+
+        if(position == 0 && firstload){
+            editText.isFocusedByDefault = true;
+            firstload = false;
+        }
+
 
 
         //TODO: Events
@@ -82,6 +91,19 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         }
 
         return view
+    }
+
+    private fun init(){
+        if(budgetTitles.isEmpty()){
+            for(value in Database.store.boxFor(BudgetTitle::class.java).all){
+                budgetTitles.add(value.name)
+            }
+            budgetTitles.add("Rentrée d'argent")
+            spinnerItems = budgetTitles
+        }
+        if(budgetItems.count() == 0){
+            budgetItems.add(BudgetItem(name = budgetTitles[0], value = 0.0))
+        }
     }
 
     fun update(){
