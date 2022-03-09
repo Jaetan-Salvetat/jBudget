@@ -2,9 +2,7 @@ package fr.jaetan.jbudget.budget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import fr.jaetan.jbudget.R
@@ -19,7 +17,7 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
     private var budgetTitles: ArrayList<String> = arrayListOf()
     private var spinnerItems: ArrayList<String> = arrayListOf()
     private var budgetItems: ArrayList<BudgetItem> = arrayListOf()
-    private var firstload = true;
+    private var firstload = true
 
     override fun getCount(): Int {
         init()
@@ -44,7 +42,6 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
 
         spinnerItems = budgetTitles
 
-
         spinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, spinnerItems)
 
         for(i in spinnerItems.indices){
@@ -61,8 +58,11 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         }
 
         if(position == 0 && firstload){
-            editText.isFocusedByDefault = true;
-            firstload = false;
+            editText.isFocusedByDefault = true
+            /*editText.requestFocus()
+            val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)*/
+            firstload = false
         }
 
 

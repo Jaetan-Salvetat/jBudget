@@ -1,10 +1,8 @@
 package fr.jaetan.jbudget.models
 
-import io.objectbox.annotation.Backlink
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToMany
-import io.objectbox.relation.ToOne
 
 @Entity
 data class Budget(

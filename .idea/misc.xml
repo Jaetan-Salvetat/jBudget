@@ -6,6 +6,7 @@
         <entry key="..\:/dev/project-fini/jBudget/jBudget/app/src/main/res/layout/adapter_home_list_item.xml" value="0.21784420289855072" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/adapter/xml/adapter_test.xml" value="0.34479166666666666" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable-v24/card_icon_btn_ripple_effect_selected.xml" value="0.3015" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable-v31/sample_card_ripple_effect.xml" value="0.23" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_border_radius_ripple_effect.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_icon_btn_ripple_effect.xml" value="0.121" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/card_icon_btn_ripple_effect_selected.xml" value="0.3015" />
@@ -18,6 +19,7 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_done.xml" value="0.232" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/history_item_not_done.xml" value="0.232" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/home_tool_bar.xml" value="0.2325" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/ic_baseline_add.xml" value="0.183" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_selected.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_selector.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/icon_btn_ripple_effect_unselected.xml" value="0.3015" />
@@ -26,11 +28,15 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_card_ripple_effect.xml" value="0.121" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_edit_text_focused.xml" value="0.121" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_edit_text_selector.xml" value="0.121" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_edit_text_unfocused.xml" value="0.183" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_first_card.xml" value="0.1105" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_first_card_style.xml" value="0.174" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_icon_btn_ripple_effect.xml" value="0.183" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/sample_icon_btn_ripple_effect_selected.xml" value="0.3015" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/test.xml" value="0.232" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/title_budget_edit_text_selector.xml" value="0.183" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/title_budget_edit_text_unfocused.xml" value="0.183" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/drawable/title_budget_edittext_focused.xml" value="0.183" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/adapter_history_bottom_sheet.xml" value="0.25416666666666665" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/adapter_history_list_item.xml" value="0.264" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/adapter_history_list_item_with_title.xml" value="0.33" />
@@ -44,6 +50,7 @@
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/fragment_settings_view.xml" value="0.18541666666666667" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/history_bottom_sheet.xml" value="0.12760416666666666" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/home_top_app_bar.xml" value="0.34479166666666666" />
+        <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/keyboard.xml" value="0.264" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/layout/settings_footer_listview.xml" value="0.17447916666666666" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/menu/top_app_bar_budget.xml" value="0.3625" />
         <entry key="..\:/dev/project-fini/jBudget/v3/app/src/main/res/menu/top_app_bar_history.xml" value="0.3625" />

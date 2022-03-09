@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.history.HistoryBottomSheetListItem
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.SortType
 

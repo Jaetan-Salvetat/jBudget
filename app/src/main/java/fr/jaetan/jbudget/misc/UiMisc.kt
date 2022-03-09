@@ -48,7 +48,7 @@ class UiMisc {
 
         private fun scale(element: ViewGroup, scaleTo: Float, scaleFrom: Float) {
             val anim = ScaleAnimation(scaleFrom, scaleTo, scaleFrom, scaleTo, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-            anim.duration = 300
+            anim.duration = 200
             anim.isFillEnabled = true
             anim.fillAfter = true
             element.startAnimation(anim)

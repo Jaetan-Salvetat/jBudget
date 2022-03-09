@@ -35,6 +35,9 @@ class ModalBudgetFragment : Fragment() {
     private var param2: String? = null
     private lateinit var args: ModalBudgetFragmentArgs
     private lateinit var budget: Budget
+    private var adapter: BudgetListItem? = null
+    private lateinit var bottomContainer: LinearLayout
+    private lateinit var keyboard: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +51,17 @@ class ModalBudgetFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_modal_budget, container, false)
+        keyboard = inflater.inflate(R.layout.keyboard, container, false)
         val bumble = arguments
         val textEdit = view.findViewById<EditText>(R.id.modal_title_budget)
         val listView = view.findViewById<ListView>(R.id.listview_modal)
         val topAppBar = view.findViewById<Toolbar>(R.id.top_app_bar_budget)
         val btnAddItem = LinearLayout(this.context)
         val textBtnAddItem = TextView(this.context)
-        val adapter = this.context?.let { BudgetListItem(it) }
+        bottomContainer = view.findViewById(R.id.save_keyboard_container)
+        adapter = this.context?.let { BudgetListItem(it) }
 
         listView.adapter = adapter
         listView.addFooterView(btnAddItem)
@@ -196,27 +201,3 @@ class ModalBudgetFragment : Fragment() {
             }
     }
 }
-
-/*view.findViewById<ImageButton>(R.id.back_to_home).setOnClickListener {
-    Navigation.findNavController(view).navigate(R.id.action_modalBudgetFragment_to_homeViewFragment)
-}
-view.findViewById<ImageButton>(R.id.go_to_history).setOnClickListener {
-    val action = ModalBudgetFragmentDirections.actionModalBudgetFragmentToHistoryFragment(args.budgetId)
-    Navigation.findNavController(view).navigate(action)
-}
-view.findViewById<ImageButton>(R.id.share_budget).setOnClickListener {
-    var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
-            "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
-
-    for(item in budget.items){
-        res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
-    }
-
-    val sendIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, res)
-        type = "text/plain"
-    }
-    val shareIntent = Intent.createChooser(sendIntent, null)
-    startActivity(shareIntent)
-}*/

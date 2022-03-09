@@ -2,13 +2,10 @@ package fr.jaetan.jbudget
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
-import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -4,7 +4,6 @@ import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @Entity
