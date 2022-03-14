@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.models.BudgetTitle
+import fr.jaetan.jbudget.models.BudgetTitle_
 import fr.jaetan.jbudget.services.Database
 import java.lang.Exception
 import java.util.ArrayList
@@ -81,6 +82,8 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 budgetItems[position].name = spinnerItems[p2]
+                val title: BudgetTitle = Database.instance.budgetTitles.query(BudgetTitle_.name.equal(spinnerItems[p2])).build().find()[0]
+                budgetItems[position].title.target = title
                 budgetItems[position].cashFlow = budgetItems[position].name.lowercase() == "Rentrée d'argent".lowercase()
             }
 
@@ -95,7 +98,7 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
 
     private fun init(){
         if(budgetTitles.isEmpty()){
-            for(value in Database.store.boxFor(BudgetTitle::class.java).all){
+            for(value in Database.instance.budgetTitles.all){
                 budgetTitles.add(value.name)
             }
             budgetTitles.add("Rentrée d'argent")
@@ -108,7 +111,7 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
 
     fun update(){
         if(budgetTitles.isEmpty()){
-            for(value in Database.store.boxFor(BudgetTitle::class.java).all){
+            for(value in Database.instance.budgetTitles.all){
                 budgetTitles.add(value.name)
             }
             budgetTitles.add("Rentrée d'argent")
@@ -116,7 +119,9 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         }
 
         val name = budgetTitles[0]
-        budgetItems.add(BudgetItem(name = name, cashFlow = name.lowercase() == "Rentrée d'argent".lowercase()))
+        val item = BudgetItem(name = name, cashFlow = name.lowercase() == "Rentrée d'argent".lowercase())
+        item.title.target = Database.instance.budgetTitles.all[0]
+        budgetItems.add(item)
         notifyDataSetChanged()
     }
 

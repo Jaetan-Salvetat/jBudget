@@ -92,6 +92,7 @@
                     android:textStyle="bold"
                     android:minWidth="100dp"
                     android:textAlignment="textEnd"
+                    android:textColor="#ff0000"
                     android:text="@string/desc"/>
 
                 <TextView

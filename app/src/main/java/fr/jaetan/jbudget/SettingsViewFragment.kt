@@ -58,14 +58,14 @@ class SettingsViewFragment : Fragment() {
         }
         view.findViewById<Button>(R.id.create_budget_btn).setOnClickListener {
             val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
-            Database.store.boxFor(Budget::class.java).put(Budget(title = title))
+            Database.instance.put(Budget(title = title))
             Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
         }
         view.findViewById<Button>(R.id.add_budget_type_btn).setOnClickListener {
             val textEdit = view.findViewById<EditText>(R.id.name_budget_title_textedit)
             val budgetName: String = textEdit.text.toString()
             if(budgetName.length > 2){
-                Database.store.boxFor(BudgetTitle::class.java).put(BudgetTitle(name = budgetName))
+                Database.instance.put(BudgetTitle(name = budgetName))
                 textEdit.setText("")
                 adapter?.update()
             }

@@ -74,13 +74,13 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         container.setOnClickListener {
             historyItem.done = !historyItem.done
             checkedStyleManager(historyItem.done, view)
-            Database.store.boxFor(BudgetHistory::class.java).put(historyItem)
+            Database.instance.budgetHistory.put(historyItem)
         }
 
         removeBtn.setOnClickListener {
             UiMisc.alertDialog(this.context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
                 callback = { dialog, _ ->
-                    val budget = Database.store.boxFor(Budget::class.java).all[budgetId]
+                    val budget = Database.instance.budgets.all[budgetId]
 
                     if(historyItem.name.lowercase() == "Rentrée d'argent".lowercase() || historyItem.cashFlow){
                         budget.total -= historyItem.value
@@ -94,9 +94,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
                         }
                     }
 
-                    Database.store.boxFor(Budget::class.java).put(budget)
-                    Database.store.boxFor(BudgetItem::class.java).put(budget.items)
-                    Database.store.boxFor(BudgetHistory::class.java).remove(historyItem)
+                    Database.instance.put(budget)
 
                     update()
                     dialog.cancel()
@@ -104,7 +102,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         }
 
         if(cashFlowModified){
-            Database.store.boxFor(BudgetHistory::class.java).put(historyItem)
+            Database.instance.budgetHistory.put(historyItem)
         }
 
         return view
@@ -112,7 +110,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
 
     fun update(history: Collection<BudgetHistory>? = null){
         if(history == null){
-            budgetHistory = Database.store.boxFor(Budget::class.java).all[budgetId].history
+            budgetHistory =Database.instance.budgets.all[budgetId].history
         }else{
             budgetHistory.clear()
             budgetHistory.addAll(history)

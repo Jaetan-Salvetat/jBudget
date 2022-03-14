@@ -9,7 +9,6 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.SortType
 import fr.jaetan.jbudget.services.Database
@@ -35,7 +34,7 @@ class HistoryBottomSheetListItem(context: Context, private val budgetId: Int, pr
     override fun getView(p0: Int, p1: View?, parent: ViewGroup?): View {
         val view = inflater.inflate(R.layout.adapter_history_bottom_sheet, parent, false)
         val btnContainer = view.findViewById<LinearLayout>(R.id.btn_container)
-        historyItems = Database.store.boxFor(Budget::class.java).all[budgetId].history
+        historyItems = Database.instance.budgets.all[budgetId].history
 
         if(p0 == 0 || titles[p0].values.first() == titles[p0 - 1].values.first()){
             view.findViewById<LinearLayout>(R.id.container_title).removeAllViewsInLayout()

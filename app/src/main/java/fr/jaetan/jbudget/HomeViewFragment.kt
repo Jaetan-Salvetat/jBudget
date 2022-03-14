@@ -74,7 +74,7 @@ class HomeViewFragment : Fragment() {
         }
         addBtn.setOnClickListener {
             val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
-            Database.store.boxFor(Budget::class.java).put(Budget(title = title))
+            Database.instance.put(Budget(title = title))
             Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
             updateView()
         }
@@ -99,7 +99,7 @@ class HomeViewFragment : Fragment() {
     }
 
     private var updateView = {
-        val count = Database.store.boxFor(Budget::class.java).count()
+        val count = Database.instance.budgets.count()
         if(count > 0){
             adapter?.update()
             if (adapter != null) {

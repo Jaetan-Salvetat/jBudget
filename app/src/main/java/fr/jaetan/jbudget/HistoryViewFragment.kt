@@ -9,12 +9,11 @@ import androidx.core.view.ViewCompat
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.history.HistoryListItem
-import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.models.SortType
-import fr.jaetan.jbudget.services.Database
 import fr.jaetan.jbudget.history.HistoryBottomSheet
+import fr.jaetan.jbudget.services.Database
 import io.objectbox.relation.ToMany
 import kotlin.properties.Delegates
 
@@ -66,9 +65,10 @@ class HistoryFragment : Fragment() {
 
         if(bumble != null){
             args = HistoryFragmentArgs.fromBundle(bumble)
-            historyItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].history
-            historyActualItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].history
-            budgetItems = Database.store.boxFor(Budget::class.java).all[args.budgetId].items
+            val budget = Database.instance.budgets.all[args.budgetId]
+            historyItems = budget.history
+            historyActualItems = budget.history
+            budgetItems = budget.items
             budgetId = args.budgetId
             adapter = this.context?.let { HistoryListItem(it, historyItems, budgetId) }
             listview.adapter = adapter
@@ -97,11 +97,12 @@ class HistoryFragment : Fragment() {
     }
 
     private fun generateMapOfSort(): ArrayList<Map<String, SortType>>{
-        val res: ArrayList<Map<String, SortType>> = arrayListOf()
-        res += mapOf("Par défaut" to SortType.Default)
-        res += mapOf("Par item sélectionné" to SortType.Done)
-        res += mapOf("Par item pas sélectionné" to SortType.NotDone)
-        res += mapOf("Rentrée d'argent" to SortType.Name)
+        val res: ArrayList<Map<String, SortType>> = arrayListOf(
+            mapOf("Par défaut" to SortType.Default),
+            mapOf("Par item sélectionné" to SortType.Done),
+            mapOf("Par item pas sélectionné" to SortType.NotDone),
+            mapOf("Rentrée d'argent" to SortType.Name)
+        )
 
         for(item in budgetItems){
             res += mapOf(item.name to SortType.Name)

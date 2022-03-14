@@ -15,7 +15,6 @@ import androidx.navigation.Navigation
 import fr.jaetan.jbudget.budget.BudgetListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
-import fr.jaetan.jbudget.models.BudgetItem
 import fr.jaetan.jbudget.services.Database
 import kotlin.collections.ArrayList
 
@@ -75,7 +74,7 @@ class ModalBudgetFragment : Fragment() {
         if(bumble != null) {
             args = ModalBudgetFragmentArgs.fromBundle(bumble)
 
-            budget = Database.store.boxFor(Budget::class.java).all[args.budgetId]
+            budget = Database.instance.budgets.all[args.budgetId]
             textEdit.setText(budget.title)
         }
 
@@ -100,6 +99,7 @@ class ModalBudgetFragment : Fragment() {
                 else -> false
             }
         }
+
         //save budget && back to home
         view.findViewById<Button>(R.id.save_update_budget_btn).setOnClickListener {
             val budgetItems = adapter?.getValues() ?: return@setOnClickListener
@@ -134,21 +134,21 @@ class ModalBudgetFragment : Fragment() {
                 }
 
                 for(i in history.indices.reversed()){
-                    if(history[i].name.lowercase() == item.name.lowercase()){
+                    if(history[i].title == item.title || history[i].name.lowercase() == item.name.lowercase()){
                         history[i].value +=  item.value
                         containsHistory = true
                         break
                     }
                 }
                 if(!containsHistory){
-                    history.add(BudgetHistory(value = item.value, name = item.name, cashFlow = item.cashFlow))
+                    val value = BudgetHistory(value = item.value, name = item.name, cashFlow = item.cashFlow)
+                    value.title = item.title
+                    history.add(value)
                 }
             }
 
             budget.history.addAll(history)
-            Database.store.boxFor(Budget::class.java).put(budget)
-            Database.store.boxFor(BudgetItem::class.java).put(budget.items)
-            Database.store.boxFor(BudgetHistory::class.java).put(budget.history)
+            Database.instance.put(budget)
 
             Navigation.findNavController(view).popBackStack()
         }

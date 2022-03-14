@@ -12,7 +12,7 @@ import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
 
 class SettingsListItem (private val context: Context) : BaseAdapter() {
-    private var dataSource = Database.store.boxFor(BudgetTitle::class.java).all
+    private var dataSource = Database.instance.budgetTitles.all
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
@@ -37,7 +37,7 @@ class SettingsListItem (private val context: Context) : BaseAdapter() {
         view.findViewById<ImageButton>(R.id.remove_budget_item).setOnClickListener {
             UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ??",
                 callback = { dialog, _ ->
-                    Database.store.boxFor(BudgetTitle::class.java).remove(getItem(position))
+                    Database.instance.budgetTitles.remove(getItem(position))
                     update()
                     dialog.cancel()
                 })
@@ -48,7 +48,7 @@ class SettingsListItem (private val context: Context) : BaseAdapter() {
     }
 
     fun update(){
-        dataSource = Database.store.boxFor(BudgetTitle::class.java).all
+        dataSource = Database.instance.budgetTitles.all
         notifyDataSetChanged()
     }
 }

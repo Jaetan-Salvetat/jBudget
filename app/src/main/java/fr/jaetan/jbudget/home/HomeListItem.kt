@@ -14,10 +14,11 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
+import fr.jaetan.jbudget.services.ObjectBox
 
 class HomeListItem(private var context: Context, private  val changeView: () -> Unit) : BaseAdapter() {
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private var budgets: ArrayList<Budget> = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
+    private var budgets = Database.instance.budgets.all
 
     override fun getCount(): Int {
         return budgets.count() - 1
@@ -62,10 +63,8 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
 
         if(budget.total - budget.totalSpent > 0.0){
             totalRemaining.setTextColor(Color.parseColor("#32CD32"))//ff0000
-            totalSpent.setTextColor(Color.parseColor("#32CD32"))//ff0000
         }else if(budget.total - budget.totalSpent < 0.0){
             totalRemaining.setTextColor(Color.parseColor("#ff0000"))//ff0000
-            totalSpent.setTextColor(Color.parseColor("#ff0000"))//ff0000
         }
 
         if(budget.items.isEmpty()) {
@@ -105,7 +104,7 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
         removeBtn.setOnClickListener {
             UiMisc.alertDialog(context, title = "Alerte", text = "Voulez vous vraiment supprimer ce budget ?",
                 callback = { dialog, _ ->
-                    Database.store.boxFor(Budget::class.java).remove(getItem(id))
+                    ObjectBox.store.boxFor(Budget::class.java).remove(getItem(id))
                     changeView()
                     dialog.cancel()
                 })
@@ -120,7 +119,7 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
     }
 
     fun update(){
-        budgets = Database.store.boxFor(Budget::class.java).all as ArrayList<Budget>
+        budgets = Database.instance.budgets.all
         notifyDataSetChanged()
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
+import fr.jaetan.jbudget.services.ObjectBox
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,13 +14,13 @@ class MainActivity : AppCompatActivity() {
 
         //TODO: Init
         try {
-            Database.init(this)
+            ObjectBox.init(this)
+            Database.init()
         }catch (e: Exception){
             print(e.toString())
         }
 
-        val budgetTitles = Database.store.boxFor(BudgetTitle::class.java)
-        if(budgetTitles.count() > 0) return
+        if(Database.instance.budgetTitles.count() > 0) return
 
         val items = arrayListOf(
             BudgetTitle(name = "Alimentations"),
@@ -29,6 +30,6 @@ class MainActivity : AppCompatActivity() {
             BudgetTitle(name = "Santés"),
             BudgetTitle(name = "Autres")
         )
-        budgetTitles.put(items)
+        Database.instance.put(items)
     }
 }

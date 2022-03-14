@@ -93,7 +93,7 @@
     },
     {
       "id": "4:7482625908516719392",
-      "lastPropertyId": "8:8906141908581440922",
+      "lastPropertyId": "9:1592030487149775348",
       "name": "BudgetHistory",
       "properties": [
         {
@@ -126,6 +126,11 @@
           "id": "8:8906141908581440922",
           "name": "cashFlow",
           "type": 1
+        },
+        {
+          "id": "9:1592030487149775348",
+          "name": "time",
+          "type": 9
         }
       ],
       "relations": []
