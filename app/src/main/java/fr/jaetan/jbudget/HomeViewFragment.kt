@@ -100,18 +100,16 @@ class HomeViewFragment : Fragment() {
 
     private var updateView = {
         val count = Database.instance.budgets.count()
-        if(count > 0){
+        listview.visibility = View.INVISIBLE
+        noBudgetText.visibility = View.VISIBLE
+
+        if(count > 0 && adapter != null){
             adapter?.update()
-            if (adapter != null) {
-                listview.removeHeaderView(headerView)
-                headerView = adapter?.getView(-1, null, listview)
-                listview.addHeaderView(headerView)
-            }
+            listview.removeHeaderView(headerView)
+            headerView = adapter?.getView(-1, null, listview)
+            listview.addHeaderView(headerView)
             listview.visibility = View.VISIBLE
             noBudgetText.visibility = View.INVISIBLE
-        }else{
-            listview.visibility = View.INVISIBLE
-            noBudgetText.visibility = View.VISIBLE
         }
     }
 

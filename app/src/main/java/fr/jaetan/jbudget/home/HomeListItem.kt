@@ -74,29 +74,29 @@ class HomeListItem(private var context: Context, private  val changeView: () -> 
             text.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
 
             container.addView(text)
-        }else{
-            for(item in budget.items){
-                val layout = LinearLayout(context)
-                val layoutName = LinearLayout(context)
-                val name = TextView(context)
-                val value = TextView(context)
-                val euro = TextView(context)
+        }
 
-                layoutName.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                name.text = item.name
-                name.textSize = 18f
-                value.text = String.format("%.2f", item.value)
-                value.textSize = 18f
-                value.setTypeface(null, Typeface.BOLD)
-                euro.text = "€"
-                euro.textSize = 18f
+        for(item in budget.items){
+            val layout = LinearLayout(context)
+            val layoutName = LinearLayout(context)
+            val name = TextView(context)
+            val value = TextView(context)
+            val euro = TextView(context)
 
-                layoutName.addView(name)
-                layout.addView(layoutName)
-                layout.addView(value)
-                layout.addView(euro)
-                view.findViewById<LinearLayout>(R.id.container_budget_items).addView(layout)
-            }
+            layoutName.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            name.text = item.name
+            name.textSize = 18f
+            value.text = String.format("%.2f", item.value)
+            value.textSize = 18f
+            value.setTypeface(null, Typeface.BOLD)
+            euro.text = "€"
+            euro.textSize = 18f
+
+            layoutName.addView(name)
+            layout.addView(layoutName)
+            layout.addView(value)
+            layout.addView(euro)
+            view.findViewById<LinearLayout>(R.id.container_budget_items).addView(layout)
         }
 
 

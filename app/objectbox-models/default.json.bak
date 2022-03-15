@@ -45,7 +45,7 @@
     },
     {
       "id": "2:8577682143141788100",
-      "lastPropertyId": "5:6023224292306198830",
+      "lastPropertyId": "6:1617917484744414599",
       "name": "BudgetItem",
       "properties": [
         {
@@ -68,6 +68,14 @@
           "id": "5:6023224292306198830",
           "name": "cashFlow",
           "type": 1
+        },
+        {
+          "id": "6:1617917484744414599",
+          "name": "titleId",
+          "indexId": "2:3008581569204365669",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BudgetTitle"
         }
       ],
       "relations": []
@@ -93,7 +101,7 @@
     },
     {
       "id": "4:7482625908516719392",
-      "lastPropertyId": "9:1592030487149775348",
+      "lastPropertyId": "10:5858393503679873916",
       "name": "BudgetHistory",
       "properties": [
         {
@@ -131,13 +139,21 @@
           "id": "9:1592030487149775348",
           "name": "time",
           "type": 9
+        },
+        {
+          "id": "10:5858393503679873916",
+          "name": "titleId",
+          "indexId": "1:2239975381076127584",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BudgetTitle"
         }
       ],
       "relations": []
     }
   ],
   "lastEntityId": "4:7482625908516719392",
-  "lastIndexId": "0:0",
+  "lastIndexId": "2:3008581569204365669",
   "lastRelationId": "5:1405221205119040755",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

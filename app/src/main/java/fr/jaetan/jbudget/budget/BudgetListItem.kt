@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.models.BudgetItem
-import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.models.BudgetTitle_
 import fr.jaetan.jbudget.services.Database
 import java.lang.Exception
@@ -82,8 +81,9 @@ class BudgetListItem(private val context: Context) : BaseAdapter(){
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 budgetItems[position].name = spinnerItems[p2]
-                val title: BudgetTitle = Database.instance.budgetTitles.query(BudgetTitle_.name.equal(spinnerItems[p2])).build().find()[0]
-                budgetItems[position].title.target = title
+                if(spinnerItems[p2].lowercase() != "rentrée d'argent"){
+                    budgetItems[position].title.target = Database.instance.budgetTitles.query(BudgetTitle_.name.equal(spinnerItems[p2])).build().find()[0]
+                }
                 budgetItems[position].cashFlow = budgetItems[position].name.lowercase() == "Rentrée d'argent".lowercase()
             }
 
