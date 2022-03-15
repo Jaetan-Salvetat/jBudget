@@ -7,6 +7,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.history.HistoryListItem
 import fr.jaetan.jbudget.models.BudgetHistory
@@ -89,7 +90,7 @@ class HistoryFragment : Fragment() {
 
         //TODO: Events
         appBar.setNavigationOnClickListener {
-            Navigation.findNavController(view).popBackStack()
+            findNavController().popBackStack()
         }
         
 

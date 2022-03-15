@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import fr.jaetan.jbudget.budget.BudgetListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
@@ -52,7 +53,6 @@ class ModalBudgetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_modal_budget, container, false)
-        keyboard = inflater.inflate(R.layout.keyboard, container, false)
         val bumble = arguments
         val textEdit = view.findViewById<EditText>(R.id.modal_title_budget)
         val listView = view.findViewById<ListView>(R.id.listview_modal)
@@ -82,7 +82,7 @@ class ModalBudgetFragment : Fragment() {
         //TODO: Events
         //Back to home
         topAppBar.setNavigationOnClickListener {
-            Navigation.findNavController(view).popBackStack()
+            findNavController().popBackStack()
         }
         //Right Menu
         topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -150,8 +150,9 @@ class ModalBudgetFragment : Fragment() {
             budget.history.addAll(history)
             Database.instance.put(budget)
 
-            Navigation.findNavController(view).popBackStack()
+            findNavController().popBackStack()
         }
+
         btnAddItem.setOnClickListener {
             adapter?.update()
         }

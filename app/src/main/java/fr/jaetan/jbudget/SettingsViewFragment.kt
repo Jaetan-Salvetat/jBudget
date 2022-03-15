@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.MaterialToolbar
 import fr.jaetan.jbudget.settings.SettingsListItem
 import fr.jaetan.jbudget.models.Budget
@@ -54,7 +55,7 @@ class SettingsViewFragment : Fragment() {
 
         //TODO: Events
         view.findViewById<MaterialToolbar>(R.id.top_app_bar_settings).setNavigationOnClickListener {
-            Navigation.findNavController(view).popBackStack()
+            findNavController().popBackStack()
         }
         view.findViewById<Button>(R.id.create_budget_btn).setOnClickListener {
             val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
