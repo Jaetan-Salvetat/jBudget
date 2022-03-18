@@ -18,4 +18,5 @@
     <string name="history">Historique</string>
     <string name="by_budget_type">Par type de budget</string>
     <string name="no_history">Aucun historique disponible.</string>
+    <string name="add_spent">Ajouter une dépense</string>
 </resources>

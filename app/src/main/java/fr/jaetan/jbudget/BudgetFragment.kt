@@ -3,7 +3,6 @@ package fr.jaetan.jbudget
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import fr.jaetan.jbudget.budget.BudgetListItem
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import fr.jaetan.jbudget.budget.BudgetMainAdapter
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.services.Database
@@ -35,9 +36,7 @@ class ModalBudgetFragment : Fragment() {
     private var param2: String? = null
     private lateinit var args: ModalBudgetFragmentArgs
     private lateinit var budget: Budget
-    private var adapter: BudgetListItem? = null
-    private lateinit var bottomContainer: LinearLayout
-    private lateinit var keyboard: View
+    private var adapter: BudgetMainAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,21 +54,12 @@ class ModalBudgetFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_modal_budget, container, false)
         val bumble = arguments
         val textEdit = view.findViewById<EditText>(R.id.modal_title_budget)
-        val listView = view.findViewById<ListView>(R.id.listview_modal)
+        val listView = view.findViewById<RecyclerView>(R.id.listview_modal)
         val topAppBar = view.findViewById<Toolbar>(R.id.top_app_bar_budget)
-        val btnAddItem = LinearLayout(this.context)
-        val textBtnAddItem = TextView(this.context)
-        bottomContainer = view.findViewById(R.id.save_keyboard_container)
-        adapter = this.context?.let { BudgetListItem(it) }
+        adapter = BudgetMainAdapter()
 
         listView.adapter = adapter
-        listView.addFooterView(btnAddItem)
-        btnAddItem.addView(textBtnAddItem)
-        btnAddItem.gravity = Gravity.CENTER
-        btnAddItem.setPadding(0, 40, 0, 40)
-        btnAddItem.setBackgroundResource(R.drawable.ripple_effect_btn_add_item_modal_budget)
-        textBtnAddItem.textSize = 18F
-        textBtnAddItem.text = "Ajouter une dépense"
+        listView.layoutManager = LinearLayoutManager(context)
 
         if(bumble != null) {
             args = ModalBudgetFragmentArgs.fromBundle(bumble)
@@ -80,7 +70,6 @@ class ModalBudgetFragment : Fragment() {
 
 
         //TODO: Events
-        //Back to home
         topAppBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -153,7 +142,7 @@ class ModalBudgetFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        btnAddItem.setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.btn_add_budget_item).setOnClickListener {
             adapter?.update()
         }
         textEdit.addTextChangedListener {

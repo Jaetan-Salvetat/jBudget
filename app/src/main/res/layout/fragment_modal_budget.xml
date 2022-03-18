@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,54 +7,66 @@
     tools:context=".ModalBudgetFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar_budget"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back"
-            app:menu="@menu/top_app_bar_budget">
+            app:menu="@menu/top_app_bar_budget"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back">
 
             <EditText
                 android:id="@+id/modal_title_budget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:background="@drawable/title_budget_edit_text_selector"
-                android:paddingHorizontal="7dp"
-                android:hint="@string/name"
                 android:layout_marginStart="10dp"
                 android:autofillHints=""
-                android:inputType="text" />
+                android:background="@drawable/title_budget_edit_text_selector"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:paddingHorizontal="7dp"
+                android:textSize="22sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/save_keyboard_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listview_modal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_budget_item"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
 
-        <ListView
-            android:id="@+id/listview_modal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:divider="@null"/>
+    <LinearLayout
+        android:id="@+id/btn_add_budget_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ripple_effect_btn_add_item_modal_budget"
+        android:gravity="center"
+        android:paddingVertical="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/save_update_budget_btn">
 
-        <Button
-            android:id="@+id/save_update_budget_btn"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            style="@style/Theme.ElevatedButton"
-            android:text="@string/save"/>
+            android:text="@string/add_spent"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/save_update_budget_btn"
+        style="@style/Theme.ElevatedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
