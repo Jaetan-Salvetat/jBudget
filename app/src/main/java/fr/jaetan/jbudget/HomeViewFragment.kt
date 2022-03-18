@@ -2,14 +2,19 @@ package fr.jaetan.jbudget
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import fr.jaetan.jbudget.home.HomeListItem
+import fr.jaetan.jbudget.home.HomeMainAdapter
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
 import java.time.LocalDate
@@ -28,10 +33,10 @@ class HomeViewFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var listview: ListView
+    private lateinit var listview: RecyclerView
     private lateinit var noBudgetText: LinearLayout
     private var headerView: View? = null
-    private var adapter: HomeListItem? = null
+    private var adapter: HomeMainAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +58,12 @@ class HomeViewFragment : Fragment() {
         val topDivider = View(context)
         topDivider.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 40)
 
-        adapter = this.context?.let { HomeListItem(it, updateView) }
+        adapter = HomeMainAdapter(updateView)
         noBudgetText = view.findViewById(R.id.home_no_budgets)
         listview = view.findViewById(R.id.listview_home_budgets)
         listview.adapter = adapter
-        listview.addHeaderView(topDivider)
+        listview.layoutManager = LinearLayoutManager(this.context)
+        //listview.addHeaderView(topDivider)
 
         updateView()
         ViewCompat.setNestedScrollingEnabled(listview, true)
@@ -66,7 +72,7 @@ class HomeViewFragment : Fragment() {
         view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
-                    Navigation.findNavController(view).navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
+                    view.findNavController().navigate(R.id.action_homeViewFragment_to_settingsViewFragment)
                     true
                 }
                 else -> false
@@ -78,19 +84,29 @@ class HomeViewFragment : Fragment() {
             Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
             updateView()
         }
-        listview.setOnScrollListener(object: AbsListView.OnScrollListener{
-            var oldState = 0
-            override fun onScrollStateChanged(p0: AbsListView?, actualState: Int) {
-            }
 
-            override fun onScroll(p0: AbsListView?, actualState: Int, p2: Int, p3: Int) {
-                if (oldState < actualState) {
+        listview.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            var oldState = 0
+            var oldScroll = 0
+            var extend = true
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, actualState: Int) {
+                if (oldState < actualState && !extend) {
                     addBtn.shrink()
                 }
-                if (oldState > actualState) {
+                if (oldState > actualState && extend) {
                     addBtn.extend()
                 }
                 oldState = actualState
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, p1: Int, actualScroll: Int) {
+                if (oldScroll < actualScroll + 2) {
+                    extend = false
+                }
+                if (oldScroll + 2 > actualScroll) {
+                    extend = true
+                }
             }
 
         })
@@ -105,9 +121,9 @@ class HomeViewFragment : Fragment() {
 
         if(count > 0 && adapter != null){
             adapter?.update()
-            listview.removeHeaderView(headerView)
-            headerView = adapter?.getView(-1, null, listview)
-            listview.addHeaderView(headerView)
+            //listview.removeHeaderView(headerView)
+            //headerView = adapter?.getView(-1, null, listview)
+            //listview.addHeaderView(headerView)
             listview.visibility = View.VISIBLE
             noBudgetText.visibility = View.INVISIBLE
         }
