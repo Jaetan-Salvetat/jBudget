@@ -30,10 +30,13 @@ class HomeMainAdapter(private  val changeView: () -> Unit) : RecyclerView.Adapte
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(view: ViewHolder, id: Int) {
-        if(id != 0){
+    override fun onBindViewHolder(view: ViewHolder, position: Int) {
+        val id: Int = if(position == 0){
+            itemCount - 1
+        }else{
             view.divider.removeAllViewsInLayout()
             view.topSpace.removeAllViewsInLayout()
+                itemCount - position - 1
         }
 
         val budget = budgets[id]
