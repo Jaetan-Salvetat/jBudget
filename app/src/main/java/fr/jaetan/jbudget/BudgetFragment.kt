@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.jaetan.jbudget.budget.BudgetMainAdapter
+import fr.jaetan.jbudget.misc.FuncMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetHistory
 import fr.jaetan.jbudget.services.Database
@@ -77,7 +78,7 @@ class ModalBudgetFragment : Fragment() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.share_budget -> {
-                    shareBudget()
+                    context?.let { FuncMisc.shareBudget(it, budget) }
                     true
                 }
                 R.id.go_to_history -> {
@@ -152,23 +153,6 @@ class ModalBudgetFragment : Fragment() {
 
 
         return view
-    }
-
-    private fun shareBudget(){
-        var res: String = "Total dépensé: ${String.format("%.2f", budget.totalSpent)}€\n" +
-                "Total resntant: ${String.format("%.2f", budget.total - budget.totalSpent)}€\n\n"
-
-        for(item in budget.items){
-            res += "${item.name}: ${String.format("%.2f", item.value)}€\n"
-        }
-
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, res)
-            type = "text/plain"
-        }
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
     }
 
     companion object {

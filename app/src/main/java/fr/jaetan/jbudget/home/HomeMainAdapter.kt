@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import fr.jaetan.jbudget.HomeViewFragmentDirections
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.misc.FuncMisc
 import fr.jaetan.jbudget.misc.UiMisc
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.services.Database
@@ -93,6 +94,7 @@ class HomeMainAdapter(private  val changeView: () -> Unit) : RecyclerView.Adapte
 
         //TODO: Events
         view.removeBtn.setOnClickListener { removeBudget(id, view.context) }
+        view.shareBtn.setOnClickListener { FuncMisc.shareBudget(view.context, budget) }
         view.goToHistoryBtn.setOnClickListener {
             val action = HomeViewFragmentDirections.actionHomeViewFragmentToHistoryFragment(id)
             Navigation.findNavController(view.itemView).navigate(action)
@@ -118,7 +120,7 @@ class HomeMainAdapter(private  val changeView: () -> Unit) : RecyclerView.Adapte
             })
     }
 
-    class ViewHolder(view: View, c: Context) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, val context: Context) : RecyclerView.ViewHolder(view) {
         val container: LinearLayout = view.findViewById(R.id.list_item_budget)
         val divider: LinearLayout = view.findViewById(R.id.divider)
         val topSpace: LinearLayout = view.findViewById(R.id.top_space)
@@ -130,8 +132,7 @@ class HomeMainAdapter(private  val changeView: () -> Unit) : RecyclerView.Adapte
 
         val removeBtn: ImageButton = view.findViewById(R.id.remove_budget_btn)
         val goToHistoryBtn: ImageButton = view.findViewById(R.id.go_to_history)
-
-        val context = c
+        val shareBtn: ImageButton = view.findViewById(R.id.share)
     }
 }
 

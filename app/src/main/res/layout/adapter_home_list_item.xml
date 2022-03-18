@@ -53,6 +53,16 @@
                     android:textSize="25sp" />
 
                 <ImageButton
+                    android:id="@+id/share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:contentDescription="@string/desc"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_share" />
+
+                <ImageButton
                     android:id="@+id/go_to_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
