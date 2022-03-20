@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
-import fr.jaetan.jbudget.settings.SettingsListItem
 import fr.jaetan.jbudget.models.Budget
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
+import fr.jaetan.jbudget.settings.SettingsMainAdapter
 import java.time.LocalDate
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,21 +49,21 @@ class SettingsViewFragment : Fragment() {
     ): View? {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_settings_view, container, false)
-        val listView = view.findViewById<ListView>(R.id.listview_settings_budget_title)
-        val adapter = this.context?.let { SettingsListItem(it) }
-        val footer = onGetLayoutInflater(null).inflate(R.layout.settings_footer_listview, null)
+        val listView = view.findViewById<RecyclerView>(R.id.listview_settings_budget_title)
+        val adapter = SettingsMainAdapter()
 
-        listView.adapter = adapter
-        listView.addFooterView(footer)
+        ViewCompat.setNestedScrollingEnabled(listView, true)
+        listView.apply {
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
+        }
+        view.findViewById<LinearLayout>(R.id.footer).bringToFront()
 
         //TODO: Events
         view.findViewById<MaterialToolbar>(R.id.top_app_bar_settings).setNavigationOnClickListener {
             findNavController().popBackStack()
-        }
-        view.findViewById<Button>(R.id.create_budget_btn).setOnClickListener {
-            val title = "${LocalDate.now().month.name} ${LocalDate.now().year}"
-            Database.instance.put(Budget(title = title))
-            Toast.makeText(this.context, title, Toast.LENGTH_LONG).show()
         }
         view.findViewById<Button>(R.id.add_budget_type_btn).setOnClickListener {
             val textEdit = view.findViewById<EditText>(R.id.name_budget_title_textedit)
@@ -68,7 +71,7 @@ class SettingsViewFragment : Fragment() {
             if(budgetName.length > 2){
                 Database.instance.put(BudgetTitle(name = budgetName))
                 textEdit.setText("")
-                adapter?.update()
+                adapter.update()
             }
         }
 

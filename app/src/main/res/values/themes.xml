@@ -35,4 +35,13 @@
         <item name="android:textColor">@color/dark_cyan</item>
         <item name="rippleColor">@color/light_cyan</item>
     </style>
+
+    <style name="Theme.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/cyan</item>
+        <item name="rippleColor">@color/cyan</item>
+        <item name="android:background">@color/light_grey</item>
+    </style>
+    <style name="Theme.Dialog" parent="@android:style/Theme.Dialog">
+        <item name="colorPrimary">@color/cyan</item>
+    </style>
 </resources>

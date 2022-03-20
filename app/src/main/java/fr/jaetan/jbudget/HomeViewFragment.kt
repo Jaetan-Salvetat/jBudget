@@ -61,12 +61,11 @@ class HomeViewFragment : Fragment() {
         adapter = HomeMainAdapter(updateView)
         noBudgetText = view.findViewById(R.id.home_no_budgets)
         listview = view.findViewById(R.id.listview_home_budgets)
+
         listview.adapter = adapter
         listview.layoutManager = LinearLayoutManager(this.context)
-        //listview.addHeaderView(topDivider)
-
-        updateView()
         ViewCompat.setNestedScrollingEnabled(listview, true)
+        updateView()
 
         //TODO: Events
         view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->

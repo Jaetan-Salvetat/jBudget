@@ -24,22 +24,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listview_home_budgets"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
         android:visibility="invisible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="61dp" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
         android:id="@+id/home_no_budgets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
