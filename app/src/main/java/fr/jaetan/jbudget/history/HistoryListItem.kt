@@ -43,6 +43,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         val textNameItem = view.findViewById<TextView>(R.id.history_item_name)
         val removeBtn = view.findViewById<ImageButton>(R.id.remove_history_item_btn)
         val container = view.findViewById<LinearLayout>(R.id.container)
+        val checkbox = view.findViewById<CheckBox>(R.id.history_item_checked)
 
         if(position > 0 && historyItem.date != getItem(count - position).date || position == 0){
             dateManager(historyItem.date, view)
@@ -50,6 +51,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
             view.findViewById<LinearLayout>(R.id.container_date).removeAllViewsInLayout()
         }
 
+        checkbox.isChecked = historyItem.done
         textNameItem.text = historyItem.name
 
         if(historyItem.cashFlow || historyItem.name.lowercase() == "Rentrée d'argent".lowercase()){
@@ -73,6 +75,14 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
         //TODO: Events
         container.setOnClickListener {
             historyItem.done = !historyItem.done
+            checkbox.isChecked = historyItem.done
+            checkedStyleManager(historyItem.done, view)
+            Database.instance.budgetHistory.put(historyItem)
+        }
+
+        checkbox.setOnCheckedChangeListener { _, value ->
+            historyItem.done = value
+            checkbox.isChecked = value
             checkedStyleManager(historyItem.done, view)
             Database.instance.budgetHistory.put(historyItem)
         }

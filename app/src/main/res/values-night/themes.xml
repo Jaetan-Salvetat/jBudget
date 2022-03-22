@@ -42,4 +42,8 @@
     <style name="Theme.Dialog" parent="@android:style/Theme.Dialog">
         <item name="colorPrimary">@color/dark_cyan</item>
     </style>
+
+    <style name="Theme.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/dark_cyan</item>
+    </style>
 </resources>
