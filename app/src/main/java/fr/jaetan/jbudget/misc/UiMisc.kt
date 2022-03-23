@@ -3,11 +3,12 @@ package fr.jaetan.jbudget.misc
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
-import android.view.ContextThemeWrapper
-import android.view.MotionEvent
-import android.view.ViewGroup
+import android.content.res.Configuration
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import android.widget.Toolbar
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.jaetan.jbudget.R
 
@@ -47,7 +48,16 @@ class UiMisc {
         }
 
         private fun scale(element: ViewGroup, scaleTo: Float, scaleFrom: Float) {
-            val anim = ScaleAnimation(scaleFrom, scaleTo, scaleFrom, scaleTo, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            val anim = ScaleAnimation(
+                scaleFrom,
+                scaleTo,
+                scaleFrom,
+                scaleTo,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f
+            )
             anim.duration = 200
             anim.isFillEnabled = true
             anim.fillAfter = true

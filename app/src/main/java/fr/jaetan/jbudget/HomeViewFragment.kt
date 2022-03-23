@@ -54,6 +54,7 @@ class HomeViewFragment : Fragment() {
         //TODO: Init
         val view = inflater.inflate(R.layout.fragment_home_view, container, false)
         val addBtn = view.findViewById<ExtendedFloatingActionButton>(R.id.add_budget_btn)
+        val toolbar = view.findViewById<Toolbar>(R.id.top_app_bar_home)
 
         val topDivider = View(context)
         topDivider.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 40)
@@ -68,7 +69,7 @@ class HomeViewFragment : Fragment() {
         updateView()
 
         //TODO: Events
-        view.findViewById<Toolbar>(R.id.top_app_bar_home).setOnMenuItemClickListener { menuItem ->
+        toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.go_to_settings -> {
                     view.findNavController().navigate(R.id.action_homeViewFragment_to_settingsViewFragment)

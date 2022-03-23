@@ -4,14 +4,14 @@
         <!-- Primary color. -->
         <item name="colorPrimary">@color/dark_pink</item>
         <item name="colorOnPrimary">@color/dark_background</item>
-        <item name="android:colorPrimaryDark">@color/dark_pink</item> <!-- statusBar -->
+        <item name="android:colorPrimaryDark">@color/dark_background</item> <!-- statusBar -->
 
         <!-- Secondary color. -->
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/dark_pink</item>
 
         <!-- Surface color. -->
-        <item name="colorSurface">@color/dark_pink</item> <!-- toolbar -->
+        <item name="colorSurface">@color/dark_background</item> <!-- toolbar -->
 
         <!-- Background color. -->
         <item name="backgroundColor">@color/dark_background</item>

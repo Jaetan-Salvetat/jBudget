@@ -1,7 +1,9 @@
 package fr.jaetan.jbudget
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import fr.jaetan.jbudget.models.BudgetTitle
 import fr.jaetan.jbudget.services.Database
 import fr.jaetan.jbudget.services.ObjectBox

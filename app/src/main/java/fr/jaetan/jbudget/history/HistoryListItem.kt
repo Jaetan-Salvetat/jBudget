@@ -104,6 +104,7 @@ class HistoryListItem(private val context: Context, private var budgetHistory: T
                         }
                     }
 
+                    budget.history.remove(budgetHistory[position])
                     Database.instance.put(budget)
 
                     update()

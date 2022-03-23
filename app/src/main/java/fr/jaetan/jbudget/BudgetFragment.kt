@@ -124,7 +124,7 @@ class ModalBudgetFragment : Fragment() {
                 }
 
                 for(i in history.indices.reversed()){
-                    if(history[i].title == item.title || history[i].name.lowercase() == item.name.lowercase()){
+                    if(history[i].name.lowercase() == item.name.lowercase()){
                         history[i].value +=  item.value
                         containsHistory = true
                         break
