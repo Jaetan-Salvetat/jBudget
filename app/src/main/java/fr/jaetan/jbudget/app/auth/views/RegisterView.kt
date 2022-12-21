@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 import fr.jaetan.jbudget.app.auth.AuthViewModel
 
 @Composable
-fun AuthContent(viewModel: AuthViewModel) {
+fun RegisterView(viewModel: AuthViewModel) {
 
 }

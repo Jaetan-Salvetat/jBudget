@@ -1,4 +1,6 @@
-package fr.jaetan.jbudget.app.auth.views
+package fr.jaetan.jbudget.app.auth
 
-class AuthViewModel {
+import androidx.lifecycle.ViewModel
+
+class AuthViewModel: ViewModel() {
 }
