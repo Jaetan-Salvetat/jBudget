@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">jBudget</string>
+    <string name="home_fab_add_budget">Nouveau budget</string>
+    <string name="home_fab_add_transaction">Nouvelle transaction</string>
+
+    <!-- Content descriptions-->
+    <string name="home_fab_add_descriptor">Bouton flottant d\'ajout</string>
+    <string name="home_fab_add_budget_descriptor">Ajouter un budget </string>
+    <string name="home_fab_add_transaction_descriptor">Ajouter une transaction </string>
 </resources>
