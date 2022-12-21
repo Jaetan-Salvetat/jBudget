@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.app.home.views.FabItem
 
 class HomeViewModel : ViewModel() {
     var fabExpanded by mutableStateOf(false)
