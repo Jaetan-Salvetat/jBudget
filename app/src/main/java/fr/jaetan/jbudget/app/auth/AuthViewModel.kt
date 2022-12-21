@@ -9,10 +9,15 @@ import fr.jaetan.jbudget.R
 
 class AuthViewModel: ViewModel() {
     var currentScreen by mutableStateOf(AuthScreens.Login)
+    var loginEmail by mutableStateOf("")
+    var loginPassword by mutableStateOf("")
+
 
     fun navigate(screen: AuthScreens) {
         currentScreen = screen
     }
+
+    fun login() = Unit
 }
 
 enum class AuthScreens(

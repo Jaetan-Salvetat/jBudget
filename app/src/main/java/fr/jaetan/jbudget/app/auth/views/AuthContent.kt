@@ -25,7 +25,7 @@ fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(70.dp))
         Image(
             painter = painterResource(R.drawable.app_icon),
             contentDescription = stringResource(R.string.app_name),
@@ -34,7 +34,7 @@ fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
                 .clip(CircleShape)
                 .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
         )
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(70.dp))
 
         when (viewModel.currentScreen) {
             AuthScreens.Login -> LoginView(viewModel)

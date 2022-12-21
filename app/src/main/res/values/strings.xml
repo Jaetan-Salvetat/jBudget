@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">jBudget</string>
 
-    <!--Auth-->
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
+    <string name="password">Mot de passe</string>
+    <string name="email">Email</string>
 </resources>
