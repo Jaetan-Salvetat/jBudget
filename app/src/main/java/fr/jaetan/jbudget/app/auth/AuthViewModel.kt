@@ -11,6 +11,8 @@ class AuthViewModel: ViewModel() {
     var currentScreen by mutableStateOf(AuthScreens.Login)
     var loginEmail by mutableStateOf("")
     var loginPassword by mutableStateOf("")
+    var registerEmail by mutableStateOf("")
+    var registerPassword by mutableStateOf("")
 
 
     fun navigate(screen: AuthScreens) {
@@ -18,6 +20,7 @@ class AuthViewModel: ViewModel() {
     }
 
     fun login() = Unit
+    fun register() = Unit
 }
 
 enum class AuthScreens(
