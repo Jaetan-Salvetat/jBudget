@@ -1,5 +1,7 @@
 package fr.jaetan.jbudget.core.models
 
 enum class Screen(val route: String) {
-    Home("home")
+    Home("home"),
+    Settings("settings"),
+    Transaction("transaction")
 }

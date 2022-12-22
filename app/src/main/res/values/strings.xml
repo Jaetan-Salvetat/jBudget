@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">jBudget</string>
     <string name="home_fab_add_budget">Nouveau budget</string>
+    <string name="home_welcome">Bienvenue %1$s</string>
     <string name="home_fab_add_transaction">Nouvelle transaction</string>
 
     <!-- Content descriptions-->
