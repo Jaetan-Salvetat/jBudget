@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.auth.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
@@ -35,7 +37,7 @@ fun LoginView(viewModel: AuthViewModel) {
         containerColor = Color.Transparent,
     )
 
-    Column {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
             value = viewModel.loginEmail,
             onValueChange = { viewModel.loginEmail = it },
@@ -53,6 +55,14 @@ fun LoginView(viewModel: AuthViewModel) {
             keyboardActions = keyboardActions,
             modifier = Modifier.fillMaxWidth(),
             colors = colors
+        )
+        
+        Spacer(Modifier.height(20.dp))
+
+        Text(stringResource(
+            R.string.forgot_password),
+            modifier = Modifier.clickable {  },
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
