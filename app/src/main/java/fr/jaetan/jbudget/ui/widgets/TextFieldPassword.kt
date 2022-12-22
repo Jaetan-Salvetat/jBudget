@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.core.services.isPassword
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +23,7 @@ fun OutlinedTextFieldPassword(
     onValueChange: (String) -> Unit,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
     keyboardActions: KeyboardActions = KeyboardActions(),
-    keyboardOptions: KeyboardOptions = KeyboardOptions()
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
 ) {
     var hidePassword by rememberSaveable { mutableStateOf(true) }
     
@@ -41,6 +42,11 @@ fun OutlinedTextFieldPassword(
                     imageVector = if (hidePassword) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                     contentDescription = stringResource(R.string.password)
                 )
+            }
+        },
+        supportingText = {
+            if (!value.isPassword && value.isNotEmpty()) {
+                Text(stringResource(R.string.bad_password), color = MaterialTheme.colorScheme.error)
             }
         }
     )
@@ -73,6 +79,11 @@ fun TextFieldPassword(
                     imageVector = if (hidePassword) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                     contentDescription = stringResource(R.string.password)
                 )
+            }
+        },
+        supportingText = {
+            if (!value.isPassword && value.isNotEmpty()) {
+                Text(stringResource(R.string.bad_password), color = MaterialTheme.colorScheme.error)
             }
         }
     )
