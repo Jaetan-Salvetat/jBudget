@@ -13,5 +13,6 @@ class HomeViewModel : ViewModel() {
     var fabExpanded by mutableStateOf(false)
     val fabItems = listOf(
         FabItem(text = R.string.home_fab_add_transaction, descriptor = R.string.home_fab_add_transaction_descriptor, onClick = {}, Icons.Default.RequestQuote),
-        FabItem(text = R.string.home_fab_add_budget, descriptor = R.string.home_fab_add_budget_descriptor, onClick = {}, Icons.Default.NoteAdd),)
+        FabItem(text = R.string.home_fab_add_budget, descriptor = R.string.home_fab_add_budget_descriptor, onClick = {}, Icons.Default.NoteAdd),
+    )
 }

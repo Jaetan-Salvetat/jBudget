@@ -26,7 +26,6 @@ fun HomeFAB(viewModel: HomeViewModel) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.home_fab_add_descriptor))
         }
     }
-
 }
 
 
