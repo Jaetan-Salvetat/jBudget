@@ -13,6 +13,7 @@ import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
+import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +51,7 @@ private fun BottomButton(viewModel: AuthViewModel) {
         Button(
             onClick = {  },
             modifier = Modifier.fillMaxWidth(),
-            enabled = viewModel.password?.isPassword == true && viewModel.email?.isEmail == true,
+            enabled = viewModel.password?.isPassword == true && viewModel.email?.isEmail == true && viewModel.username?.isUsename == true,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer

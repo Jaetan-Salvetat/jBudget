@@ -68,6 +68,30 @@ fun RegisterView(viewModel: AuthViewModel) {
                 }
             }
         )
+
+        Spacer(Modifier.height(30.dp))
+
+        OutlinedTextField(
+            value = viewModel.username.orEmpty(),
+            onValueChange = { viewModel.username = it },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardActions = keyboardActions,
+            label = { Text(stringResource(R.string.email)) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged {
+                    coroutineScope.launch {
+                        delay(200)
+                        bringIntoViewRequester.bringIntoView()
+                    }
+                },
+            colors = colors,
+            supportingText = {
+                if (!viewModel.email.isEmail) {
+                    Text(stringResource(R.string.bad_username), color = MaterialTheme.colorScheme.error)
+                }
+            }
+        )
         Spacer(Modifier.height(30.dp))
         OutlinedTextFieldPassword(
             value = viewModel.password.orEmpty(),
@@ -88,3 +112,4 @@ fun RegisterView(viewModel: AuthViewModel) {
         Spacer(Modifier.bringIntoViewRequester(bringIntoViewRequester))
     }
 }
+
