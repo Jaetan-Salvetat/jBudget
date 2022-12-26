@@ -2,19 +2,30 @@ package fr.jaetan.jbudget.app.auth.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
+import fr.jaetan.jbudget.core.services.extentions.isEmail
+import fr.jaetan.jbudget.core.services.extentions.isPassword
+import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 @Composable
 fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
@@ -40,5 +51,92 @@ fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
             AuthScreens.Login -> LoginView(viewModel)
             AuthScreens.Register -> RegisterView(viewModel)
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginView(viewModel: AuthViewModel) {
+    val focusManager = LocalFocusManager.current
+    val keyboardActions = KeyboardActions(
+        onNext = { focusManager.moveFocus(FocusDirection.Down) },
+        onDone = {
+            viewModel.login()
+            focusManager.clearFocus()
+        }
+    )
+    val colors = TextFieldDefaults.outlinedTextFieldColors(
+        containerColor = Color.Transparent,
+    )
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Input(
+            value = viewModel.email.orEmpty(),
+            onChange = { viewModel.email = it },
+            labelRes = R.string.email,
+            showSupportingText = viewModel.email?.isEmail == false,
+            keyboardActions = keyboardActions,
+            colors = colors
+        )
+
+        PasswordInput(
+            value = viewModel.password.orEmpty(),
+            onChange = { viewModel.password = it },
+            keyboardActions = keyboardActions,
+            colors = colors,
+            showSupportingText = viewModel.password?.isPassword == false
+        )
+
+        Spacer(Modifier.height(20.dp))
+
+        Text(stringResource(
+            R.string.forgot_password),
+            modifier = Modifier.clickable {  },
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RegisterView(viewModel: AuthViewModel) {
+    val focusManager = LocalFocusManager.current
+    val keyboardActions = KeyboardActions(
+        onNext = { focusManager.moveFocus(FocusDirection.Down) },
+        onDone = {
+            viewModel.register()
+            focusManager.clearFocus()
+        }
+    )
+    val colors = TextFieldDefaults.outlinedTextFieldColors(
+        containerColor = Color.Transparent,
+    )
+
+    Column {
+        Input(
+            value = viewModel.email.orEmpty(),
+            onChange = { viewModel.email = it },
+            labelRes = R.string.email,
+            showSupportingText = viewModel.email?.isEmail == false,
+            keyboardActions = keyboardActions,
+            colors = colors
+        )
+
+        Input(
+            value = viewModel.username.orEmpty(),
+            onChange = { viewModel.username = it },
+            labelRes = R.string.username,
+            showSupportingText = viewModel.username?.isUsename == false,
+            keyboardActions = keyboardActions,
+            colors = colors
+        )
+
+        PasswordInput(
+            value = viewModel.password.orEmpty(),
+            onChange = { viewModel.password = it },
+            keyboardActions = keyboardActions,
+            colors = colors,
+            showSupportingText = viewModel.password?.isPassword == false
+        )
     }
 }
