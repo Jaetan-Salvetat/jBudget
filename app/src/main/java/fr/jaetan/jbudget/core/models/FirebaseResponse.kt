@@ -1,10 +1,13 @@
 package fr.jaetan.jbudget.core.models
 
-enum class FirebaseResponse {
-    Success,
-    Error,
+import androidx.annotation.StringRes
+import fr.jaetan.jbudget.R
+
+enum class FirebaseResponse(@StringRes val messageRes: Int) {
+    Success(R.string.success),
+    Error(R.string.sample_error),
 
     //Auth
-    UserAlreadyExist,
-    BadEmailOrPassword
+    UserAlreadyExist(R.string.user_already_exist),
+    BadEmailOrPassword(R.string.bad_email_or_password)
 }

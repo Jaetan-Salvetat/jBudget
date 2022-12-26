@@ -4,6 +4,7 @@
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
     <string name="sample_error">Une erreur inatendue est survenue.</string>
+    <string name="success">Succès</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>

@@ -42,38 +42,30 @@ class AuthViewModel: ViewModel() {
 
     private fun login() {
         JBudget.authRepository.loginWithEmailAndPassword(email!!, password!!) {
+            errorMessageRes = it.messageRes
+
             when (it) {
                 FirebaseResponse.Success -> {
                     state = State.None
                     JBudget.isLogged = true
                 }
-                FirebaseResponse.BadEmailOrPassword -> {
-                    state = State.Error
-                    errorMessageRes = R.string.bad_email_or_password
-                }
-                else -> {
-                    errorMessageRes = R.string.sample_error
-                    state = State.Error
-                }
+                FirebaseResponse.BadEmailOrPassword -> state = State.Error
+                else -> errorMessageRes = R.string.sample_error
             }
         }
     }
 
     private fun register() {
         JBudget.authRepository.registerWithEmailAndPassword(email!!, username!!, password!!) {
+            errorMessageRes = it.messageRes
+
             when (it) {
                 FirebaseResponse.Success -> {
                     state = State.None
                     JBudget.isLogged = true
                 }
-                FirebaseResponse.UserAlreadyExist -> {
-                    errorMessageRes = R.string.user_already_exist
-                    state = State.Error
-                }
-                else -> {
-                    errorMessageRes = R.string.sample_error
-                    state = State.Error
-                }
+                FirebaseResponse.UserAlreadyExist -> state = State.Error
+                else -> state = State.Error
             }
         }
     }
