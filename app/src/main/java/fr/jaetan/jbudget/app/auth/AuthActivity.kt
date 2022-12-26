@@ -17,19 +17,15 @@ import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.theme.JBudgetTheme
 
 class AuthActivity: ComponentActivity() {
-    override fun onStart() {
-        super.onStart()
-
-        if (JBudget.isLogged) {
-            startActivity(MainActivity.launch(this))
-            finish()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            if (JBudget.isLogged) {
+                startActivity(MainActivity.launch(this))
+                finish()
+            }
+
             JBudgetTheme {
                 App()
             }

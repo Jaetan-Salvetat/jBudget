@@ -6,6 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
 import fr.jaetan.jbudget.core.services.extentions.isUsename
@@ -15,6 +18,8 @@ class AuthViewModel: ViewModel() {
     var email by mutableStateOf(null as String?)
     var password by mutableStateOf(null as String?)
     var username by mutableStateOf(null as String?)
+    var state by mutableStateOf(State.None)
+    @StringRes var errorMessageRes: Int = R.string.sample_error
     val canContinue: Boolean
         get() = password?.isPassword == true
             && email?.isEmail == true
@@ -29,8 +34,31 @@ class AuthViewModel: ViewModel() {
 
     }
 
-    fun login() = Unit
-    fun register() = Unit
+    fun auth() {
+        state = State.Loading
+        if (currentScreen == AuthScreens.Login) login()
+        register()
+    }
+
+    private fun login() = Unit
+    private fun register() {
+        JBudget.authRepository.registerWithEmailAndPassword(email!!, username!!, password!!) {
+            when (it) {
+                FirebaseResponse.Success -> {
+                    state = State.None
+                    JBudget.isLogged = true
+                }
+                FirebaseResponse.UserAlreadyExist -> {
+                    errorMessageRes = R.string.user_already_exist
+                    state = State.Error
+                }
+                else -> {
+                    errorMessageRes = R.string.sample_error
+                    state = State.Error
+                }
+            }
+        }
+    }
 }
 
 enum class AuthScreens(

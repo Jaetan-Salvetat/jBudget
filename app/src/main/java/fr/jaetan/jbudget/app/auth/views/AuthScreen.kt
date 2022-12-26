@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
+import fr.jaetan.jbudget.core.models.State
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +47,7 @@ private fun BottomButton(viewModel: AuthViewModel) {
         Spacer(Modifier.height(20.dp))
         
         Button(
-            onClick = {  },
+            onClick = { viewModel.auth() },
             modifier = Modifier.fillMaxWidth(),
             enabled = viewModel.canContinue,
             colors = ButtonDefaults.buttonColors(
@@ -54,7 +55,11 @@ private fun BottomButton(viewModel: AuthViewModel) {
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             )
         ) {
-            Text(stringResource(viewModel.currentScreen.titleRes))
+            if (viewModel.state == State.Loading) {
+                CircularProgressIndicator(Modifier.size(20.dp))
+            } else {
+                Text(stringResource(viewModel.currentScreen.titleRes))
+            }
         }
     }
 }
