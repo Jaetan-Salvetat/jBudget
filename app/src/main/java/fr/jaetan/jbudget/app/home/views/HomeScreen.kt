@@ -14,7 +14,7 @@ import fr.jaetan.jbudget.core.models.Screen
 @Composable
 fun HomeScreen(navController: NavHostController, ) {
     val viewModel = HomeViewModel(navController)
-    Scaffold( content = {HomeContent(it)}, floatingActionButton = {HomeFAB(viewModel)}, topBar = { AppBar(navController) })
+    Scaffold( content = {HomeContent(it, viewModel)}, floatingActionButton = {HomeFAB(viewModel)}, topBar = { AppBar(navController) })
 }
 
 
