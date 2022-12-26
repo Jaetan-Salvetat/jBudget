@@ -36,6 +36,7 @@ class AuthViewModel: ViewModel() {
     }
 
     fun auth() {
+        if (!canContinue) return
         state = State.Loading
         if (currentScreen == AuthScreens.Login) return login()
         register()
