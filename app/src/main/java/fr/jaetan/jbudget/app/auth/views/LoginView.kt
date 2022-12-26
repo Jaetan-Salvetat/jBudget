@@ -1,17 +1,22 @@
 package fr.jaetan.jbudget.app.auth.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -23,11 +28,15 @@ import fr.jaetan.jbudget.app.auth.AuthViewModel
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
 import fr.jaetan.jbudget.ui.widgets.OutlinedTextFieldPassword
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun LoginView(viewModel: AuthViewModel) {
     val focusManager = LocalFocusManager.current
+    val bringIntoViewRequester = BringIntoViewRequester()
+    val coroutineScope = rememberCoroutineScope()
     val keyboardActions = KeyboardActions(
         onNext = { focusManager.moveFocus(FocusDirection.Down) },
         onDone = {
@@ -46,7 +55,14 @@ fun LoginView(viewModel: AuthViewModel) {
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email),
             keyboardActions = keyboardActions,
             label = { Text(stringResource(R.string.email)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged {
+                    coroutineScope.launch {
+                        delay(200)
+                        bringIntoViewRequester.bringIntoView()
+                    }
+                },
             colors = colors,
             supportingText = {
                 if (viewModel.email != null && !viewModel.email!!.isEmail) {
@@ -60,12 +76,19 @@ fun LoginView(viewModel: AuthViewModel) {
             onValueChange = { viewModel.password = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = keyboardActions,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged {
+                    coroutineScope.launch {
+                        delay(200)
+                        bringIntoViewRequester.bringIntoView()
+                    }
+                },
             colors = colors,
             showErrorMessage = viewModel.password != null && !viewModel.password!!.isPassword
         )
         
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(20.dp).bringIntoViewRequester(bringIntoViewRequester))
 
         Text(stringResource(
             R.string.forgot_password),
