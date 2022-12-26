@@ -12,17 +12,20 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
 import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.ui.widgets.ForgotPasswordDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen() {
-    val viewModel = AuthViewModel()
-
+fun AuthScreen(viewModel: AuthViewModel) {
     Scaffold(
         topBar = { AuthTopAppBar(viewModel.currentScreen.titleRes) },
         content = { AuthContent(it, viewModel) },
         bottomBar = { BottomButton(viewModel) }
     )
+
+    ForgotPasswordDialog(isVisible = viewModel.showForgotPasswordDialog) {
+        viewModel.showForgotPasswordDialog = false
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

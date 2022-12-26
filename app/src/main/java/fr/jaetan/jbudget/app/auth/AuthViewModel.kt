@@ -19,6 +19,7 @@ class AuthViewModel: ViewModel() {
     var password by mutableStateOf(null as String?)
     var username by mutableStateOf(null as String?)
     var state by mutableStateOf(State.None)
+    var showForgotPasswordDialog by mutableStateOf(false)
     @StringRes var errorMessageRes: Int = R.string.sample_error
     val canContinue: Boolean
         get() = password?.isPassword == true

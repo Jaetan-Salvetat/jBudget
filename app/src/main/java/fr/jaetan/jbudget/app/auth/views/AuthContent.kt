@@ -95,7 +95,7 @@ private fun LoginView(viewModel: AuthViewModel, keyboardActions: KeyboardActions
 
         Text(stringResource(
             R.string.forgot_password),
-            modifier = Modifier.clickable {  },
+            modifier = Modifier.clickable { viewModel.showForgotPasswordDialog = true },
             color = MaterialTheme.colorScheme.primary
         )
     }

@@ -5,6 +5,8 @@
     <string name="register">Inscription</string>
     <string name="sample_error">Une erreur inatendue est survenue.</string>
     <string name="success">Succès</string>
+    <string name="next">Continuer</string>
+    <string name="cancel">Annuler</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
@@ -17,4 +19,6 @@
     <string name="bad_username">Ton nom d\'utilisateur doit contenir au moins 3 caractères.</string>
     <string name="user_already_exist">Un utilisateur existe déjà avec cette email ou ce nom d\'utilisateur.</string>
     <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
+    <string name="password_reset">Réinitialisation du mot de passe</string>
+    <string name="email_sent">L\'email à bien été envoyé.</string>
 </resources>

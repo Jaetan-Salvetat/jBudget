@@ -38,6 +38,7 @@ private fun App() {
     val systemUiController = rememberSystemUiController()
     val backgroundColor = MaterialTheme.colorScheme.background
     val darkTheme = isSystemInDarkTheme()
+    val viewModel = AuthViewModel()
 
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -53,6 +54,6 @@ private fun App() {
         Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        AuthScreen()
+        AuthScreen(viewModel)
     }
 }

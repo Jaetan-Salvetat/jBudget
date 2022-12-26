@@ -38,5 +38,7 @@ class AuthRepository {
             }
     }
 
-
+    fun resetPassword(email: String) {
+        auth.sendPasswordResetEmail(email)
+    }
 }
