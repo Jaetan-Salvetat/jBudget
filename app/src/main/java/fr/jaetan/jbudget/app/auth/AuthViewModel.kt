@@ -24,6 +24,7 @@ class AuthViewModel: ViewModel() {
         get() = password?.isPassword == true
             && email?.isEmail == true
             && (username?.isUsename == true || currentScreen == AuthScreens.Login)
+            && state == State.None
 
 
     fun navigate(screen: AuthScreens) {
