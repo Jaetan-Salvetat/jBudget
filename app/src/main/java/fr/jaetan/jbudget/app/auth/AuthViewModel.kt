@@ -9,14 +9,15 @@ import fr.jaetan.jbudget.R
 
 class AuthViewModel: ViewModel() {
     var currentScreen by mutableStateOf(AuthScreens.Login)
-    var loginEmail by mutableStateOf("")
-    var loginPassword by mutableStateOf("")
-    var registerEmail by mutableStateOf("")
-    var registerPassword by mutableStateOf("")
+    var email by mutableStateOf(null as String?)
+    var password by mutableStateOf(null as String?)
 
 
     fun navigate(screen: AuthScreens) {
         currentScreen = screen
+        email = null
+        password = null
+
     }
 
     fun login() = Unit

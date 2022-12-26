@@ -20,6 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.auth.AuthViewModel
+import fr.jaetan.jbudget.core.services.extentions.isEmail
+import fr.jaetan.jbudget.core.services.extentions.isPassword
 import fr.jaetan.jbudget.ui.widgets.OutlinedTextFieldPassword
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,22 +41,28 @@ fun LoginView(viewModel: AuthViewModel) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         OutlinedTextField(
-            value = viewModel.loginEmail,
-            onValueChange = { viewModel.loginEmail = it },
+            value = viewModel.email.orEmpty(),
+            onValueChange = { viewModel.email = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email),
             keyboardActions = keyboardActions,
             label = { Text(stringResource(R.string.email)) },
             modifier = Modifier.fillMaxWidth(),
-            colors = colors
+            colors = colors,
+            supportingText = {
+                if (viewModel.email != null && !viewModel.email!!.isEmail) {
+                    Text(stringResource(R.string.bad_email), color = MaterialTheme.colorScheme.error)
+                }
+            }
         )
         Spacer(Modifier.height(30.dp))
         OutlinedTextFieldPassword(
-            value = viewModel.loginPassword,
-            onValueChange = { viewModel.loginPassword = it },
+            value = viewModel.password.orEmpty(),
+            onValueChange = { viewModel.password = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = keyboardActions,
             modifier = Modifier.fillMaxWidth(),
-            colors = colors
+            colors = colors,
+            showErrorMessage = viewModel.password != null && !viewModel.password!!.isPassword
         )
         
         Spacer(Modifier.height(20.dp))

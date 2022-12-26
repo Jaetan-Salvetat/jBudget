@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -21,6 +18,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.auth.AuthViewModel
+import fr.jaetan.jbudget.core.services.extentions.isEmail
+import fr.jaetan.jbudget.core.services.extentions.isPassword
 import fr.jaetan.jbudget.ui.widgets.OutlinedTextFieldPassword
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,22 +39,28 @@ fun RegisterView(viewModel: AuthViewModel) {
 
     Column {
         OutlinedTextField(
-            value = viewModel.registerEmail,
-            onValueChange = { viewModel.registerEmail = it },
+            value = viewModel.email.orEmpty(),
+            onValueChange = { viewModel.email = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next, keyboardType = KeyboardType.Email),
             keyboardActions = keyboardActions,
             label = { Text(stringResource(R.string.email)) },
             modifier = Modifier.fillMaxWidth(),
-            colors = colors
+            colors = colors,
+            supportingText = {
+                if (viewModel.email != null && !viewModel.email!!.isEmail) {
+                    Text(stringResource(R.string.bad_email), color = MaterialTheme.colorScheme.error)
+                }
+            }
         )
         Spacer(Modifier.height(30.dp))
         OutlinedTextFieldPassword(
-            value = viewModel.registerPassword,
-            onValueChange = { viewModel.registerPassword = it },
+            value = viewModel.password.orEmpty(),
+            onValueChange = { viewModel.password = it },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = keyboardActions,
             modifier = Modifier.fillMaxWidth(),
-            colors = colors
+            colors = colors,
+            showErrorMessage = viewModel.password != null && !viewModel.password!!.isPassword
         )
     }
 }
