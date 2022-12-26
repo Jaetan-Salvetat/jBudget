@@ -32,7 +32,7 @@ internal fun Input(
     @StringRes labelRes: Int,
     keyboardActions: KeyboardActions,
     colors: TextFieldColors,
-    showSupportingText: Boolean
+    showSupportingText: Boolean,
 ) {
     val bringIntoViewRequester = BringIntoViewRequester()
     val coroutineScope = rememberCoroutineScope()
@@ -47,13 +47,12 @@ internal fun Input(
             .fillMaxWidth()
             .onFocusChanged {
                 coroutineScope.launch {
-                    delay(200)
+                    delay(1000)
                     bringIntoViewRequester.bringIntoView()
                 }
             }
             .onFocusEvent {
                 coroutineScope.launch {
-                    delay(200)
                     bringIntoViewRequester.bringIntoView()
                 }
             },
@@ -64,10 +63,7 @@ internal fun Input(
             }
         }
     )
-    Spacer(
-        Modifier
-            .height(15.dp)
-            .bringIntoViewRequester(bringIntoViewRequester))
+    Spacer(Modifier.height(15.dp))
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -91,13 +87,12 @@ internal fun PasswordInput(
             .fillMaxWidth()
             .onFocusChanged {
                 coroutineScope.launch {
-                    delay(200)
+                    delay(500)
                     bringIntoViewRequester.bringIntoView()
                 }
             }
             .onFocusEvent {
                 coroutineScope.launch {
-                    delay(200)
                     bringIntoViewRequester.bringIntoView()
                 }
             },
