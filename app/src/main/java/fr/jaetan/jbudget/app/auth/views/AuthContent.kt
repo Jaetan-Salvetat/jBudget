@@ -6,10 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +24,21 @@ import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
 import fr.jaetan.jbudget.core.services.extentions.isUsename
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
+    val focusManager = LocalFocusManager.current
+    val keyboardActions = KeyboardActions(
+        onNext = { focusManager.moveFocus(FocusDirection.Down) },
+        onDone = {
+            viewModel.register()
+            focusManager.clearFocus()
+        }
+    )
+    val colors = TextFieldDefaults.outlinedTextFieldColors(
+        containerColor = Color.Transparent,
+    )
+
     Column(
         Modifier
             .padding(padding)
@@ -48,32 +58,20 @@ fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
         Spacer(Modifier.height(70.dp))
 
         when (viewModel.currentScreen) {
-            AuthScreens.Login -> LoginView(viewModel)
-            AuthScreens.Register -> RegisterView(viewModel)
+            AuthScreens.Login -> LoginView(viewModel, keyboardActions, colors)
+            AuthScreens.Register -> RegisterView(viewModel, keyboardActions, colors)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginView(viewModel: AuthViewModel) {
-    val focusManager = LocalFocusManager.current
-    val keyboardActions = KeyboardActions(
-        onNext = { focusManager.moveFocus(FocusDirection.Down) },
-        onDone = {
-            viewModel.login()
-            focusManager.clearFocus()
-        }
-    )
-    val colors = TextFieldDefaults.outlinedTextFieldColors(
-        containerColor = Color.Transparent,
-    )
-
+fun LoginView(viewModel: AuthViewModel, keyboardActions: KeyboardActions, colors: TextFieldColors) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Input(
             value = viewModel.email.orEmpty(),
             onChange = { viewModel.email = it },
             labelRes = R.string.email,
+            supportingText = R.string.bad_email,
             showSupportingText = viewModel.email?.isEmail == false,
             keyboardActions = keyboardActions,
             colors = colors
@@ -97,26 +95,14 @@ fun LoginView(viewModel: AuthViewModel) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterView(viewModel: AuthViewModel) {
-    val focusManager = LocalFocusManager.current
-    val keyboardActions = KeyboardActions(
-        onNext = { focusManager.moveFocus(FocusDirection.Down) },
-        onDone = {
-            viewModel.register()
-            focusManager.clearFocus()
-        }
-    )
-    val colors = TextFieldDefaults.outlinedTextFieldColors(
-        containerColor = Color.Transparent,
-    )
-
+fun RegisterView(viewModel: AuthViewModel, keyboardActions: KeyboardActions, colors: TextFieldColors) {
     Column {
         Input(
             value = viewModel.email.orEmpty(),
             onChange = { viewModel.email = it },
             labelRes = R.string.email,
+            supportingText = R.string.bad_email,
             showSupportingText = viewModel.email?.isEmail == false,
             keyboardActions = keyboardActions,
             colors = colors
@@ -126,6 +112,7 @@ fun RegisterView(viewModel: AuthViewModel) {
             value = viewModel.username.orEmpty(),
             onChange = { viewModel.username = it },
             labelRes = R.string.username,
+            supportingText = R.string.bad_username,
             showSupportingText = viewModel.username?.isUsename == false,
             keyboardActions = keyboardActions,
             colors = colors

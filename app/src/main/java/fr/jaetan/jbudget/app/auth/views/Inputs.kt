@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.ui.widgets.OutlinedTextFieldPassword
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,6 +32,7 @@ internal fun Input(
     keyboardActions: KeyboardActions,
     colors: TextFieldColors,
     showSupportingText: Boolean,
+    @StringRes supportingText: Int
 ) {
     val bringIntoViewRequester = BringIntoViewRequester()
     val coroutineScope = rememberCoroutineScope()
@@ -59,7 +59,7 @@ internal fun Input(
         colors = colors,
         supportingText = {
             if (showSupportingText) {
-                Text(stringResource(R.string.bad_email), color = MaterialTheme.colorScheme.error)
+                Text(stringResource(supportingText), color = MaterialTheme.colorScheme.error)
             }
         }
     )
