@@ -5,8 +5,25 @@
     <string name="home_fab_add_transaction">Nouvelle transaction</string>
     <string name="home_hint_did_you_know">Le saviez vous ?</string>
     <string name="home_hint_show_me">Montrez moi</string>
+    
+    <!-- Hints -->
+
+    <!--
+    <string-array name="hint_array">
+        <item>Vous pouvez créer un budget sans date de fin</item>
+        <item>Les statistiques des budgets en cours sont affiché dans un graphique</item>
+        <item>Une fois le budget créé, vous pouvez créer des catégories pour ranger vos transactions</item>
+        <item>Vous pouvez masquer cette section via les paramètres</item>
+    </string-array>
+    -->
+
+    <string name="hint_1">Vous pouvez créer un budget sans date de fin</string>
+    <string name="hint_2">Les statistiques des budgets en cours sont affiché dans un graphique</string>
+    <string name="hint_3">Une fois le budget créé, vous pouvez créer des catégories pour ranger vos transactions</string>
+    <string name="hint_4">Vous pouvez masquer cette section via les paramètres</string>
+
     <!-- Content descriptions-->
-    <string name="navigate_next">Aller à \'élément suivant </string>
+    <string name="navigate_next">Aller à l\'élément suivant </string>
 
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
     <string name="home_fab_add_descriptor">Bouton flottant d\'ajout</string>

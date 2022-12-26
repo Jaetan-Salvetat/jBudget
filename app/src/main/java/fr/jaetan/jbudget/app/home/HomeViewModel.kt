@@ -28,11 +28,13 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
     //===========//
     //===HINTS===//
     //===========//
+    //val hints = R.array.hint_array
     val hintItems = listOf(
-        HintItem("Vous pouvez créer un budget sans date de fin", fun(){}),
-        HintItem("Les statistiques des budgets en cours sont affiché dans un graphique", fun(){}),
-        HintItem("Une fois le budget créé, vous pouvez créer des catégories pour ranger vos transactions", fun(){}),
-        HintItem("Vous pouvez masquer cette section via les paramètres", fun(){})
+        HintItem(R.string.hint_1, fun(){}),
+        HintItem(R.string.hint_2, fun(){}),
+        HintItem(R.string.hint_3, fun(){}),
+        HintItem(R.string.hint_4, fun(){})
+
     )
     var currentHint by mutableStateOf(0)
     fun nextHint() {
