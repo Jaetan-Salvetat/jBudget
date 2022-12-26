@@ -6,12 +6,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.core.services.extentions.isEmail
+import fr.jaetan.jbudget.core.services.extentions.isPassword
+import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 class AuthViewModel: ViewModel() {
     var currentScreen by mutableStateOf(AuthScreens.Login)
     var email by mutableStateOf(null as String?)
     var password by mutableStateOf(null as String?)
     var username by mutableStateOf(null as String?)
+    val canContinue: Boolean
+        get() = password?.isPassword == true
+            && email?.isEmail == true
+            && (username?.isUsename == true || currentScreen == AuthScreens.Login)
 
 
     fun navigate(screen: AuthScreens) {
