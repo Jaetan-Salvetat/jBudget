@@ -8,9 +8,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
+import fr.jaetan.jbudget.core.models.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController, ) {
     val viewModel = HomeViewModel(navController)
@@ -25,7 +25,7 @@ fun AppBar(navController: NavHostController) {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
         actions = {
-            IconButton(onClick = {navController.navigate("settings")}) {
+            IconButton(onClick = {navController.navigate(Screen.Settings.route)}) {
                 Icon(imageVector = Icons.Default.Settings, contentDescription = stringResource(R.string.home_appbar_settings_descriptor))
             }
         }
