@@ -14,8 +14,10 @@ fun HomeContent(padding: PaddingValues, viewModel: HomeViewModel) {
             .padding(horizontal = 20.dp)
             .fillMaxSize(),
     ) {
+        HomePageSpacer()
         HintSection(viewModel)
         HomePageSpacer()
+        BudgetSection(viewModel)
     }
 }
 
