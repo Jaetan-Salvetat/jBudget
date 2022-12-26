@@ -63,7 +63,7 @@ fun RegisterView(viewModel: AuthViewModel) {
                 },
             colors = colors,
             supportingText = {
-                if (viewModel.email != null && !viewModel.email!!.isEmail) {
+                if (!viewModel.email.isEmail) {
                     Text(stringResource(R.string.bad_email), color = MaterialTheme.colorScheme.error)
                 }
             }
@@ -83,7 +83,7 @@ fun RegisterView(viewModel: AuthViewModel) {
                     }
                 },
             colors = colors,
-            showErrorMessage = viewModel.password != null && !viewModel.password!!.isPassword
+            showErrorMessage = !viewModel.password.isPassword
         )
         Spacer(Modifier.bringIntoViewRequester(bringIntoViewRequester))
     }

@@ -11,6 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
+import fr.jaetan.jbudget.core.services.extentions.isEmail
+import fr.jaetan.jbudget.core.services.extentions.isPassword
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +50,7 @@ private fun BottomButton(viewModel: AuthViewModel) {
         Button(
             onClick = {  },
             modifier = Modifier.fillMaxWidth(),
+            enabled = viewModel.password?.isPassword == true && viewModel.email?.isEmail == true,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
