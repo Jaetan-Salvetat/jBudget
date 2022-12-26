@@ -5,5 +5,6 @@ enum class FirebaseResponse {
     Error,
 
     //Auth
-    UserAlreadyExist
+    UserAlreadyExist,
+    BadEmailOrPassword
 }

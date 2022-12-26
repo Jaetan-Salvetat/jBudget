@@ -15,4 +15,5 @@
     <string name="bad_password">Ton mot de passe doit contenir au moins 8 caractères.</string>
     <string name="bad_username">Ton nom d\'utilisateur doit contenir au moins 3 caractères.</string>
     <string name="user_already_exist">Un utilisateur existe déjà avec cette email ou ce nom d\'utilisateur.</string>
+    <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
 </resources>

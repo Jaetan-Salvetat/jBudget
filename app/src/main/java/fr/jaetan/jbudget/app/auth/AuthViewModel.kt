@@ -36,11 +36,29 @@ class AuthViewModel: ViewModel() {
 
     fun auth() {
         state = State.Loading
-        if (currentScreen == AuthScreens.Login) login()
+        if (currentScreen == AuthScreens.Login) return login()
         register()
     }
 
-    private fun login() = Unit
+    private fun login() {
+        JBudget.authRepository.loginWithEmailAndPassword(email!!, password!!) {
+            when (it) {
+                FirebaseResponse.Success -> {
+                    state = State.None
+                    JBudget.isLogged = true
+                }
+                FirebaseResponse.BadEmailOrPassword -> {
+                    state = State.Error
+                    errorMessageRes = R.string.bad_email_or_password
+                }
+                else -> {
+                    errorMessageRes = R.string.sample_error
+                    state = State.Error
+                }
+            }
+        }
+    }
+
     private fun register() {
         JBudget.authRepository.registerWithEmailAndPassword(email!!, username!!, password!!) {
             when (it) {
