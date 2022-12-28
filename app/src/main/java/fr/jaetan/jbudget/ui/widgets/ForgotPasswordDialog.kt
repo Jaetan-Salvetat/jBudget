@@ -30,7 +30,10 @@ fun ForgotPasswordDialog(
             onDismissRequest = dismiss,
             confirmButton = {
                 TextButton(
-                    onClick = { JBudget.authRepository.resetPassword(email!!) },
+                    onClick = {
+                        JBudget.authRepository.resetPassword(email!!)
+                        dismiss()
+                    },
                     enabled = email?.isEmail == true
                 ) {
                     Text(stringResource(R.string.next))
