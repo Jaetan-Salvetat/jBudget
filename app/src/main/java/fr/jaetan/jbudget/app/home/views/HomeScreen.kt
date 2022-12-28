@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.home.views
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -10,18 +11,19 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Screen
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController, ) {
+fun HomeScreen(navController: NavHostController) {
     val viewModel = HomeViewModel(navController)
-    Scaffold( content = {HomeContent(it)}, floatingActionButton = {HomeFAB(viewModel)}, topBar = { AppBar(navController) })
+    Scaffold( content = {HomeContent()}, floatingActionButton = {HomeFAB(viewModel)}, topBar = { AppBar(navController) })
 }
 
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(navController: NavHostController) {
+private fun AppBar(navController: NavHostController) {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
         actions = {

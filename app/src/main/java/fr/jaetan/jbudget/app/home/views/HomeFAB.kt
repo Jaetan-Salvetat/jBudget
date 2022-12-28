@@ -30,7 +30,7 @@ fun HomeFAB(viewModel: HomeViewModel) {
 
 
 @Composable
-fun HomeFabContainer(viewModel: HomeViewModel) {
+private fun HomeFabContainer(viewModel: HomeViewModel) {
     if(viewModel.fabExpanded)
     {
         for(item in viewModel.fabItems) {
