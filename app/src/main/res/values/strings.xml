@@ -4,6 +4,29 @@
     <string name="home_welcome">Bienvenue %1$s</string>
     <string name="home_fab_add_transaction">Nouvelle transaction</string>
 
+
+    <string name="login">Connexion</string>
+    <string name="register">Inscription</string>
+    <string name="sample_error">Une erreur inatendue est survenue.</string>
+    <string name="success">Succès</string>
+    <string name="next">Continuer</string>
+    <string name="cancel">Annuler</string>
+
+    <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
+    <string name="navigate_to_login">Tu possède déjà un compte ?</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+    <string name="password">Mot de passe</string>
+    <string name="email">Email</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="bad_email">Ton email n\'est pas au bon format.</string>
+    <string name="bad_password">Ton mot de passe doit contenir au moins 8 caractères.</string>
+    <string name="bad_username">Ton nom d\'utilisateur doit contenir au moins 3 caractères.</string>
+    <string name="user_already_exist">Un utilisateur existe déjà avec cette email ou ce nom d\'utilisateur.</string>
+    <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
+    <string name="password_reset">Réinitialisation du mot de passe</string>
+    <string name="email_sent">L\'email à bien été envoyé.</string>
+
+
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
     <string name="home_fab_add_descriptor">Bouton flottant d\'ajout</string>

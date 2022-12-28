@@ -12,7 +12,7 @@
         android:theme="@style/Theme.JBudget"
         tools:targetApi="31">
         <activity
-            android:name=".app.MainActivity"
+            android:name=".app.auth.AuthActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.JBudget">
@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".app.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.JBudget" />
     </application>
 
 </manifest>
