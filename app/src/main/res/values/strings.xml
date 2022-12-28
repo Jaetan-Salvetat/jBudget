@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">jBudget</string>
+    <string name="home_fab_add_budget">Nouveau budget</string>
+    <string name="home_welcome">Bienvenue %1$s</string>
+    <string name="home_fab_add_transaction">Nouvelle transaction</string>
+
 
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
@@ -21,4 +25,11 @@
     <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
     <string name="password_reset">Réinitialisation du mot de passe</string>
     <string name="email_sent">L\'email à bien été envoyé.</string>
+
+
+    <!-- Content descriptions-->
+    <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
+    <string name="home_fab_add_descriptor">Bouton flottant d\'ajout</string>
+    <string name="home_fab_add_budget_descriptor">Ajouter un budget </string>
+    <string name="home_fab_add_transaction_descriptor">Ajouter une transaction </string>
 </resources>
