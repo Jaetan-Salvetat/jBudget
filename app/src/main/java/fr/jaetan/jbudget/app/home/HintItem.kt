@@ -1,6 +1,5 @@
 package fr.jaetan.jbudget.app.home
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import fr.jaetan.jbudget.R
 
-class HintItem(@StringRes private val content: Int, val onClick: () -> Unit /* Should need Navigation */) {
+class HintItem(private val content: String, val onClick: () -> Unit /* Should need Navigation */) {
     @Composable
     fun GetView(viewModel: HomeViewModel) {
         Column {
@@ -44,7 +43,7 @@ class HintItem(@StringRes private val content: Int, val onClick: () -> Unit /* S
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(content),
+                    text = content,
                     Modifier.weight(2F))
                 Button(
                     onClick = { onClick(/* Should ask Navigation */) },

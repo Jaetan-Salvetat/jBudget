@@ -15,11 +15,6 @@ fun HomeContent(padding: PaddingValues, viewModel: HomeViewModel) {
             .fillMaxSize(),
     ) {
         HintSection(viewModel)
-        HomePageSpacer()
+        Spacer(modifier = Modifier.height(20.dp))
     }
-}
-
-@Composable
-fun HomePageSpacer() {
-    Spacer(modifier = Modifier.height(20.dp))
 }
