@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Screen
 
 class HomeViewModel(navController: NavHostController) : ViewModel() {

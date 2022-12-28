@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.home.views
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -15,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
@@ -91,3 +93,5 @@ private fun HomeFabItem(modifier: Modifier, viewModel: HomeViewModel) {
         }
     }
 }
+
+class FabItem(@StringRes val text: Int, @StringRes val descriptor: Int, val onClick: () -> Unit, val icon: ImageVector)
