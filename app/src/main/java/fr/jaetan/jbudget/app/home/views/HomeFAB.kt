@@ -13,7 +13,7 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 
 @Composable
-fun FabSection(viewModel: HomeViewModel) {
+fun HomeFAB(viewModel: HomeViewModel) {
     Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.End) {
         Column(horizontalAlignment = Alignment.End) {
             HomeFabContainer(viewModel)
@@ -27,7 +27,6 @@ fun FabSection(viewModel: HomeViewModel) {
         }
     }
 }
-
 
 
 @Composable

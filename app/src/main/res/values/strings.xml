@@ -1,24 +1,26 @@
 <resources>
-
     <string name="app_name">jBudget</string>
     <string name="home_fab_add_budget">Nouveau budget</string>
     <string name="home_welcome">Bienvenue %1$s</string>
     <string name="home_fab_add_transaction">Nouvelle transaction</string>
-    <string name="home_hint_current"> sur </string>
-    <string name="home_budget_closed">Ce budget est fini</string>
-
-
-    <!-- Hints -->
-
     <string name="home_hint_did_you_know">Le saviez vous ?</string>
     <string name="home_hint_show_me">Montrez moi</string>
-    <string name="home_budget_develop_content">Développez le contenu</string>
+    
+    <!-- Hints -->
+
+    <!--
+    <string-array name="hint_array">
+        <item>Vous pouvez créer un budget sans date de fin</item>
+        <item>Les statistiques des budgets en cours sont affiché dans un graphique</item>
+        <item>Une fois le budget créé, vous pouvez créer des catégories pour ranger vos transactions</item>
+        <item>Vous pouvez masquer cette section via les paramètres</item>
+    </string-array>
+    -->
 
     <string name="hint_1">Vous pouvez créer un budget sans date de fin</string>
     <string name="hint_2">Les statistiques des budgets en cours sont affiché dans un graphique</string>
     <string name="hint_3">Une fois le budget créé, vous pouvez créer des catégories pour ranger vos transactions</string>
     <string name="hint_4">Vous pouvez masquer cette section via les paramètres</string>
-
 
     <!-- Content descriptions-->
     <string name="navigate_next">Aller à l\'élément suivant </string>
@@ -28,4 +30,3 @@
     <string name="home_fab_add_budget_descriptor">Ajouter un budget </string>
     <string name="home_fab_add_transaction_descriptor">Ajouter une transaction </string>
 </resources>
-
