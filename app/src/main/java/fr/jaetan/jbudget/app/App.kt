@@ -1,9 +1,9 @@
 package fr.jaetan.jbudget.app
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,16 +17,12 @@ import fr.jaetan.jbudget.core.models.Screen
 fun App() {
     val navController = rememberNavController()
     val systemUiController = rememberSystemUiController()
-    val backgroundColor = MaterialTheme.colorScheme.background
     val darkTheme = isSystemInDarkTheme()
 
     SideEffect {
-        systemUiController.setStatusBarColor(
-            color = backgroundColor,
-            darkIcons = darkTheme
-        )
         systemUiController.setSystemBarsColor(
-            color = backgroundColor
+            color = Color.Transparent,
+            darkIcons = !darkTheme
         )
     }
 
