@@ -1,6 +1,5 @@
 package fr.jaetan.jbudget.app.settings.view
 
-import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -10,18 +9,19 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.app.settings.SettingsViewModel
 
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavHostController) {
+    val viewModel = SettingsViewModel()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { SettingsAppBar(scrollBehavior) { navController.popBackStack() } },
-        content = {  }
+        content = { SettingsContent(it, viewModel) }
     )
 }
 

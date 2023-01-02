@@ -21,12 +21,12 @@ class AuthActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            if (JBudget.isLogged) {
+            if (JBudget.state.isLogged) {
                 startActivity(MainActivity.launch(this))
                 finish()
             }
 
-            JBudgetTheme {
+            JBudgetTheme(JBudget.state) {
                 App()
             }
         }

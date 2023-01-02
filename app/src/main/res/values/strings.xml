@@ -28,6 +28,12 @@
 
 
     <string name="my_settings">Mes paramètres</string>
+    <string name="my_data">Mes données</string>
+    <string name="my_budget_categories">Mes catégories de budget</string>
+    <string name="update_my_email">Modifier mon email</string>
+    <string name="update_my_username">Modifier mon nom d\'utilisateur</string>
+    <string name="update_my_password">Modifier mon nom mot de passe</string>
+    <string name="no_budget_saved">Aucune catégories enregistré.</string>
 
 
     <!-- Content descriptions-->
@@ -36,4 +42,6 @@
     <string name="home_fab_add_budget_descriptor">Ajouter un budget </string>
     <string name="home_fab_add_transaction_descriptor">Ajouter une transaction </string>
     <string name="return_to_previous_screen">Retour à la page précédente</string>
+    <string name="update_category">Modifier la catégorie</string>
+    <string name="remove_category">Supprimer la catégorie</string>
 </resources>

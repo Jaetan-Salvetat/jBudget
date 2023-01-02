@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.theme.JBudgetTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            JBudgetTheme {
+            JBudgetTheme(JBudget.state) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     App()
                 }
