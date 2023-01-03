@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -104,7 +105,9 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, showDivider: Bo
 
 @Composable
 private fun ThemeSelector(viewModel: SettingsViewModel) {
-    Column(Modifier.height(70.dp).fillMaxWidth().clickable { viewModel.showThemDropDown = true }) {
+    val context = LocalContext.current
+
+    Column(Modifier.height(70.dp).fillMaxWidth().clickable { viewModel.showThemeDropDown = true }) {
         Divider()
         Row(
             Modifier
@@ -116,7 +119,7 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
 
             Column(
                 Modifier
-                    .clickable { viewModel.showThemDropDown = true }
+                    .clickable { viewModel.showThemeDropDown = true }
                     .clip(RoundedCornerShape(5.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(5.dp))
             ){
@@ -126,8 +129,8 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                     fontWeight = FontWeight.Bold
                 )
                 DropdownMenu(
-                    expanded = viewModel.showThemDropDown,
-                    onDismissRequest = { viewModel.showThemDropDown = false }
+                    expanded = viewModel.showThemeDropDown,
+                    onDismissRequest = { viewModel.showThemeDropDown = false }
                 ) {
                     Themes.values().forEach {
                         DropdownMenuItem(
@@ -137,10 +140,7 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                                     fontWeight = if (it == JBudget.state.currentTheme) FontWeight.Bold else FontWeight.Normal
                                 )
                             },
-                            onClick = {
-                                JBudget.state.currentTheme = it
-                                viewModel.showThemDropDown = false
-                            }
+                            onClick = { viewModel.changeTheme(context, it) }
                         )
                     }
                 }

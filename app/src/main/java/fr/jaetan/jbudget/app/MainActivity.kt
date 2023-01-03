@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import fr.jaetan.jbudget.core.services.JBudget
@@ -18,8 +19,10 @@ class MainActivity : ComponentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-
         setContent {
+            val context = this
+            LaunchedEffect(Unit) { JBudget.init(context) }
+
             JBudgetTheme(JBudget.state) {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     App()

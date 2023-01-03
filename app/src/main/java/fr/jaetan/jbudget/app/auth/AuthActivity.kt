@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -21,6 +22,9 @@ class AuthActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val context = this
+            LaunchedEffect(Unit) { JBudget.init(context) }
+
             if (JBudget.state.isLogged) {
                 startActivity(MainActivity.launch(this))
                 finish()
