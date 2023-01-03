@@ -29,12 +29,13 @@
 
     <string name="my_settings">Mes paramètres</string>
     <string name="my_data">Mes données</string>
-    <string name="my_budget_categories">Mes catégories de budget</string>
     <string name="update_my_email">Modifier mon email</string>
     <string name="update_my_username">Modifier mon nom d\'utilisateur</string>
     <string name="update_my_password">Modifier mon nom mot de passe</string>
-    <string name="no_budget_saved">Aucune catégories enregistré.</string>
     <string name="notifications">Notifications</string>
+    <string name="disconnect">Déconnexion</string>
+    <string name="remove_my_account">Supprimer mon compte</string>
+    <string name="change_app_theme">Changer le thème de l\'application</string>
 
 
     <!-- Content descriptions-->

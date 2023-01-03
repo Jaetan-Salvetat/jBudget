@@ -60,7 +60,7 @@ private fun OtherSection() {
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                 )
             ) {
-                Text("Déconnexion")
+                Text(stringResource(R.string.disconnect))
             }
             TextButton(
                 onClick = {  },
@@ -68,7 +68,7 @@ private fun OtherSection() {
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 )
-            ) { Text("Supprimer mon compte") }
+            ) { Text(stringResource(R.string.remove_my_account)) }
         }
     }
 }
@@ -150,9 +150,9 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                 .padding(horizontal = 15.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(imageVector = Icons.Filled.DarkMode, contentDescription = "Changer le thème de l'application")
+            Icon(imageVector = Icons.Filled.DarkMode, contentDescription = stringResource(R.string.change_app_theme))
             Spacer(Modifier.width(20.dp))
-            Text("Changer le thème de l'application", modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.change_app_theme), modifier = Modifier.weight(1f))
 
             Column(
                 Modifier
