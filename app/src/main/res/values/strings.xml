@@ -34,6 +34,7 @@
     <string name="update_my_username">Modifier mon nom d\'utilisateur</string>
     <string name="update_my_password">Modifier mon nom mot de passe</string>
     <string name="no_budget_saved">Aucune catégories enregistré.</string>
+    <string name="notifications">Notifications</string>
 
 
     <!-- Content descriptions-->

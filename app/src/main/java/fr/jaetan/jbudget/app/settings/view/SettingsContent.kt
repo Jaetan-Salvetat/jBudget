@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AlternateEmail
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,11 +32,12 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         //stickyHeader { SettingsListTitle(R.string.my_data) }
         item { UserItem(Icons.Filled.AlternateEmail, R.string.update_my_email) {} }
         item { UserItem(Icons.Filled.Person, R.string.update_my_username) {} }
-        item { UserItem(Icons.Filled.Lock, R.string.update_my_password, false) {} }
+        item { UserItem(Icons.Filled.Lock, R.string.update_my_password) {} }
 
+        //Notifications section
+        item { NotificationItem() }
         //Theme section
         item { ThemeSelector(viewModel) }
-
         //Other section
         item { OtherSection() }
     }
@@ -75,7 +74,7 @@ private fun OtherSection() {
 }
 
 @Composable
-private fun UserItem(icon: ImageVector, @StringRes textRes: Int, showDivider: Boolean = true, action: () -> Unit) {
+private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -97,8 +96,41 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, showDivider: Bo
                 Spacer(Modifier.weight(1f))
                 Text(stringResource(textRes), style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.weight(1f))
-                if (showDivider) Divider()
+                Divider()
             }
+        }
+    }
+}
+
+@Composable
+private fun NotificationItem() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .clickable { }
+            .height(70.dp)
+    ) {
+        Row(
+            Modifier
+                .padding(horizontal = 15.dp)
+                .fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Filled.Notifications, contentDescription = stringResource(R.string.notifications))
+            Spacer(Modifier.width(20.dp))
+            Column(
+                Modifier
+                    .weight(1f)
+                    .fillMaxHeight()) {
+                Spacer(Modifier.weight(1f))
+                Text(stringResource(R.string.notifications), style = MaterialTheme.typography.bodyMedium)
+                Spacer(Modifier.weight(1f))
+                Divider()
+            }
+            Switch(
+                checked = true,
+                onCheckedChange = {}
+            )
         }
     }
 }
@@ -107,14 +139,19 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, showDivider: Bo
 private fun ThemeSelector(viewModel: SettingsViewModel) {
     val context = LocalContext.current
 
-    Column(Modifier.height(70.dp).fillMaxWidth().clickable { viewModel.showThemeDropDown = true }) {
-        Divider()
+    Column(
+        Modifier
+            .height(70.dp)
+            .fillMaxWidth()
+            .clickable { viewModel.showThemeDropDown = true }) {
         Row(
             Modifier
                 .height(70.dp)
                 .padding(horizontal = 15.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(imageVector = Icons.Filled.DarkMode, contentDescription = "Changer le thème de l'application")
+            Spacer(Modifier.width(20.dp))
             Text("Changer le thème de l'application", modifier = Modifier.weight(1f))
 
             Column(
