@@ -38,8 +38,8 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         item { NotificationItem(viewModel) }
         //Theme section
         item { ThemeSelector(viewModel) }
-        //Other section
-        item { OtherSection() }
+        //Disconnect section
+        item { DisconnectSection() }
     }
 }
 
@@ -166,13 +166,10 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun OtherSection() {
+private fun DisconnectSection() {
     Column {
         Divider()
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)) {
+        Column(Modifier.fillMaxWidth().padding(horizontal = 15.dp)) {
             Spacer(Modifier.height(15.dp))
             OutlinedButton(
                 onClick = {  },
@@ -183,13 +180,6 @@ private fun OtherSection() {
             ) {
                 Text(stringResource(R.string.disconnect))
             }
-            TextButton(
-                onClick = {  },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colorScheme.error
-                )
-            ) { Text(stringResource(R.string.remove_my_account)) }
         }
     }
 }
