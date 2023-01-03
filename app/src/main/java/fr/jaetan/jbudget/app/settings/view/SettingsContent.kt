@@ -172,7 +172,7 @@ private fun DisconnectSection() {
         Column(Modifier.fillMaxWidth().padding(horizontal = 15.dp)) {
             Spacer(Modifier.height(15.dp))
             OutlinedButton(
-                onClick = {  },
+                onClick = { JBudget.authRepository.disconnect() },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
