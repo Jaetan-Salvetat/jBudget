@@ -75,33 +75,41 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> U
 @Composable
 private fun NotificationItem(viewModel: SettingsViewModel) {
     val context = LocalContext.current
+
     Box(
         Modifier
             .fillMaxWidth()
-            .clickable { viewModel.notificationHandler(context, !JBudget.state.isNotificationEnabled) }
+            .clickable {
+                viewModel.notificationHandler(
+                    context,
+                    !JBudget.state.isNotificationEnabled
+                )
+            }
             .height(70.dp)
     ) {
         Row(
             Modifier
-                .padding(horizontal = 15.dp)
+                .padding(start = 15.dp)
                 .fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Filled.Notifications, contentDescription = stringResource(R.string.notifications))
             Spacer(Modifier.width(20.dp))
-            Column(
-                Modifier
-                    .weight(1f)
-                    .fillMaxHeight()) {
-                Spacer(Modifier.weight(1f))
-                Text(stringResource(R.string.notifications), style = MaterialTheme.typography.bodyMedium)
-                Spacer(Modifier.weight(1f))
+            Column(Modifier.weight(1f)) {
+                Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Spacer(Modifier.weight(1f))
+                        Text(stringResource(R.string.notifications), style = MaterialTheme.typography.bodyMedium)
+                        Spacer(Modifier.weight(1f))
+                    }
+                    Switch(
+                        checked = JBudget.state.isNotificationEnabled,
+                        onCheckedChange = { viewModel.notificationHandler(context, it) },
+                        modifier = Modifier.padding(end = 15.dp)
+                    )
+                }
                 Divider()
             }
-            Switch(
-                checked = JBudget.state.isNotificationEnabled,
-                onCheckedChange = { viewModel.notificationHandler(context, it) }
-            )
         }
     }
 }
