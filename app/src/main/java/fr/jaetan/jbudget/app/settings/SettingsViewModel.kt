@@ -21,4 +21,10 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
             JBudget.state.saveTheme(context, theme.text)
         }
     }
+
+    fun notificationHandler(context: Context, isEnabled: Boolean) {
+        viewModelScope.launch(dispatcher) {
+            JBudget.state.notificationHandler(context, isEnabled)
+        }
+    }
 }

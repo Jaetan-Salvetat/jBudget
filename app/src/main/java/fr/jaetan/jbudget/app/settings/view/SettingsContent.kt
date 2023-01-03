@@ -35,7 +35,7 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         item { UserItem(Icons.Filled.Lock, R.string.update_my_password) {} }
 
         //Notifications section
-        item { NotificationItem() }
+        item { NotificationItem(viewModel) }
         //Theme section
         item { ThemeSelector(viewModel) }
         //Other section
@@ -73,11 +73,12 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> U
 }
 
 @Composable
-private fun NotificationItem() {
+private fun NotificationItem(viewModel: SettingsViewModel) {
+    val context = LocalContext.current
     Box(
         Modifier
             .fillMaxWidth()
-            .clickable { }
+            .clickable { viewModel.notificationHandler(context, !JBudget.state.isNotificationEnabled) }
             .height(70.dp)
     ) {
         Row(
@@ -98,8 +99,8 @@ private fun NotificationItem() {
                 Divider()
             }
             Switch(
-                checked = true,
-                onCheckedChange = {}
+                checked = JBudget.state.isNotificationEnabled,
+                onCheckedChange = { viewModel.notificationHandler(context, it) }
             )
         }
     }
