@@ -44,36 +44,6 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun OtherSection() {
-    Column {
-        Divider()
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp)) {
-            Spacer(Modifier.height(15.dp))
-            Button(
-                onClick = {  },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer
-                )
-            ) {
-                Text(stringResource(R.string.disconnect))
-            }
-            TextButton(
-                onClick = {  },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MaterialTheme.colorScheme.error
-                )
-            ) { Text(stringResource(R.string.remove_my_account)) }
-        }
-    }
-}
-
-@Composable
 private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> Unit) {
     Box(
         Modifier
@@ -182,6 +152,35 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun OtherSection() {
+    Column {
+        Divider()
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp)) {
+            Spacer(Modifier.height(15.dp))
+            OutlinedButton(
+                onClick = {  },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.disconnect))
+            }
+            TextButton(
+                onClick = {  },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) { Text(stringResource(R.string.remove_my_account)) }
         }
     }
 }
