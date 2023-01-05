@@ -50,7 +50,7 @@ class AuthViewModel: ViewModel() {
             when (it) {
                 FirebaseResponse.Success -> {
                     state = State.None
-                    JBudget.state.isLogged
+                    JBudget.state.isLogged = true
                 }
                 FirebaseResponse.BadEmailOrPassword -> state = State.Error
                 else -> errorMessageRes = R.string.sample_error
