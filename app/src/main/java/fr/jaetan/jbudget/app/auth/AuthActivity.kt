@@ -1,5 +1,7 @@
 package fr.jaetan.jbudget.app.auth
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +36,10 @@ class AuthActivity: ComponentActivity() {
                 App()
             }
         }
+    }
+
+    companion object {
+        fun launch(context: Context): Intent = Intent(context, AuthActivity::class.java)
     }
 }
 

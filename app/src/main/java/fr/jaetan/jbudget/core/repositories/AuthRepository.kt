@@ -44,5 +44,6 @@ class AuthRepository {
 
     fun disconnect() {
         auth.signOut()
+        JBudget.state.isLogged = false
     }
 }
