@@ -32,7 +32,7 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         //stickyHeader { SettingsListTitle(R.string.my_data) }
         item { UserItem(Icons.Filled.AlternateEmail, R.string.update_my_email) {} }
         item { UserItem(Icons.Filled.Person, R.string.update_my_username) {} }
-        item { UserItem(Icons.Filled.Lock, R.string.update_my_password) {} }
+        item { UserItem(Icons.Filled.Lock, R.string.update_my_password) { viewModel.showResetPasswordDialog = true } }
 
         //Notifications section
         item { NotificationItem(viewModel) }

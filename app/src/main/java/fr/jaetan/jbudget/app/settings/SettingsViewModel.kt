@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     var showThemeDropDown by mutableStateOf(false)
+    var showResetPasswordDialog by mutableStateOf(false)
 
     fun changeTheme(context: Context, theme: Themes) {
         showThemeDropDown = false

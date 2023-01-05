@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.jaetan.jbudget.app.home.views.HomeScreen
+import fr.jaetan.jbudget.app.settings.SettingsViewModel
 import fr.jaetan.jbudget.app.settings.view.SettingsScreen
 import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
 import fr.jaetan.jbudget.core.models.Screen
@@ -31,7 +32,8 @@ fun App() {
             HomeScreen(navController)
         }
         composable(Screen.Settings.route) {
-            SettingsScreen(navController)
+            val settingsViewModel = SettingsViewModel()
+            SettingsScreen(navController, settingsViewModel)
         }
         composable(Screen.Transaction.route) {
             TransactionScreen(navController)

@@ -10,12 +10,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
+import fr.jaetan.jbudget.ui.widgets.ForgotPasswordDialog
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavHostController) {
-    val viewModel = SettingsViewModel()
+fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewModel) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
@@ -23,6 +23,8 @@ fun SettingsScreen(navController: NavHostController) {
         topBar = { SettingsAppBar(scrollBehavior) { navController.popBackStack() } },
         content = { SettingsContent(it, viewModel) }
     )
+
+    ForgotPasswordDialog(viewModel.showResetPasswordDialog) { viewModel.showResetPasswordDialog = false }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
