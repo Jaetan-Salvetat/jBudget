@@ -45,6 +45,9 @@
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
 
+    <string name="tips_title">Le saviez vous ?</string>
+    <string name="tips_advance">%1$d sur %2$d</string>
+    <string name="show_me_more">Montrez moi !</string>
 
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
@@ -54,4 +57,6 @@
     <string name="return_to_previous_screen">Retour à la page précédente</string>
     <string name="update_category">Modifier la catégorie</string>
     <string name="remove_category">Supprimer la catégorie</string>
+    <string name="previous_item_descriptor">élément précédent</string>
+    <string name="next_item_descriptor">élément suivant</string>
 </resources>
