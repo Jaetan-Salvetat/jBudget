@@ -1,7 +1,10 @@
 package fr.jaetan.jbudget.core.models
 
-enum class Themes(val text: String) {
-    Light("clair"),
-    Dark("sombre"),
-    System("system")
+import androidx.annotation.StringRes
+import fr.jaetan.jbudget.R
+
+enum class Themes(@StringRes val textRes: Int) {
+    Light(R.string.theme_light),
+    Dark(R.string.theme_dark),
+    System(R.string.theme_system)
 }

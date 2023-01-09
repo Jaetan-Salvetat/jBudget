@@ -28,7 +28,7 @@ class MainViewModel: ViewModel() {
     suspend fun init(context: Context) {
         currentUser = FirebaseAuth.getInstance().currentUser
         context.settingsStore.data.collect { prefs ->
-            val theme = Themes.values().find { prefs[THEME_KEY] == it.text }
+            val theme = Themes.values().find { prefs[THEME_KEY] == it.textRes.toString() }
             val isNotifEnabled = prefs[IS_NOTIFICATION_ENABLED]
 
             Log.d("test", isNotifEnabled ?: "null")
@@ -43,15 +43,14 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    suspend fun saveTheme(context: Context, value: String) {
+    suspend fun saveTheme(context: Context, value: Int) {
         context.settingsStore.edit {
-            it[THEME_KEY] = value
+            it[THEME_KEY] = value.toString()
         }
     }
 
     suspend fun notificationHandler(context: Context, value: Boolean) {
         context.settingsStore.edit {
-            Log.d("testt", value.toString())
             it[IS_NOTIFICATION_ENABLED] = value.toString()
         }
     }

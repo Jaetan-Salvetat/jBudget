@@ -38,6 +38,9 @@
     <string name="disconnect">Déconnexion</string>
     <string name="remove_my_account">Supprimer mon compte</string>
     <string name="theme">Thème</string>
+    <string name="theme_system">Sytème</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
 
 
     <!-- Content descriptions-->

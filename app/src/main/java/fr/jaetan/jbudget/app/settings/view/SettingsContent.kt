@@ -1,18 +1,18 @@
 package fr.jaetan.jbudget.app.settings.view
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -138,6 +138,7 @@ private fun NotificationItem(viewModel: SettingsViewModel) {
 @Composable
 private fun ThemeSelector(viewModel: SettingsViewModel) {
     val context = LocalContext.current
+    val arrowRotation by animateFloatAsState(if (!viewModel.showThemeDropDown) 0f else 180f)
 
     Column(
         Modifier
@@ -157,14 +158,20 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
             Column(
                 Modifier
                     .clickable { viewModel.showThemeDropDown = true }
-                    .clip(RoundedCornerShape(5.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(5.dp))
             ){
-                Text(
-                    JBudget.state.currentTheme.text,
-                    modifier = Modifier.padding(10.dp),
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        stringResource(JBudget.state.currentTheme.textRes),
+                        modifier = Modifier.padding(10.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(Modifier.width(3.dp))
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.rotate(arrowRotation)
+                    )
+                }
                 DropdownMenu(
                     expanded = viewModel.showThemeDropDown,
                     onDismissRequest = { viewModel.showThemeDropDown = false }
@@ -173,7 +180,7 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                         DropdownMenuItem(
                             text = {
                                 Text(
-                                    it.text,
+                                    stringResource(it.textRes),
                                     fontWeight = if (it == JBudget.state.currentTheme) FontWeight.Bold else FontWeight.Normal
                                 )
                             },

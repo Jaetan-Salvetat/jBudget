@@ -23,7 +23,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     fun changeTheme(context: Context, theme: Themes) {
         showThemeDropDown = false
         viewModelScope.launch(dispatcher) {
-            JBudget.state.saveTheme(context, theme.text)
+            JBudget.state.saveTheme(context, theme.textRes)
         }
     }
 
