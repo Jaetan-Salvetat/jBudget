@@ -12,7 +12,10 @@ class AuthRepository {
 
     fun loginWithEmailAndPassword(email: String, password: String, callback: (FirebaseResponse) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener { callback(FirebaseResponse.Success) }
+            .addOnSuccessListener {
+                callback(FirebaseResponse.Success)
+                JBudget.state.currentUser = auth.currentUser
+            }
             .addOnCanceledListener { callback(FirebaseResponse.Error) }
             .addOnFailureListener {
                 when (it) {
@@ -27,7 +30,10 @@ class AuthRepository {
     fun registerWithEmailAndPassword(email: String, username: String, password: String, callback: (FirebaseResponse) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                JBudget.userRepository.updateUsername(username) { callback(FirebaseResponse.Success) }
+                JBudget.userRepository.updateUsername(username) {
+                    JBudget.state.currentUser = auth.currentUser
+                    callback(FirebaseResponse.Success)
+                }
             }
             .addOnCanceledListener { callback(FirebaseResponse.Error) }
             .addOnFailureListener {
@@ -44,6 +50,6 @@ class AuthRepository {
 
     fun disconnect() {
         auth.signOut()
-        JBudget.state.isLogged = false
+        JBudget.state.currentUser = null
     }
 }

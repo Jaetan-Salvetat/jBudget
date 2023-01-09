@@ -19,9 +19,10 @@ class MainViewModel: ViewModel() {
     private var _isNotificationEnabled by mutableStateOf(true)
     private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(SETTINGS_KEY)
 
+    val isLogged get() = currentUser != null
     val currentTheme: Themes get() = _currentTheme
     val isNotificationEnabled: Boolean get() = _isNotificationEnabled
-    var isLogged by mutableStateOf(FirebaseAuth.getInstance().currentUser != null)
+    var currentUser by mutableStateOf(FirebaseAuth.getInstance().currentUser)
 
     suspend fun init(context: Context) {
         context.settingsStore.data.collect { prefs ->
