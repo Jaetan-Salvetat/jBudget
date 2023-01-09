@@ -18,7 +18,6 @@ import fr.jaetan.jbudget.ui.widgets.ForgotPasswordDialog
 fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewModel) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
-
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { SettingsAppBar(scrollBehavior) { navController.popBackStack() } },
@@ -27,6 +26,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewMode
 
     ForgotPasswordDialog(viewModel.showResetPasswordDialog) { viewModel.showResetPasswordDialog = false }
     UpdateEmailDialog(viewModel)
+    UpdateUsernameDialog(viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

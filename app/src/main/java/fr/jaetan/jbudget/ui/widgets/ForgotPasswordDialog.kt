@@ -1,6 +1,5 @@
 package fr.jaetan.jbudget.ui.widgets
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -22,8 +21,6 @@ fun ForgotPasswordDialog(
 ) {
     var email by rememberSaveable { mutableStateOf(null as String?) }
     val focusManager = LocalFocusManager.current
-
-    BackHandler(onBack = dismiss)
 
     if (isVisible) {
         AlertDialog(

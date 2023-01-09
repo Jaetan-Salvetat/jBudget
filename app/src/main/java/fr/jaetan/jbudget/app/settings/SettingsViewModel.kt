@@ -12,6 +12,7 @@ import fr.jaetan.jbudget.core.models.Themes
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
+import fr.jaetan.jbudget.core.services.extentions.isUsename
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +38,37 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     var showResetPasswordDialog by mutableStateOf(false)
 
 
+    //Update username dialog
+    var showUpdateUsernameDialog by mutableStateOf(false)
+    var username by mutableStateOf(null as String?)
+    var currentUsername by mutableStateOf(JBudget.state.currentUser!!.displayName)
+    var updateUsernameState by mutableStateOf(State.None)
+    var updateUsernameErrorMessageRes by mutableStateOf(null as Int?)
+
+    fun updateUsername() {
+        if (username?.isUsename == false || updateUsernameState == State.Loading) return
+
+        updateUsernameState = State.Loading
+
+        JBudget.userRepository.updateUsername(username!!) {
+            if (it != FirebaseResponse.Success) {
+                updateUsernameErrorMessageRes = it.messageRes
+                currentUsername = JBudget.state.currentUser!!.displayName
+                return@updateUsername
+            }
+            currentUsername = JBudget.state.currentUser!!.displayName
+            dismissUsernameDialog()
+        }
+    }
+
+    fun dismissUsernameDialog() {
+        showUpdateUsernameDialog = false
+        username = null
+        updateUsernameState = State.None
+        updateEmailErrorMessageRes = null
+    }
+
+
     // Update email dialog
     var showUpdateEmailDialog by mutableStateOf(false)
     var email by mutableStateOf(null as String?)
@@ -47,6 +79,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
 
     fun updateEmail() {
         if (email?.isEmail == false && password?.isPassword == false || updateEmailState == State.Loading) return
+
         updateEmailState = State.Loading
 
         JBudget.userRepository.updateEmail(email!!, password!!) {
@@ -66,5 +99,6 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
         email = null
         password = null
         updateEmailErrorMessageRes = null
+        updateEmailState = State.None
     }
 }

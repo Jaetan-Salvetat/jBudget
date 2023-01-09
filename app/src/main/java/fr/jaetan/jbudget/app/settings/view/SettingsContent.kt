@@ -42,8 +42,8 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
             UserItem(
                 Icons.Filled.Person,
                 R.string.update_my_username,
-                JBudget.state.currentUser?.displayName
-            ) {}
+                viewModel.currentUsername
+            ) { viewModel.showUpdateUsernameDialog = true }
         }
         item {
             UserItem(
