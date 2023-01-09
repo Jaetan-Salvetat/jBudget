@@ -51,25 +51,17 @@ private fun TipsSection(viewModel: HomeViewModel) {
 private fun TipsItem(tips: TipsItem, pageState: PagerState) {
     val coroutineScope = rememberCoroutineScope()
     val nextPage: () -> Unit = {
-        if (pageState.currentPage + 1 >= pageState.pageCount) {
+        if (pageState.currentPage + 1 < pageState.pageCount) {
             coroutineScope.launch {
-                pageState.scrollToPage(0)
-            }
-        } else {
-            coroutineScope.launch {
-                pageState.scrollToPage(pageState.currentPage + 1)
+                pageState.animateScrollToPage(pageState.currentPage + 1)
             }
         }
 
     }
     val previousPage: () -> Unit = {
-        if (pageState.currentPage <= 0) {
+        if (pageState.currentPage > 0) {
             coroutineScope.launch {
-                pageState.scrollToPage(pageState.pageCount - 1)
-            }
-        } else {
-            coroutineScope.launch {
-                pageState.scrollToPage(pageState.currentPage - 1)
+                pageState.animateScrollToPage(pageState.currentPage - 1)
             }
         }
     }
