@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.app.home.views.HomeScreen
 import fr.jaetan.jbudget.app.settings.view.SettingsScreen
 import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
@@ -32,7 +33,7 @@ fun App() {
 
     NavHost(navController, Screen.Home.route) {
         composable(Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(HomeViewModel(navController), navController)
         }
         composable(Screen.Settings.route) {
             SettingsScreen(navController)

@@ -1,37 +1,68 @@
-package fr.jaetan.jbudget.app
+package fr.jaetan.jbudget.app.budget.create
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.app.home.HomeViewModel
+import fr.jaetan.jbudget.core.models.State
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateBudgetDialog(input: String) {
-    val inputState = remember { mutableStateOf(input) }
-    Column {
-        Text(stringResource(R.string.new_dialog_name))
-        TextField(
-            value = inputState.value,
-            onValueChange = { inputState.value = it }
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = {
+fun CreateBudgetDialog(viewModel: HomeViewModel, dismiss: () -> Unit) {
 
+
+    BackHandler(onBack = dismiss)
+
+    Dialog(onDismissRequest = dismiss) {
+        val focusRequest = FocusRequester()
+        SideEffect { focusRequest.requestFocus() }
+
+        Column (horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))) {
+            Text(
+                stringResource(R.string.new_dialog_name), style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(20.dp))
+            TextField(
+                value = viewModel.newBudgetValue,
+                onValueChange = { viewModel.newBudgetValue = it },
+                supportingText = {
+                    if (viewModel.newBudgetError != null) { Text(stringResource(viewModel.newBudgetError!!), color = MaterialTheme.colorScheme.error)}
+                },
+                modifier = Modifier.focusRequester(focusRequest)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {
+                    viewModel.newBudgetState = State.Loading
+                    viewModel.createBudget(viewModel.newBudgetValue)
+                },
+                enabled = when {
+                    viewModel.newBudgetState == State.Loading -> false
+                    viewModel.newBudgetValue.isBlank() -> false
+                    else -> true
+                }
+            ) {
+                when (viewModel.newBudgetState) {
+                    State.Loading -> CircularProgressIndicator(Modifier.size(20.dp))
+                    else -> Text(stringResource(R.string.new_dialog_create))
+                }
             }
-        ) {
-            Text(stringResource(R.string.new_dialog_create))
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }

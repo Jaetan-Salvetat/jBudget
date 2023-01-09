@@ -10,6 +10,7 @@
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
     <string name="sample_error">Une erreur inatendue est survenue.</string>
+    <string name="connectivity_error">Erreur de connexion au serveur</string>
     <string name="success">Succès</string>
     <string name="next">Continuer</string>
     <string name="cancel">Annuler</string>

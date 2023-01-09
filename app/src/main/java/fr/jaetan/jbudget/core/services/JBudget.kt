@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.google.firebase.auth.FirebaseAuth
 import fr.jaetan.jbudget.core.repositories.AuthRepository
+import fr.jaetan.jbudget.core.repositories.BudgetRepository
 import fr.jaetan.jbudget.core.repositories.UserRepository
 
 class JBudget {
@@ -13,5 +14,6 @@ class JBudget {
 
         val authRepository = AuthRepository()
         val userRepository = UserRepository()
+        val budgetRepository = BudgetRepository()
     }
 }
