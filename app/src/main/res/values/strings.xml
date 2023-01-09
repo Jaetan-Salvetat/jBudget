@@ -35,7 +35,7 @@
     <string name="notifications">Notifications</string>
     <string name="disconnect">Déconnexion</string>
     <string name="remove_my_account">Supprimer mon compte</string>
-    <string name="change_app_theme">Changer le thème de l\'application</string>
+    <string name="theme">Thème</string>
 
 
     <!-- Content descriptions-->

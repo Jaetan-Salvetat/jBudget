@@ -129,9 +129,9 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                 .padding(horizontal = 15.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(imageVector = Icons.Filled.DarkMode, contentDescription = stringResource(R.string.change_app_theme))
+            Icon(imageVector = Icons.Filled.DarkMode, contentDescription = stringResource(R.string.theme))
             Spacer(Modifier.width(20.dp))
-            Text(stringResource(R.string.change_app_theme), modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.theme), modifier = Modifier.weight(1f))
 
             Column(
                 Modifier
