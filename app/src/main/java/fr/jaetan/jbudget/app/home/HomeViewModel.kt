@@ -30,8 +30,8 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
     fun createBudget(budgetName: String) {
         JBudget.budgetRepository.createBudget(budgetName) { _, response ->
             when (response) {
-                FirebaseResponse.Error -> {newBudgetError = response.messageRes }
-                FirebaseResponse.ConnectivityError -> {newBudgetError = response.messageRes }
+                FirebaseResponse.Error -> { newBudgetError = response.messageRes }
+                FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
                 else -> {
                     newBudgetState = State.None
                     newBudgetValue = ""

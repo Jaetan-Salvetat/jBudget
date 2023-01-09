@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -34,11 +35,14 @@ fun CreateBudgetDialog(viewModel: HomeViewModel, dismiss: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))) {
+            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 stringResource(R.string.new_dialog_name), style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(20.dp))
             TextField(
                 value = viewModel.newBudgetValue,
+                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
+                label = { Text(text = stringResource(R.string.new_budget_dialog_name)) },
                 onValueChange = { viewModel.newBudgetValue = it },
                 supportingText = {
                     if (viewModel.newBudgetError != null) { Text(stringResource(viewModel.newBudgetError!!), color = MaterialTheme.colorScheme.error)}

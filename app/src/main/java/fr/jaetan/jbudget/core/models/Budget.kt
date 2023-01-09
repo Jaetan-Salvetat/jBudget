@@ -7,7 +7,8 @@ import java.util.*
 data class Budget(
     var id: String = "",
     var userId: String = FirebaseAuth.getInstance().currentUser!!.uid,
-    var name: String = "", var startDate: Date? = null,
+    var name: String = "",
+    var startDate: Date? = null,
     var endDate: Date? = null) {
 
 
