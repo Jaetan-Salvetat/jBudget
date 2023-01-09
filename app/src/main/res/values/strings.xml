@@ -17,6 +17,7 @@
     <string name="forgot_password">Mot de passe oublié ?</string>
     <string name="password">Mot de passe</string>
     <string name="email">Email</string>
+    <string name="new_email">Nouvelle email</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="bad_email">Ton email n\'est pas au bon format.</string>
     <string name="bad_password">Ton mot de passe doit contenir au moins 8 caractères.</string>

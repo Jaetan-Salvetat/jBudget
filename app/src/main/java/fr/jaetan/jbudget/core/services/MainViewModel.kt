@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import fr.jaetan.jbudget.core.models.Themes
 
 class MainViewModel: ViewModel() {
@@ -22,9 +23,10 @@ class MainViewModel: ViewModel() {
     val isLogged get() = currentUser != null
     val currentTheme: Themes get() = _currentTheme
     val isNotificationEnabled: Boolean get() = _isNotificationEnabled
-    var currentUser by mutableStateOf(FirebaseAuth.getInstance().currentUser)
+    var currentUser by mutableStateOf(null as FirebaseUser?)
 
     suspend fun init(context: Context) {
+        currentUser = FirebaseAuth.getInstance().currentUser
         context.settingsStore.data.collect { prefs ->
             val theme = Themes.values().find { prefs[THEME_KEY] == it.text }
             val isNotifEnabled = prefs[IS_NOTIFICATION_ENABLED]

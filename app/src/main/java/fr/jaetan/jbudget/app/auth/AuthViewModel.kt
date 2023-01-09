@@ -48,10 +48,7 @@ class AuthViewModel: ViewModel() {
             errorMessageRes = it.messageRes
 
             when (it) {
-                FirebaseResponse.Success -> {
-                    state = State.None
-                    JBudget.state.isLogged = true
-                }
+                FirebaseResponse.Success -> { state = State.None }
                 FirebaseResponse.BadEmailOrPassword -> state = State.Error
                 else -> errorMessageRes = R.string.sample_error
             }
@@ -62,13 +59,10 @@ class AuthViewModel: ViewModel() {
         JBudget.authRepository.registerWithEmailAndPassword(email!!, username!!, password!!) {
             errorMessageRes = it.messageRes
 
-            when (it) {
-                FirebaseResponse.Success -> {
-                    state = State.None
-                    JBudget.state.isLogged = true
-                }
-                FirebaseResponse.UserAlreadyExist -> state = State.Error
-                else -> state = State.Error
+            state = when (it) {
+                FirebaseResponse.Success -> State.None
+                FirebaseResponse.UserAlreadyExist -> State.Error
+                else -> State.Error
             }
         }
     }
