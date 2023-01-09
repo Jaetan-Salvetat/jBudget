@@ -29,7 +29,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
     Scaffold {
         Column {
             AppBar(navController)
-            HomeContent()
+            HomeContent(viewModel)
         }
         Box(
             Modifier

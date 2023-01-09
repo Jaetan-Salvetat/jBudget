@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.material.icons.filled.RequestQuote
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -16,6 +17,15 @@ import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
 class HomeViewModel(navController: NavHostController) : ViewModel() {
+    // Home tips
+    val tips = mutableStateListOf(
+        TipsItem("Vous pouvez réer un budget sans date de fin 1") {},
+        TipsItem("Vous pouvez réer un budget sans date de fin 2") {},
+        TipsItem("Vous pouvez réer un budget sans date de fin 3") {},
+        TipsItem("Vous pouvez réer un budget sans date de fin 4") {},
+    )
+
+
     var newBudgetValue by mutableStateOf("")
     var newBudgetError by mutableStateOf(null as Int?)
     var newBudgetState by mutableStateOf(State.None)
@@ -41,3 +51,5 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
         }
     }
 }
+
+data class TipsItem(val text: String, val action: () -> Unit)
