@@ -45,7 +45,7 @@
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
 
-    <string name="tips_title">Le saviez vous ?</string>
+    <string name="tips_title">Le savais-tu ?</string>
     <string name="tips_advance">%1$d sur %2$d</string>
     <string name="show_me_more">Montrez moi !</string>
 
