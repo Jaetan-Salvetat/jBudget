@@ -1,6 +1,5 @@
 package fr.jaetan.jbudget.app.budget.create
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,9 +22,6 @@ import fr.jaetan.jbudget.core.models.State
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateBudgetDialog(viewModel: HomeViewModel, dismiss: () -> Unit) {
-
-
-    BackHandler(onBack = dismiss)
 
     Dialog(onDismissRequest = dismiss) {
         val focusRequest = FocusRequester()
