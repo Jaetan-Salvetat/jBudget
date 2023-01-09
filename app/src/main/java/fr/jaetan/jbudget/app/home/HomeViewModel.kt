@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.home
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NoteAdd
 import androidx.compose.material.icons.filled.RequestQuote
@@ -11,19 +12,23 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
+import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
-class HomeViewModel(navController: NavHostController) : ViewModel() {
+class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
     val tips = mutableStateListOf(
-        TipsItem("Vous pouvez réer un budget sans date de fin 1") {},
-        TipsItem("Vous pouvez réer un budget sans date de fin 2") {},
-        TipsItem("Vous pouvez réer un budget sans date de fin 3") {},
-        TipsItem("Vous pouvez réer un budget sans date de fin 4") {},
+        TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) },
+        TipsItem(R.string.can_no_specify_date) {},
+        //manage default categories to settings view
     )
+
+
+    //Budgets
+    val budgets = mutableStateListOf<Budget>()
 
 
     var newBudgetValue by mutableStateOf("")
@@ -50,6 +55,15 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
             }
         }
     }
+
+
+
+    init {
+        //Dans le callback de la récupération des budgets
+        if (budgets.isEmpty()) {
+            tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
+        }
+    }
 }
 
-data class TipsItem(val text: String, val action: () -> Unit)
+data class TipsItem(@StringRes val text: Int, val action: () -> Unit)

@@ -102,7 +102,7 @@ private fun TipsItem(tips: TipsItem, pageState: PagerState) {
                 }
             }
 
-            Text(tips.text, modifier = Modifier.padding(end = 30.dp))
+            Text(stringResource(tips.text), modifier = Modifier.padding(end = 30.dp))
 
             Text(
                 stringResource(R.string.show_me_more),
