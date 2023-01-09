@@ -13,7 +13,7 @@ class BudgetRepository {
         val budget = Budget()
         budget.name = budgetName
 
-        database.collection("budgets")
+        database.collection(COLLECTION_NAME)
             .add(budget.toMap())
             .addOnSuccessListener { documentReference ->
                 callback(documentReference.id, FirebaseResponse.Success)
@@ -24,5 +24,19 @@ class BudgetRepository {
             .addOnFailureListener {
                 callback(null, FirebaseResponse.Error)
             }
+    }
+
+    fun getBudget(budgetId: String?, callback: (Budget?, FirebaseResponse) -> Unit) {
+        val document = database.collection(COLLECTION_NAME).document(budgetId ?: "")
+        document.get()
+            .addOnSuccessListener { response ->
+                callback(Budget.fromMap(budgetId!!, response.data!!), FirebaseResponse.Success)
+            }
+            .addOnCanceledListener { callback(null, FirebaseResponse.Error) }
+            .addOnFailureListener { callback(null, FirebaseResponse.Error) }
+    }
+
+    companion object {
+        const val COLLECTION_NAME = "budgets"
     }
 }

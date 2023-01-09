@@ -15,7 +15,7 @@ import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
-class HomeViewModel(navController: NavHostController) : ViewModel() {
+class HomeViewModel(var navController: NavHostController) : ViewModel() {
     var newBudgetValue by mutableStateOf("")
     var newBudgetError by mutableStateOf(null as Int?)
     var newBudgetState by mutableStateOf(State.None)
@@ -28,7 +28,7 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
     )
 
     fun createBudget(budgetName: String) {
-        JBudget.budgetRepository.createBudget(budgetName) { _, response ->
+        JBudget.budgetRepository.createBudget(budgetName) { budgetId, response ->
             when (response) {
                 FirebaseResponse.Error -> { newBudgetError = response.messageRes }
                 FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
@@ -36,6 +36,7 @@ class HomeViewModel(navController: NavHostController) : ViewModel() {
                     newBudgetState = State.None
                     newBudgetValue = ""
                     showNewBudgetDialog = false
+                    navController.navigate("${Screen.Budget.route}/$budgetId")
                 }
             }
         }
