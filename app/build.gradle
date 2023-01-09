@@ -69,6 +69,9 @@ dependencies {
     //status bar custom
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
 
+    //Storage
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
     //firebase
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
