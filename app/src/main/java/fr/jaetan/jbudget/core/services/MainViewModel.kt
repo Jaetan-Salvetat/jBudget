@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseUser
 import fr.jaetan.jbudget.core.models.Themes
 
 class MainViewModel: ViewModel() {
-    private var _currentTheme by mutableStateOf(Themes.System)
+    private var _currentTheme by mutableStateOf(Themes.Dark)
     private var _isNotificationEnabled by mutableStateOf(true)
     private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(SETTINGS_KEY)
 

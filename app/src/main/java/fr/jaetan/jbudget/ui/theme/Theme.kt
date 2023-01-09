@@ -1,6 +1,7 @@
 package fr.jaetan.jbudget.ui.theme
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -34,11 +35,11 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun JBudgetTheme(
     state: MainViewModel,
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val dynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val darkTheme = isSystemInDarkTheme()
+
     MaterialTheme(
         colorScheme = getTheme(state.currentTheme, darkTheme, dynamicColor, LocalContext.current),
         typography = Typography,
@@ -53,7 +54,5 @@ private fun getTheme(theme: Themes, isSystemDarkTheme: Boolean, dynamicColor: Bo
     dynamicColor && theme == Themes.System && !isSystemDarkTheme -> dynamicLightColorScheme(context)
     !dynamicColor && theme == Themes.Light -> LightColorScheme
     !dynamicColor && theme == Themes.Dark -> DarkColorScheme
-    !dynamicColor && theme == Themes.System && isSystemDarkTheme -> DarkColorScheme
-    !dynamicColor && theme == Themes.System && !isSystemDarkTheme -> LightColorScheme
     else -> darkColorScheme(primary = Color.Red)
 }

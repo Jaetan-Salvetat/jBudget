@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.settings.view
 
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -177,6 +178,8 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
                     onDismissRequest = { viewModel.showThemeDropDown = false }
                 ) {
                     Themes.values().forEach {
+                        if (it == Themes.System && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) return@forEach
+
                         DropdownMenuItem(
                             text = {
                                 Text(
