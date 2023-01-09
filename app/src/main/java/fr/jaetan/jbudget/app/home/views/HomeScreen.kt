@@ -1,20 +1,18 @@
 package fr.jaetan.jbudget.app.home.views
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.create.CreateBudgetDialog
@@ -26,18 +24,24 @@ import fr.jaetan.jbudget.core.models.State
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
-    Scaffold {
+    val backgroundAnimation by animateColorAsState(
+        targetValue =  if (viewModel.fabExpanded) MaterialTheme.colorScheme.scrim.copy(alpha = .5f) else Color.Transparent
+    )
+
+    Scaffold(floatingActionButton = { HomeFAB(viewModel) }) {
         Column {
             AppBar(navController)
             HomeContent(viewModel)
         }
         Box(
             Modifier
-                .fillMaxSize()
-                .background(if (viewModel.fabExpanded) MaterialTheme.colorScheme.scrim.copy(alpha = .5f) else Color.Transparent)
-        ) {
-            HomeFAB(Modifier.align(Alignment.BottomEnd).padding(bottom = 30.dp, end = 30.dp), viewModel)
-        }
+                .fillMaxSize(if (viewModel.fabExpanded) 1f else 0f)
+                .background(backgroundAnimation)
+                .clickable(
+                    interactionSource = MutableInteractionSource(),
+                    indication = null,
+                ) { if (viewModel.fabExpanded) viewModel.fabExpanded = false }
+        )
     }
 
     if (viewModel.showNewBudgetDialog) {

@@ -24,7 +24,7 @@ import fr.jaetan.jbudget.app.home.HomeViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun HomeFAB(modifier: Modifier, viewModel: HomeViewModel) {
+fun HomeFAB(viewModel: HomeViewModel) {
     val fabIconRotation by animateFloatAsState(if (!viewModel.fabExpanded) 0f else 225f)
     val fabContainerColor by animateColorAsState(if (!viewModel.fabExpanded) {
         MaterialTheme.colorScheme.primaryContainer
@@ -32,7 +32,7 @@ fun HomeFAB(modifier: Modifier, viewModel: HomeViewModel) {
         MaterialTheme.colorScheme.errorContainer
     })
     
-    Column(modifier, horizontalAlignment = Alignment.End) {
+    Column(horizontalAlignment = Alignment.End) {
         AnimatedVisibility(
             viewModel.fabExpanded,
             enter = fadeIn(),
