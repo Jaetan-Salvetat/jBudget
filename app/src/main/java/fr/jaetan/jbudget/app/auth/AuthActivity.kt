@@ -1,5 +1,7 @@
 package fr.jaetan.jbudget.app.auth
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -21,15 +24,22 @@ class AuthActivity: ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            if (JBudget.isLogged) {
+            val context = this
+            LaunchedEffect(Unit) { JBudget.init(context) }
+
+            if (JBudget.state.isLogged) {
                 startActivity(MainActivity.launch(this))
                 finish()
             }
 
-            JBudgetTheme {
+            JBudgetTheme(JBudget.state) {
                 App()
             }
         }
+    }
+
+    companion object {
+        fun launch(context: Context): Intent = Intent(context, AuthActivity::class.java)
     }
 }
 

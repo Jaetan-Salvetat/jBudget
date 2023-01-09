@@ -21,7 +21,7 @@ fun OutlinedTextFieldPassword(
     value: String,
     onValueChange: (String) -> Unit,
     showErrorMessage: Boolean,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
     keyboardActions: KeyboardActions = KeyboardActions(),
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
 ) {

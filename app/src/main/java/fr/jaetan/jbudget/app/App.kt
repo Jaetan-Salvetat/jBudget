@@ -1,15 +1,16 @@
 package fr.jaetan.jbudget.app
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.app.home.views.HomeScreen
+import fr.jaetan.jbudget.app.settings.SettingsViewModel
 import fr.jaetan.jbudget.app.settings.view.SettingsScreen
 import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
 import fr.jaetan.jbudget.core.models.Screen
@@ -18,16 +19,12 @@ import fr.jaetan.jbudget.core.models.Screen
 fun App() {
     val navController = rememberNavController()
     val systemUiController = rememberSystemUiController()
-    val backgroundColor = MaterialTheme.colorScheme.background
     val darkTheme = isSystemInDarkTheme()
 
     SideEffect {
-        systemUiController.setStatusBarColor(
-            color = backgroundColor,
-            darkIcons = darkTheme
-        )
         systemUiController.setSystemBarsColor(
-            color = backgroundColor
+            color = Color.Transparent,
+            darkIcons = !darkTheme
         )
     }
 
@@ -36,7 +33,8 @@ fun App() {
             HomeScreen(HomeViewModel(navController), navController)
         }
         composable(Screen.Settings.route) {
-            SettingsScreen(navController)
+            val settingsViewModel = SettingsViewModel()
+            SettingsScreen(navController, settingsViewModel)
         }
         composable(Screen.Transaction.route) {
             TransactionScreen(navController)
