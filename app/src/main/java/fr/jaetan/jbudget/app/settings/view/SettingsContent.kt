@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
 import fr.jaetan.jbudget.core.models.Themes
@@ -30,8 +31,8 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         .fillMaxWidth()) {
         //User section
         //stickyHeader { SettingsListTitle(R.string.my_data) }
-        item { UserItem(Icons.Filled.AlternateEmail, R.string.update_my_email) {} }
-        item { UserItem(Icons.Filled.Person, R.string.update_my_username) {} }
+        item { UserItem(Icons.Filled.AlternateEmail, R.string.update_my_email, JBudget.state.currentUser?.email) {} }
+        item { UserItem(Icons.Filled.Person, R.string.update_my_username, JBudget.state.currentUser?.displayName) {} }
         item { UserItem(Icons.Filled.Lock, R.string.update_my_password) { viewModel.showResetPasswordDialog = true } }
 
         //Notifications section
@@ -44,7 +45,7 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> Unit) {
+private fun UserItem(icon: ImageVector, @StringRes textRes: Int, subText: String? = null, action: () -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -65,6 +66,9 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, action: () -> U
                     .fillMaxHeight()) {
                 Spacer(Modifier.weight(1f))
                 Text(stringResource(textRes), style = MaterialTheme.typography.bodyMedium)
+                subText?.let {
+                    Text(it, style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.outline, fontSize = 11.sp))
+                }
                 Spacer(Modifier.weight(1f))
                 Divider()
             }
@@ -169,7 +173,10 @@ private fun ThemeSelector(viewModel: SettingsViewModel) {
 private fun DisconnectSection() {
     Column {
         Divider()
-        Column(Modifier.fillMaxWidth().padding(horizontal = 15.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp)) {
             Spacer(Modifier.height(15.dp))
             OutlinedButton(
                 onClick = { JBudget.authRepository.disconnect() },
