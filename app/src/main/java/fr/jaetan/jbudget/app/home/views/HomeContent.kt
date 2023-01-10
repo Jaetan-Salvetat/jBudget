@@ -33,17 +33,6 @@ import kotlinx.coroutines.launch
 fun HomeContent(viewModel: HomeViewModel) {
     LazyColumn {
         item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
-        item { TipsSection(viewModel) }
     }
 }
 
