@@ -17,6 +17,7 @@ import fr.jaetan.jbudget.core.models.Screen
 
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
+    var showDeleteTipsButton by mutableStateOf(false)
     val tips = mutableStateListOf(
         TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) },
         TipsItem(R.string.can_no_specify_date) {},

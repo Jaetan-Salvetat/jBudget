@@ -14,6 +14,7 @@
     <string name="success">Succès</string>
     <string name="next">Continuer</string>
     <string name="cancel">Annuler</string>
+    <string name="hide">Cacher</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
