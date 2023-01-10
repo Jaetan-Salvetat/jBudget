@@ -15,13 +15,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.State
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateBudgetDialog(viewModel: HomeViewModel, dismiss: () -> Unit) {
+fun CreateBudgetDialog(dismiss: () -> Unit) {
+    val viewModel = CreateBudgetViewModel(dismiss)
 
     Dialog(onDismissRequest = dismiss) {
         val focusRequest = FocusRequester()

@@ -13,10 +13,7 @@ import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
-import fr.jaetan.jbudget.core.models.State
-import fr.jaetan.jbudget.core.services.JBudget
 
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
@@ -31,9 +28,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     val budgets = mutableStateListOf<Budget>()
 
 
-    var newBudgetValue by mutableStateOf("")
-    var newBudgetError by mutableStateOf(null as Int?)
-    var newBudgetState by mutableStateOf(State.None)
+    //FAB
     var showNewBudgetDialog by mutableStateOf(false)
     var fabExpanded by mutableStateOf(false)
     val fabItems = listOf(
@@ -41,21 +36,6 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
             Screen.Transaction.route)}, Icons.Default.RequestQuote),
         FabItem(text = R.string.home_fab_add_budget, descriptor = R.string.home_fab_add_budget_descriptor, onClick = { showNewBudgetDialog = !showNewBudgetDialog}, Icons.Default.NoteAdd),
     )
-
-    fun createBudget(budgetName: String) {
-        JBudget.budgetRepository.createBudget(budgetName) { _, response ->
-            when (response) {
-                FirebaseResponse.Error -> { newBudgetError = response.messageRes }
-                FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
-                else -> {
-                    newBudgetState = State.None
-                    newBudgetValue = ""
-                    showNewBudgetDialog = false
-                }
-            }
-        }
-    }
-
 
 
     init {

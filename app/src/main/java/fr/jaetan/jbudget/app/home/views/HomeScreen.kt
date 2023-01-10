@@ -19,7 +19,6 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.create.CreateBudgetDialog
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Screen
-import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -51,12 +50,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
     }
 
     if (viewModel.showNewBudgetDialog) {
-        CreateBudgetDialog(viewModel) {
-            viewModel.newBudgetValue = ""
-            viewModel.newBudgetError = null
-            viewModel.newBudgetState = State.None
-            viewModel.showNewBudgetDialog = false
-        }
+        CreateBudgetDialog { viewModel.showNewBudgetDialog = false }
     }
 }
 
