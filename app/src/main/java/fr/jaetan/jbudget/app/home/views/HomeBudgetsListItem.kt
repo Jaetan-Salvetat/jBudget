@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -36,11 +35,7 @@ fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: HomeView
     val containerShape by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
     val containerPadding by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
     val containerBackground by animateColorAsState(
-        targetValue =  when {
-            isExpanded && isSystemInDarkTheme() -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = .4f)
-            isExpanded && !isSystemInDarkTheme() -> MaterialTheme.colorScheme.secondaryContainer
-            else -> Color.Transparent
-        }
+        targetValue = if (isExpanded) MaterialTheme.colorScheme.secondaryContainer.copy(alpha = .4f) else  Color.Transparent
     )
 
     Box(Modifier.padding(containerPadding)) {
