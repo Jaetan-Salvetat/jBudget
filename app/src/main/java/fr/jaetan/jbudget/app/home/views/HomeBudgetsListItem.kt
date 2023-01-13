@@ -1,9 +1,13 @@
 package fr.jaetan.jbudget.app.home.views
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
@@ -13,7 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,14 +32,25 @@ import fr.jaetan.jbudget.R
 @Composable
 fun HomeBudgetsListItem(budget: Budget, viewModel: HomeViewModel) {
     val isExpanded = budget == viewModel.selectedBudget
+    val containerShape by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
+    val containerBackground by animateColorAsState(
+        targetValue =  if (isExpanded) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent
+    )
 
-    Column(
+    Box(
         Modifier
-            .fillMaxWidth()
-            .clickable { viewModel.toggleSelectedBudget(budget) }) {
-        HomeBudgetHeader(isExpanded, budget)
-        AnimatedVisibility(isExpanded) {
-            HomeBudgetContent(budget)
+            .padding(containerShape)
+    ) {
+        Column(
+            Modifier
+                .clip(RoundedCornerShape(containerShape))
+                .clickable { viewModel.toggleSelectedBudget(budget) }
+                .background(containerBackground, RoundedCornerShape(containerShape))
+        ) {
+            HomeBudgetHeader(isExpanded, budget)
+            AnimatedVisibility(isExpanded) {
+                HomeBudgetContent(budget)
+            }
         }
     }
 }
@@ -54,7 +71,6 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
 
     Row(
         Modifier
-            .fillMaxWidth()
             .padding(vertical = 20.dp, horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
