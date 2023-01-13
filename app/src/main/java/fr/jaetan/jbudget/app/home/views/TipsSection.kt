@@ -40,7 +40,12 @@ fun TipsSection(viewModel: HomeViewModel) {
     val pagerState = rememberPagerState()
 
     HorizontalPager(viewModel.tips.size, state =  pagerState) {
-        TipsItem(viewModel, viewModel.tips[this.currentPage], pagerState)
+        val pageScope = this
+
+        Column {
+            TipsItem(viewModel, viewModel.tips[pageScope.currentPage], pagerState)
+            Spacer(Modifier.height(20.dp))
+        }
     }
 }
 

@@ -14,6 +14,9 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
+import java.time.LocalDate
+import java.time.ZoneOffset
+import java.util.*
 
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
@@ -26,7 +29,16 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     //Budgets
-    val budgets = mutableStateListOf<Budget>()
+    val budgets = mutableStateListOf<Budget>(
+        Budget(name = "Name 1", startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+        Budget(name = "Name 2", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+    )
+    var selectedBudget by mutableStateOf(null as Budget?)
+
+    fun toggleSelectedBudget(budget: Budget) {
+        if (budget == selectedBudget) selectedBudget = null
+        else selectedBudget = budget
+    }
 
 
     //FAB
