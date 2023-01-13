@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.home.views
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,12 +13,18 @@ import fr.jaetan.jbudget.app.home.HomeViewModel
 
 @Composable
 fun HomeContent(viewModel: HomeViewModel) {
-    LazyColumn {
+    LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
         item { TipsSection(viewModel) }
         item { Divider() }
-        items(viewModel.getCurrentBudgets()) { HomeBudgetsListItem(it, viewModel) }
+        items(viewModel.currentBudgets) { budget ->
+            HomeBudgetsListItem(
+                budget,
+                viewModel.selectedCurrentBudgets.find { it == budget } != null,
+                viewModel
+            )
+        }
         item { Divider() }
-        items(viewModel.getOldBudgets()) { HomeBudgetsListItem(it, viewModel) }
+        items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
         item { Spacer(Modifier.height(100.dp)) }
     }
 }

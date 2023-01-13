@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,20 +26,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.toText
-import fr.jaetan.jbudget.R
 
 @Composable
-fun HomeBudgetsListItem(budget: Budget, viewModel: HomeViewModel) {
-    val isExpanded = budget == viewModel.selectedBudget
+fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: HomeViewModel) {
     val containerShape by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
+    val containerPadding by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
     val containerBackground by animateColorAsState(
-        targetValue =  if (isExpanded) MaterialTheme.colorScheme.primaryContainer else Color.Transparent
+        targetValue =  when {
+            isExpanded && isSystemInDarkTheme() -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = .4f)
+            isExpanded && !isSystemInDarkTheme() -> MaterialTheme.colorScheme.secondaryContainer
+            else -> Color.Transparent
+        }
     )
 
-    Box(Modifier.padding(containerShape)) {
+    Box(Modifier.padding(containerPadding)) {
         Column(
             Modifier
                 .clip(RoundedCornerShape(containerShape))

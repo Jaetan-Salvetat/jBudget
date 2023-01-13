@@ -29,7 +29,9 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     //Budgets
-    val budgets = mutableStateListOf(
+    var selectedOldBudget by mutableStateOf(null as Budget?)
+    var selectedCurrentBudgets = mutableStateListOf<Budget>()
+    private val budgets = mutableStateListOf(
         Budget(name = "Test 1"),
         Budget(name = "2023", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
         Budget(
@@ -58,27 +60,18 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
             endDate = Date.from(LocalDate.parse("2022-10-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
         ),
     )
-    var selectedBudget by mutableStateOf(null as Budget?)
+    val currentBudgets: List<Budget> get() = budgets.filter { it.isCurrentBudget }
+    val oldBudgets: List<Budget> get() = budgets.filter { !it.isCurrentBudget }
 
     fun toggleSelectedBudget(budget: Budget) {
-        selectedBudget = if (budget == selectedBudget) null
-        else budget
-    }
-
-    fun getCurrentBudgets(): List<Budget> = budgets.filter {
-        when {
-            it.startDate == null && it.endDate == null -> true
-            it.startDate != null && it.endDate == null -> true
-            it.startDate != null
-            && it.endDate!!.after(Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC))) -> true
-            else -> false
+        if (budget.isCurrentBudget) {
+            if (selectedCurrentBudgets.find { it == budget } != null) selectedCurrentBudgets.remove(budget)
+            else selectedCurrentBudgets.add(budget)
+            return
         }
-    }
 
-    fun getOldBudgets(): List<Budget> = budgets.filter {
-        it.startDate != null
-        && it.endDate != null
-        && it.endDate!!.before(Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC)))
+        selectedOldBudget = if (budget == selectedOldBudget) null
+        else budget
     }
 
 
@@ -93,6 +86,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     init {
+        selectedCurrentBudgets.addAll(currentBudgets)
         //Dans le callback de la récupération des budgets
         if (budgets.isEmpty()) {
             tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
