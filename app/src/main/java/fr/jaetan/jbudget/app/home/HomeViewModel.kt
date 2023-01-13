@@ -30,14 +30,55 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
     //Budgets
     val budgets = mutableStateListOf(
-        Budget(id = "", name = "Name 1", startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
-        Budget(id = "", name = "Name 2", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+        Budget(name = "Test 1"),
+        Budget(name = "2023", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+        Budget(
+            name = "Janvier 2023",
+            startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+            endDate = Date.from(LocalDate.parse("2023-02-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+        ),
+        Budget(
+            name = "Décembre Jaetan 2022",
+            startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+            endDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+        ),
+        Budget(
+            name = "Novembre 2022",
+            startDate = Date.from(LocalDate.parse("2022-11-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+            endDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+        ),
+        Budget(
+            name = "Octobre 2022",
+            startDate = Date.from(LocalDate.parse("2022-10-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+            endDate = Date.from(LocalDate.parse("2022-11-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+        ),
+        Budget(
+            name = "Septembre 2022",
+            startDate = Date.from(LocalDate.parse("2022-09-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+            endDate = Date.from(LocalDate.parse("2022-10-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
+        ),
     )
     var selectedBudget by mutableStateOf(null as Budget?)
 
     fun toggleSelectedBudget(budget: Budget) {
         selectedBudget = if (budget == selectedBudget) null
         else budget
+    }
+
+    fun getCurrentBudgets(): List<Budget> = budgets.filter {
+        when {
+            it.startDate == null && it.endDate == null -> true
+            it.startDate != null && it.endDate == null -> true
+            it.startDate != null
+            && it.endDate!!.after(Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC))) -> true
+            else -> false
+        }
+    }
+
+    fun getOldBudgets(): List<Budget> = budgets.filter {
+        it.startDate != null
+        && it.endDate != null
+        && it.endDate!!.before(Date.from(LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC)))
     }
 
 

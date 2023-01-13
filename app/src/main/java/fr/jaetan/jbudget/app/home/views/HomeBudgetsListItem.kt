@@ -41,8 +41,12 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
     val arrowRotation by animateFloatAsState(if (!isExpanded) 0f else 180f)
     var dates = ""
 
-    budget.startDate?.let { dates += it.toText() }
-    budget.endDate?.let { dates += "- ${it.toText()}" }
+    budget.startDate?.let { dates += "(${it.toText()}" }
+    budget.endDate.let {
+        dates += if (it == null && budget.startDate != null) ")"
+        else if (it == null) ""
+        else " - ${it.toText()})"
+    }
 
     Row(
         Modifier
@@ -52,10 +56,10 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
     ) {
         Text(budget.name, style = MaterialTheme.typography.titleLarge)
         Text(
-            "(${dates})",
+            dates,
             modifier = Modifier
-                .weight(1f)
-                .padding(start = 5.dp),
+                .padding(start = 5.dp)
+                .weight(1f),
             style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline),
             overflow = TextOverflow.Ellipsis, maxLines = 1
         )

@@ -11,6 +11,8 @@ fun HomeContent(viewModel: HomeViewModel) {
     LazyColumn {
         item { TipsSection(viewModel) }
         item { Divider() }
-        items(viewModel.budgets) { HomeBudgetsListItem(it, viewModel) }
+        items(viewModel.getCurrentBudgets()) { HomeBudgetsListItem(it, viewModel) }
+        item { Divider() }
+        items(viewModel.getOldBudgets()) { HomeBudgetsListItem(it, viewModel) }
     }
 }
