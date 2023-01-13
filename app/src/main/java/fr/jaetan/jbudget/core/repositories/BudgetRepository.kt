@@ -10,7 +10,7 @@ class BudgetRepository {
 
     fun createBudget(budgetName: String, callback: (String?, FirebaseResponse) -> Unit)  {
 
-        val budget = Budget()
+        val budget = Budget("")
         budget.name = budgetName
 
         database.collection("budgets")

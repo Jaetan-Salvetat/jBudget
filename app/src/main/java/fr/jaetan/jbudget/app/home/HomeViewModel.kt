@@ -29,15 +29,15 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     //Budgets
-    val budgets = mutableStateListOf<Budget>(
-        Budget(name = "Name 1", startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
-        Budget(name = "Name 2", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+    val budgets = mutableStateListOf(
+        Budget(id = "", name = "Name 1", startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
+        Budget(id = "", name = "Name 2", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
     )
     var selectedBudget by mutableStateOf(null as Budget?)
 
     fun toggleSelectedBudget(budget: Budget) {
-        if (budget == selectedBudget) selectedBudget = null
-        else selectedBudget = budget
+        selectedBudget = if (budget == selectedBudget) null
+        else budget
     }
 
 
