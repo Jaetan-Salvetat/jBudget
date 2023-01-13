@@ -14,12 +14,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.toText
+import fr.jaetan.jbudget.R
 
 @Composable
 fun HomeBudgetsListItem(budget: Budget, viewModel: HomeViewModel) {
@@ -43,9 +45,11 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
 
     budget.startDate?.let { dates += "(${it.toText()}" }
     budget.endDate.let {
-        dates += if (it == null && budget.startDate != null) ")"
-        else if (it == null) ""
-        else " - ${it.toText()})"
+        dates += when {
+            it == null && budget.startDate != null -> " - ${stringResource(R.string.actually)}"
+            it == null -> "(∞)"
+            else -> " - ${it.toText()})"
+        }
     }
 
     Row(
