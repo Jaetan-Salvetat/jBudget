@@ -45,6 +45,9 @@
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
 
+    <string name="sample_budget_category_name1">Catégorie 1</string>
+    <string name="sample_budget_category_name2">Catégorie 2</string>
+    <string name="sample_budget_category_name3">Catégorie 3</string>
 
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
@@ -55,4 +58,5 @@
     <string name="return_to_previous_screen">Retour à la page précédente</string>
     <string name="update_category">Modifier la catégorie</string>
     <string name="remove_category">Supprimer la catégorie</string>
+    <string name="expand_section_descriptor">Étendre la section</string>
 </resources>

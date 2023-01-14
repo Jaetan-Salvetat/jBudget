@@ -25,7 +25,7 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        content = { BudgetContent(it) },
+        content = { BudgetContent(it, viewModel) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
 }
 
