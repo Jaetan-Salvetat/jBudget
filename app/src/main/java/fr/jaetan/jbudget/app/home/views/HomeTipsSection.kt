@@ -36,11 +36,16 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TipsSection(viewModel: HomeViewModel) {
+fun HomeTipsSection(viewModel: HomeViewModel) {
     val pagerState = rememberPagerState()
 
     HorizontalPager(viewModel.tips.size, state =  pagerState) {
-        TipsItem(viewModel, viewModel.tips[this.currentPage], pagerState)
+        val pageScope = this
+
+        Column {
+            TipsItem(viewModel, viewModel.tips[pageScope.currentPage], pagerState)
+            Spacer(Modifier.height(20.dp))
+        }
     }
 }
 
@@ -65,7 +70,7 @@ private fun TipsItem(viewModel: HomeViewModel, tips: TipsItem, pageState: PagerS
 
     Box(Modifier.fillMaxWidth()) {
         TipsItemContent(viewModel, tips, pageState, nextPage, previousPage)
-        TipsItemActionContent(viewModel, tips)
+        TipsItemActionContent(viewModel, pageState)
     }
 }
 
@@ -126,8 +131,11 @@ private fun TipsItemContent(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun TipsItemActionContent(viewModel: HomeViewModel, tips: TipsItem) {
+private fun TipsItemActionContent(viewModel: HomeViewModel, pageState: PagerState) {
+    val coroutineScope = rememberCoroutineScope()
+
     if (viewModel.showDeleteTipsButton) {
         Row(
             Modifier
@@ -147,10 +155,7 @@ private fun TipsItemActionContent(viewModel: HomeViewModel, tips: TipsItem) {
                     .weight(1f)
                     .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp)),
                 Icons.Rounded.Delete, textRes = R.string.hide
-            ) {
-                viewModel.tips.remove(tips)
-                viewModel.showDeleteTipsButton = false
-            }
+            ) { coroutineScope.launch { viewModel.removeTips(pageState) } }
             TipsIconButton(
                 Modifier
                     .weight(1f)

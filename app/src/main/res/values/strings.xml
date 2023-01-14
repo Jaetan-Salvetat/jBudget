@@ -49,6 +49,7 @@
     <string name="tips_title">Le savais-tu ?</string>
     <string name="tips_advance">%1$d sur %2$d</string>
     <string name="show_me_more">Montrez moi !</string>
+    <string name="actually">maintenant</string>
 
 
     <!-- Content descriptions-->
@@ -67,4 +68,5 @@
     <string name="change_app_theme">Personalise le thème de l\'application dans les paramètres</string>
     <string name="create_your_first_budget">Créer ton 1er budget !</string>
     <string name="can_no_specify_date">Tu peux créer un budget sans spécifier de date</string>
+    <string name="long_press_to_remove_tips">Tu peux Cacher un "tips" en restant appuyé sur le tips</string>
 </resources>

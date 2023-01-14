@@ -36,7 +36,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
     ) {
         Column {
             AppBar(scrollBehavior, navController)
-            HomeContent(viewModel)
+            HomeContent(viewModel, Modifier.weight(1f))
         }
         Box(
             Modifier
