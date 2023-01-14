@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TipsSection(viewModel: HomeViewModel) {
+fun HomeTipsSection(viewModel: HomeViewModel) {
     val pagerState = rememberPagerState()
 
     HorizontalPager(viewModel.tips.size, state =  pagerState) {

@@ -30,9 +30,9 @@ import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.toText
 
 @Composable
-fun HomeBudgetsList(viewModel: HomeViewModel) {
+fun HomeBudgetsSection(viewModel: HomeViewModel) {
     LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
-        item { TipsSection(viewModel) }
+        item { HomeTipsSection(viewModel) }
         item { Divider() }
         items(viewModel.currentBudgets) { budget ->
             HomeBudgetsListItem(

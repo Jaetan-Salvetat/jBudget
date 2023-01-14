@@ -19,7 +19,7 @@ fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
         when (viewModel.loadingState) {
             State.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
             State.EmptyData -> EmptyDataContainer(Modifier.align(Alignment.Center), viewModel)
-            State.None -> HomeBudgetsList(viewModel)
+            State.None -> HomeBudgetsSection(viewModel)
             else -> {}
         }
     }
@@ -28,7 +28,7 @@ fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
 @Composable
 private fun EmptyDataContainer(modifier: Modifier, viewModel: HomeViewModel) {
     Column(modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        TipsSection(viewModel)
+        HomeTipsSection(viewModel)
         Divider()
         Spacer(Modifier.weight(1f))
         Text("Ta liste de budget est vide, ajoute en !")
