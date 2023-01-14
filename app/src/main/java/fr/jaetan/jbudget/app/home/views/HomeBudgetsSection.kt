@@ -41,8 +41,10 @@ fun HomeBudgetsSection(viewModel: HomeViewModel) {
                 viewModel
             )
         }
-        item { Divider() }
-        items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
+        if (viewModel.oldBudgets.isNotEmpty()) {
+            item { Divider() }
+            items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
+        }
         item { Spacer(Modifier.height(100.dp)) }
     }
 }
