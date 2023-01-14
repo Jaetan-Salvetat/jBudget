@@ -13,10 +13,10 @@ import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Budget
+import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
-import java.time.LocalDate
-import java.time.ZoneOffset
-import java.util.*
+import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.services.JBudget
 
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
@@ -29,37 +29,10 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     //Budgets
+    var loadingState by mutableStateOf(State.Loading)
     var selectedOldBudget by mutableStateOf(null as Budget?)
     var selectedCurrentBudgets = mutableStateListOf<Budget>()
-    private val budgets = mutableStateListOf(
-        Budget(name = "Test 1"),
-        Budget(name = "2023", startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC))),
-        Budget(
-            name = "Janvier 2023",
-            startDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-            endDate = Date.from(LocalDate.parse("2023-02-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-        ),
-        Budget(
-            name = "Décembre Jaetan 2022",
-            startDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-            endDate = Date.from(LocalDate.parse("2023-01-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-        ),
-        Budget(
-            name = "Novembre 2022",
-            startDate = Date.from(LocalDate.parse("2022-11-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-            endDate = Date.from(LocalDate.parse("2022-12-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-        ),
-        Budget(
-            name = "Octobre 2022",
-            startDate = Date.from(LocalDate.parse("2022-10-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-            endDate = Date.from(LocalDate.parse("2022-11-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-        ),
-        Budget(
-            name = "Septembre 2022",
-            startDate = Date.from(LocalDate.parse("2022-09-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-            endDate = Date.from(LocalDate.parse("2022-10-01").atStartOfDay().toInstant(ZoneOffset.UTC)),
-        ),
-    )
+    private val budgets = mutableStateListOf<Budget>()
     val currentBudgets: List<Budget> get() = budgets.filter { it.isCurrentBudget }
     val oldBudgets: List<Budget> get() = budgets.filter { !it.isCurrentBudget }
 
@@ -74,6 +47,24 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         else budget
     }
 
+    private fun initBudgets() {
+        JBudget.budgetRepository.getAll { data, response ->
+            loadingState = when {
+                data.isEmpty() && response == FirebaseResponse.Success -> State.EmptyData
+                response == FirebaseResponse.Success -> {
+                    budgets.clear()
+                    budgets.addAll(data)
+                    selectedCurrentBudgets.addAll(currentBudgets)
+                    State.None
+                }
+                else -> State.Error
+            }
+            if (budgets.isEmpty()) {
+                tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
+            }
+        }
+    }
+
 
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
@@ -85,13 +76,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     )
 
 
-    init {
-        selectedCurrentBudgets.addAll(currentBudgets)
-        //Dans le callback de la récupération des budgets
-        if (budgets.isEmpty()) {
-            tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
-        }
-    }
+    init { initBudgets() }
 }
 
 data class TipsItem(@StringRes val text: Int, val action: () -> Unit)

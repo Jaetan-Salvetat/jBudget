@@ -7,13 +7,12 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,7 +30,25 @@ import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.toText
 
 @Composable
-fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: HomeViewModel) {
+fun HomeBudgetsList(viewModel: HomeViewModel) {
+    LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
+        item { TipsSection(viewModel) }
+        item { Divider() }
+        items(viewModel.currentBudgets) { budget ->
+            HomeBudgetsListItem(
+                budget,
+                viewModel.selectedCurrentBudgets.find { it == budget } != null,
+                viewModel
+            )
+        }
+        item { Divider() }
+        items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
+        item { Spacer(Modifier.height(100.dp)) }
+    }
+}
+
+@Composable
+private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: HomeViewModel) {
     val containerShape by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
     val containerPadding by animateDpAsState(targetValue =  if (isExpanded) 10.dp else 0.dp)
     val containerBackground by animateColorAsState(
