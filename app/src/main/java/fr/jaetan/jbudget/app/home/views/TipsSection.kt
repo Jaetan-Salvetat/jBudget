@@ -70,7 +70,7 @@ private fun TipsItem(viewModel: HomeViewModel, tips: TipsItem, pageState: PagerS
 
     Box(Modifier.fillMaxWidth()) {
         TipsItemContent(viewModel, tips, pageState, nextPage, previousPage)
-        TipsItemActionContent(viewModel, tips)
+        TipsItemActionContent(viewModel, pageState)
     }
 }
 
@@ -131,8 +131,11 @@ private fun TipsItemContent(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun TipsItemActionContent(viewModel: HomeViewModel, tips: TipsItem) {
+private fun TipsItemActionContent(viewModel: HomeViewModel, pageState: PagerState) {
+    val coroutineScope = rememberCoroutineScope()
+
     if (viewModel.showDeleteTipsButton) {
         Row(
             Modifier
@@ -152,10 +155,7 @@ private fun TipsItemActionContent(viewModel: HomeViewModel, tips: TipsItem) {
                     .weight(1f)
                     .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp)),
                 Icons.Rounded.Delete, textRes = R.string.hide
-            ) {
-                viewModel.tips.remove(tips)
-                viewModel.showDeleteTipsButton = false
-            }
+            ) { coroutineScope.launch { viewModel.removeTips(pageState) } }
             TipsIconButton(
                 Modifier
                     .weight(1f)

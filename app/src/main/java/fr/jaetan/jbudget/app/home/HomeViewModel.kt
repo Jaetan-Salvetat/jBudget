@@ -10,6 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Budget
@@ -18,6 +20,7 @@ import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
+@OptIn(ExperimentalPagerApi::class)
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
     var showDeleteTipsButton by mutableStateOf(false)
@@ -27,6 +30,15 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         TipsItem(R.string.can_no_specify_date) {},
         //manage default categories to settings view
     )
+
+    suspend fun removeTips(pagerState: PagerState) {
+        val index = pagerState.currentPage
+        if (index == tips.size - 1) {
+            pagerState.animateScrollToPage(index - 1)
+        }
+        tips.removeAt(index)
+        showDeleteTipsButton = false
+    }
 
 
     //Budgets
