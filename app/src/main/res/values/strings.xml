@@ -14,6 +14,7 @@
     <string name="success">Succès</string>
     <string name="next">Continuer</string>
     <string name="cancel">Annuler</string>
+    <string name="hide">Cacher</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
@@ -49,6 +50,12 @@
     <string name="sample_budget_category_name2">Catégorie 2</string>
     <string name="sample_budget_category_name3">Catégorie 3</string>
 
+    <string name="tips_title">Le savais-tu ?</string>
+    <string name="tips_advance">%1$d sur %2$d</string>
+    <string name="show_me_more">Montrez moi !</string>
+    <string name="actually">maintenant</string>
+
+
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>
     <string name="edit_descriptor">Bouton d\'édition</string>
@@ -59,4 +66,13 @@
     <string name="update_category">Modifier la catégorie</string>
     <string name="remove_category">Supprimer la catégorie</string>
     <string name="expand_section_descriptor">Étendre la section</string>
+    <string name="previous_item_descriptor">élément précédent</string>
+    <string name="next_item_descriptor">élément suivant</string>
+
+
+    <!-- Home tips -->
+    <string name="change_app_theme">Personalise le thème de l\'application dans les paramètres</string>
+    <string name="create_your_first_budget">Créer ton 1er budget !</string>
+    <string name="can_no_specify_date">Tu peux créer un budget sans spécifier de date</string>
+    <string name="long_press_to_remove_tips">Tu peux Cacher un "tips" en restant appuyé sur le tips</string>
 </resources>
