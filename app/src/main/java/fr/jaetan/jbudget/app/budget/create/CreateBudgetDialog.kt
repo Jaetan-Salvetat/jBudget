@@ -104,7 +104,7 @@ private fun CreateBudgetFooter(viewModel: CreateBudgetViewModel) {
                     }
             ) {
                 Text(
-                    "Date de fin",
+                    stringResource(R.string.end_date),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                 )
