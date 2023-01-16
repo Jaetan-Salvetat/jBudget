@@ -56,6 +56,13 @@
     <string name="actually">maintenant</string>
     <string name="end_date">Date de fin</string>
 
+    <string name="new_transaction">Nouvelle transaction</string>
+    <string name="budget">Budget</string>
+    <string name="category">Catégorie</string>
+    <string name="zero">0</string>
+    <string name="new_male">Nouveau</string>
+    <string name="new_female">Nouveau</string>
+
 
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>

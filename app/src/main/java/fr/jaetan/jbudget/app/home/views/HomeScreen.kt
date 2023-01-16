@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.create.CreateBudgetDialog
 import fr.jaetan.jbudget.app.home.HomeViewModel
+import fr.jaetan.jbudget.app.transaction.view.TransactionDialog
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.services.JBudget
 
@@ -51,6 +52,12 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
 
     if (viewModel.showNewBudgetDialog) {
         CreateBudgetDialog(navController) { viewModel.showNewBudgetDialog = false }
+    }
+    if (viewModel.showNewTransactionDialog) {
+        TransactionDialog(
+            { viewModel.showNewBudgetDialog = true },
+            {  },
+        ) { viewModel.showNewTransactionDialog = false }
     }
 }
 

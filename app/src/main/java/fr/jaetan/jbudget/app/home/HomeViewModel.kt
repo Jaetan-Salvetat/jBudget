@@ -85,12 +85,16 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
+    var showNewTransactionDialog by mutableStateOf(false)
     var fabExpanded by mutableStateOf(false)
     val fabItems = listOf(
         FabItem(
             text = R.string.home_fab_add_transaction,
             descriptor = R.string.home_fab_add_transaction_descriptor,
-            onClick = { navController.navigate(Screen.Transaction.route) },
+            onClick = {
+                showNewTransactionDialog = true
+                fabExpanded = false
+            },
             icon = Icons.Default.RequestQuote
         ),
         FabItem(

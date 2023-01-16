@@ -14,7 +14,6 @@ import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.app.home.views.HomeScreen
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
 import fr.jaetan.jbudget.app.settings.view.SettingsScreen
-import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
 import fr.jaetan.jbudget.core.models.Screen
 
 @Composable
@@ -37,9 +36,6 @@ fun App() {
         composable(Screen.Settings.route) {
             val settingsViewModel = SettingsViewModel()
             SettingsScreen(navController, settingsViewModel)
-        }
-        composable(Screen.Transaction.route) {
-            TransactionScreen(navController)
         }
         composable("${Screen.Budget.route}/{budgetId}") {
             val budgetId = it.arguments?.getString("budgetId")
