@@ -4,7 +4,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
@@ -23,12 +25,13 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
         }
     }
 
-    fun createBudget(budgetName: String) {
-        JBudget.budgetRepository.createBudget(budgetName) { _, response ->
+    fun createBudget(budgetName: String, navController: NavHostController) {
+        JBudget.budgetRepository.createBudget(budgetName) { budgtId, response ->
             when (response) {
                 FirebaseResponse.Error -> { newBudgetError = response.messageRes }
                 FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
                 else -> {
+                    navController.navigate("${Screen.Budget.route}/$budgtId")
                     newBudgetState = State.None
                     newBudgetValue = ""
                     dismiss()

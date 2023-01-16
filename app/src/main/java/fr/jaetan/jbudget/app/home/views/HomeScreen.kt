@@ -50,7 +50,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
     }
 
     if (viewModel.showNewBudgetDialog) {
-        CreateBudgetDialog { viewModel.showNewBudgetDialog = false }
+        CreateBudgetDialog(navController) { viewModel.showNewBudgetDialog = false }
     }
 }
 

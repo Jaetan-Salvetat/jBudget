@@ -14,13 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.State
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateBudgetDialog(dismiss: () -> Unit) {
+fun CreateBudgetDialog(navController: NavHostController, dismiss: () -> Unit) {
     val viewModel = CreateBudgetViewModel(dismiss)
 
     Dialog(onDismissRequest = dismiss) {
@@ -49,7 +50,7 @@ fun CreateBudgetDialog(dismiss: () -> Unit) {
             Button(
                 onClick = {
                     viewModel.newBudgetState = State.Loading
-                    viewModel.createBudget(viewModel.newBudgetValue)
+                    viewModel.createBudget(viewModel.newBudgetValue, navController)
                 },
                 enabled = when {
                     viewModel.newBudgetState == State.Loading -> false
