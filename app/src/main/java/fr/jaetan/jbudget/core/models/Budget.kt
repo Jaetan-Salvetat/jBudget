@@ -1,8 +1,8 @@
 package fr.jaetan.jbudget.core.models
 
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
-import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.*
@@ -11,7 +11,7 @@ data class Budget(
     var name: String,
     val id: String = "",
     var userId: String = FirebaseAuth.getInstance().currentUser!!.uid,
-    var startDate: Date = Date(),
+    var startDate: Date = Calendar.getInstance().time,
     var endDate: Date? = null) {
 
     val isCurrentBudget: Boolean
@@ -28,8 +28,8 @@ data class Budget(
         return mapOf(
             "name" to name,
             "userId" to userId,
-            "startDate" to  Timestamp(startDate.time / 1000),
-            "endDate" to if (endDate == null) null else Timestamp(endDate!!.time / 1000)
+            "startDate" to  Timestamp(startDate),
+            "endDate" to if (endDate == null) null else Timestamp(endDate!!)
         )
     }
 
@@ -40,8 +40,8 @@ data class Budget(
             id = budget.id,
             name = budget.data?.get("name") as String,
             userId = budget.data?.get("userId") as String,
-            startDate = budget.data?.get("startDate").let { (it as com.google.firebase.Timestamp).toDate() },
-            endDate = budget.data?.get("endDate")?.let { (it as com.google.firebase.Timestamp).toDate() }
+            startDate = budget.data?.get("startDate").let { (it as Timestamp).toDate() },
+            endDate = budget.data?.get("endDate")?.let { (it as Timestamp).toDate() }
         )
     }
 }

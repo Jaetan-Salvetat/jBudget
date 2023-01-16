@@ -5,15 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
+import java.util.*
 
 class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
     var newBudgetValue by mutableStateOf("")
     var newBudgetError by mutableStateOf(null as Int?)
     var newBudgetState by mutableStateOf(State.None)
+    var startDate: Date by mutableStateOf(Calendar.getInstance().time)
+    var endDate by mutableStateOf(null as Date?)
     var dismiss: () -> Unit
 
     init {
@@ -25,13 +29,18 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
         }
     }
 
-    fun createBudget(budgetName: String, navController: NavHostController) {
-        JBudget.budgetRepository.createBudget(budgetName) { budgtId, response ->
+    fun createBudget(navController: NavHostController) {
+        val budget = Budget(
+            name = newBudgetValue,
+            startDate = startDate,
+            endDate = endDate
+        )
+        JBudget.budgetRepository.createBudget(budget) { budgetId, response ->
             when (response) {
                 FirebaseResponse.Error -> { newBudgetError = response.messageRes }
                 FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
                 else -> {
-                    navController.navigate("${Screen.Budget.route}/$budgtId")
+                    navController.navigate("${Screen.Budget.route}/$budgetId")
                     newBudgetState = State.None
                     newBudgetValue = ""
                     dismiss()

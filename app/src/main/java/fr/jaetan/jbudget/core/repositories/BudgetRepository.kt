@@ -9,11 +9,7 @@ import fr.jaetan.jbudget.core.services.JBudget
 class BudgetRepository {
     private val database = Firebase.firestore.collection("budgets")
 
-    fun createBudget(budgetName: String, callback: (String?, FirebaseResponse) -> Unit)  {
-
-        val budget = Budget("")
-        budget.name = budgetName
-
+    fun createBudget(budget: Budget, callback: (String?, FirebaseResponse) -> Unit)  {
         database
             .add(budget.toMap())
             .addOnSuccessListener { documentReference ->
