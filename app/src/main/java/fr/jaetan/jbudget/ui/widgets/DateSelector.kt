@@ -6,11 +6,11 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.*
 
-fun dateSelector(context: Context, date: Date, onChange: (Date) -> Unit) {
+fun dateSelector(context: Context, date: Date, minDate: Date? = null, onChange: (Date) -> Unit) {
     val calendar = Calendar.getInstance()
     calendar.time = date
 
-    DatePickerDialog(
+    val datePickerDialog = DatePickerDialog(
         context,
         { _, year, month, day ->
             onChange(
@@ -24,5 +24,10 @@ fun dateSelector(context: Context, date: Date, onChange: (Date) -> Unit) {
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
         calendar.get(Calendar.DAY_OF_MONTH),
-    ).show()
+    )
+
+    minDate?.let {
+        datePickerDialog.datePicker.minDate = it.time
+    }
+    datePickerDialog.show()
 }
