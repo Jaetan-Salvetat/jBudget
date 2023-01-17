@@ -7,14 +7,10 @@ import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetRepository {
-    private val database = Firebase.firestore
+    private val database = Firebase.firestore.collection("budgets")
 
-    fun createBudget(budgetName: String, callback: (String?, FirebaseResponse) -> Unit)  {
-
-        val budget = Budget("")
-        budget.name = budgetName
-
-        database.collection("budgets")
+    fun createBudget(budget: Budget, callback: (String?, FirebaseResponse) -> Unit)  {
+        database
             .add(budget.toMap())
             .addOnSuccessListener { documentReference ->
                 callback(documentReference.id, FirebaseResponse.Success)
@@ -27,8 +23,18 @@ class BudgetRepository {
             }
     }
 
+    fun getBudget(budgetId: String?, callback: (Budget?, FirebaseResponse) -> Unit) {
+        val document = database.document(budgetId ?: "")
+        document.get()
+            .addOnSuccessListener { response ->
+                callback(Budget.fromMap(response), FirebaseResponse.Success)
+            }
+            .addOnCanceledListener { callback(null, FirebaseResponse.Error) }
+            .addOnFailureListener { callback(null, FirebaseResponse.Error) }
+    }
+
     fun getAll(callback: (List<Budget>, FirebaseResponse) -> Unit) {
-        database.collection("budgets")
+        database
             .whereEqualTo("userId", JBudget.state.currentUser?.uid).get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {

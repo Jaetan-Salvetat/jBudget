@@ -61,7 +61,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
         Column(
             Modifier
                 .clip(RoundedCornerShape(containerShape))
-                .clickable { }
+                .clickable { viewModel.navigateToBudgetScreen(budget.id) }
                 .background(containerBackground, RoundedCornerShape(containerShape))
         ) {
             HomeBudgetHeader(isExpanded, budget, viewModel)
@@ -75,15 +75,11 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
 @Composable
 private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: HomeViewModel) {
     val arrowRotation by animateFloatAsState(if (!isExpanded) 0f else 180f)
-    var dates = ""
+    var dates = "(${budget.startDate.toText()}"
 
-    budget.startDate?.let { dates += "(${it.toText()}" }
-    budget.endDate.let {
-        dates += when {
-            it == null && budget.startDate != null -> " - ${stringResource(R.string.actually)})"
-            it == null -> "(∞)"
-            else -> " - ${it.toText()})"
-        }
+    dates += when (budget.endDate) {
+        null -> " - ${stringResource(R.string.actually)})"
+        else -> " - ${budget.endDate!!.toText()})"
     }
 
     Column(Modifier.padding(vertical = 20.dp, horizontal = 20.dp)) {

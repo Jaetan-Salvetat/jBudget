@@ -3,6 +3,7 @@ package fr.jaetan.jbudget.core.services
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
@@ -13,6 +14,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import fr.jaetan.jbudget.core.models.Budget
+import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Themes
 
 class MainViewModel: ViewModel() {
@@ -23,10 +27,13 @@ class MainViewModel: ViewModel() {
     val isLogged get() = currentUser != null
     val currentTheme: Themes get() = _currentTheme
     val isNotificationEnabled: Boolean get() = _isNotificationEnabled
+    val budgets = mutableStateListOf<Budget>()
     var currentUser by mutableStateOf(null as FirebaseUser?)
 
     suspend fun init(context: Context) {
         currentUser = FirebaseAuth.getInstance().currentUser
+        initBudgets()
+
         context.settingsStore.data.collect { prefs ->
             val theme = Themes.values().find { prefs[THEME_KEY] == it.textRes.toString() }
             val isNotifEnabled = prefs[IS_NOTIFICATION_ENABLED]
@@ -52,6 +59,21 @@ class MainViewModel: ViewModel() {
     suspend fun notificationHandler(context: Context, value: Boolean) {
         context.settingsStore.edit {
             it[IS_NOTIFICATION_ENABLED] = value.toString()
+        }
+    }
+
+
+    private fun initBudgets() {
+        JBudget.budgetRepository.getAll { data, response ->
+            when {
+                data.isEmpty() && response == FirebaseResponse.Success -> State.EmptyData
+                response == FirebaseResponse.Success -> {
+                    budgets.clear()
+                    budgets.addAll(data)
+                    State.None
+                }
+                else -> State.Error
+            }
         }
     }
 

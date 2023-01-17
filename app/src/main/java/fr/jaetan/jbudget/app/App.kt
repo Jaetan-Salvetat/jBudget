@@ -8,10 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.app.budget.views.BudgetScreen
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.app.home.views.HomeScreen
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
 import fr.jaetan.jbudget.app.settings.view.SettingsScreen
+import fr.jaetan.jbudget.app.transaction.TransactionViewModel
 import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
 import fr.jaetan.jbudget.core.models.Screen
 
@@ -36,8 +39,14 @@ fun App() {
             val settingsViewModel = SettingsViewModel()
             SettingsScreen(navController, settingsViewModel)
         }
+        composable("${Screen.Budget.route}/{budgetId}") {
+            val budgetId = it.arguments?.getString("budgetId")
+            val budgetViewModel = BudgetViewModel(budgetId)
+            BudgetScreen(budgetViewModel, navController)
+        }
         composable(Screen.Transaction.route) {
-            TransactionScreen(navController)
+            val transactionViewModel = TransactionViewModel(navController)
+            TransactionScreen(transactionViewModel)
         }
     }
 }
