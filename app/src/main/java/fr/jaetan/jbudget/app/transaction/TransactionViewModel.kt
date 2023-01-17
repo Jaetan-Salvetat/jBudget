@@ -22,6 +22,7 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     var amountString by mutableStateOf("")
     var categoryName by mutableStateOf("")
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
+    var loadingState by mutableStateOf(State.None)
 
     fun updateAmount(value: String) {
         val decimalFormatter = DecimalFormat()
@@ -75,15 +76,17 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     }
 
     fun save() {
+        loadingState = State.Loading
         val transaction = Transaction(
             date = Calendar.getInstance().time,
-            amount = amountString.toDouble(),
+            amount = amountString.replace(",", ".").toDouble(),
             categoryId = currentCategory!!.id,
             budgetId = currentBudget!!.id
         )
 
         JBudget.transactionRepository.createTransaction(transaction) { _, response ->
             if (response == FirebaseResponse.Success) navController.popBackStack()
+            loadingState = State.Error
         }
     }
 

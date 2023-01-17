@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
+import fr.jaetan.jbudget.core.models.State
 
 @Composable
 fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) {
@@ -257,6 +258,10 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
                 && viewModel.currentCategory != null
                 && viewModel.amountString.isNotEmpty()
     ) {
-        Text(stringResource(R.string.new_dialog_create))
+        if (viewModel.loadingState == State.Loading) {
+            CircularProgressIndicator(Modifier.size(20.dp))
+        } else {
+            Text(stringResource(R.string.new_dialog_create))
+        }
     }
 }
