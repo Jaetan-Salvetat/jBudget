@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Category
+import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
 
 class TransactionViewModel: ViewModel() {
@@ -19,11 +20,7 @@ class TransactionViewModel: ViewModel() {
         Category(name = "Category 2", budgetId = "flI6koWXohaxwNLjeftg"),
         Category(name = "Category 3", budgetId = "flI6koWXohaxwNLjeftg")
     )
-    val budgets = mutableStateListOf(
-        Budget(name = "name 1"),
-        Budget(name = "name 2"),
-        Budget(name = "name 3"),
-    )
+    val budgets: List<Budget> get() = JBudget.state.budgets
     var amountString by mutableStateOf("")
 
     fun updateAmount(value: String) {
