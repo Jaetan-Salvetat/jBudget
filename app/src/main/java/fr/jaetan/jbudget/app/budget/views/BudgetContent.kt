@@ -46,15 +46,15 @@ private fun BudgetDates(viewModel: BudgetViewModel) {
         modifier = Modifier.fillMaxWidth()) {
 
 
+    Text(
+        text = viewModel.budget!!.startDate.toText(),
+        style = MaterialTheme.typography.titleMedium)
+    Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
         Text(
-            text = viewModel.budget!!.startDate.toText(),
+            text = if (viewModel.budget!!.endDate != null)
+                viewModel.budget!!.endDate!!.toText() else
+                stringResource(id = R.string.actually),
             style = MaterialTheme.typography.titleMedium)
-        viewModel.budget!!.endDate?.let {
-            Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
-            Text(
-                text = it.toText(),
-                style = MaterialTheme.typography.titleMedium)
-        }
     }
 }
 
