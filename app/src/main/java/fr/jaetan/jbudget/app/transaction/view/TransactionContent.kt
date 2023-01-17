@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Euro
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
@@ -224,9 +225,19 @@ private fun TransactionCategoryName(viewModel: TransactionViewModel) {
         onValueChange = { viewModel.categoryName = it },
         label = { Text(stringResource(R.string.category_name)) },
         colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.Transparent),
-        modifier = Modifier.focusRequester(focusRequester),
+        modifier = Modifier
+            .focusRequester(focusRequester)
+            .fillMaxWidth(),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { viewModel.saveCategory() })
+        keyboardActions = KeyboardActions(onDone = { viewModel.saveCategory() }),
+        trailingIcon = {
+            IconButton(onClick = { viewModel.clearCategoryName() }) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = stringResource(R.string.clear_input_descriptor)
+                )
+            }
+        }
     )
 }
 

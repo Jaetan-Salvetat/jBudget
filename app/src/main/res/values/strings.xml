@@ -82,6 +82,7 @@
     <string name="previous_item_descriptor">élément précédent</string>
     <string name="next_item_descriptor">élément suivant</string>
     <string name="more_vert_descriptor">plus d\'options</string>
+    <string name="clear_input_descriptor">Vider le champ</string>
 
 
     <!-- Home tips -->

@@ -43,8 +43,6 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
         }
     }
 
-    init { changeCurrentBudget(JBudget.state.budgets.firstOrNull()) }
-
 
     fun changeCurrentBudget(budget: Budget?) {
         showBudgetDropDown = false
@@ -64,6 +62,7 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     }
 
     fun saveCategory() {
+        if (categoryName.isEmpty()) return
         showCategoryInput = false
         val category = Category(name = categoryName, budgetId = currentBudget!!.id)
 
@@ -89,6 +88,13 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
             loadingState = State.Error
         }
     }
+
+    fun clearCategoryName() {
+        showCategoryInput = false
+        categoryName = ""
+    }
+
+    init { changeCurrentBudget(JBudget.state.budgets.firstOrNull()) }
 
     /*private fun Double.toPriceFormat(): String {
         val nf = NumberFormat.getCurrencyInstance()
