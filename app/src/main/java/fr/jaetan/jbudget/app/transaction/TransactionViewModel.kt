@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.Category
-import fr.jaetan.jbudget.core.models.FirebaseResponse
+import androidx.navigation.NavHostController
+import fr.jaetan.jbudget.core.models.*
 import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
+import java.util.Calendar
 
-class TransactionViewModel: ViewModel() {
+class TransactionViewModel(val navController: NavHostController): ViewModel() {
     var showCategoryInput by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
@@ -75,7 +75,16 @@ class TransactionViewModel: ViewModel() {
     }
 
     fun save() {
+        val transaction = Transaction(
+            date = Calendar.getInstance().time,
+            amount = amountString.toDouble(),
+            categoryId = currentCategory!!.id,
+            budgetId = currentBudget!!.id
+        )
 
+        JBudget.transactionRepository.createTransaction(transaction) { _, response ->
+            if (response == FirebaseResponse.Success) navController.popBackStack()
+        }
     }
 
     /*private fun Double.toPriceFormat(): String {

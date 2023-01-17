@@ -12,9 +12,9 @@ import fr.jaetan.jbudget.app.transaction.TransactionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionScreen(viewModel: TransactionViewModel, navController: NavHostController) {
+fun TransactionScreen(viewModel: TransactionViewModel) {
     Scaffold(
-        topBar = { TransactionAppBar(navController) },
+        topBar = { TransactionAppBar(viewModel.navController) },
         content = { TransactionContent(it, viewModel) }
     )
 }

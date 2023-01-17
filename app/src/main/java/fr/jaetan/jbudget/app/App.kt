@@ -45,8 +45,8 @@ fun App() {
             BudgetScreen(budgetViewModel, navController)
         }
         composable(Screen.Transaction.route) {
-            val transactionViewModel = TransactionViewModel()
-            TransactionScreen(transactionViewModel, navController)
+            val transactionViewModel = TransactionViewModel(navController)
+            TransactionScreen(transactionViewModel)
         }
     }
 }
