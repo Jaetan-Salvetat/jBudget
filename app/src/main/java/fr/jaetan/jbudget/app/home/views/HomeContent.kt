@@ -1,10 +1,7 @@
 package fr.jaetan.jbudget.app.home.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,9 +15,9 @@ fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
     Box(modifier) {
         when (viewModel.loadingState) {
             State.Loading -> LoadingContainer(viewModel)
-            State.EmptyData -> EmptyDataContainer(Modifier.align(Alignment.Center), viewModel)
+            State.EmptyData -> EmptyDataContainer(viewModel)
             State.None -> HomeBudgetsSection(viewModel)
-            else -> {}
+            else -> ErrorContainer(viewModel)
         }
     }
 }
@@ -29,22 +26,48 @@ fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
 private fun LoadingContainer(viewModel: HomeViewModel) {
     Column(Modifier.fillMaxSize()) {
         HomeTipsSection(viewModel)
-        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     }
 }
 
 @Composable
-private fun EmptyDataContainer(modifier: Modifier, viewModel: HomeViewModel) {
-    Column(modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+private fun ErrorContainer(viewModel: HomeViewModel) {
+    Column(Modifier.fillMaxWidth()) {
         HomeTipsSection(viewModel)
-        Divider()
-        Spacer(Modifier.weight(1f))
-        Text("Ta liste de budget est vide, ajoute en !")
-        TextButton(onClick = { viewModel.showNewBudgetDialog = true }) {
-            Text(stringResource(R.string.home_fab_add_budget))
+        Box(
+            Modifier
+                .weight(1f)
+                .fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Text(
+                text = stringResource(R.string.sample_error),
+                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.error)
+            )
         }
-        Spacer(Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun EmptyDataContainer(viewModel: HomeViewModel) {
+    Column(Modifier.fillMaxSize()) {
+        HomeTipsSection(viewModel)
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Ta liste de budget est vide, ajoute en !")
+            TextButton(onClick = { viewModel.showNewBudgetDialog = true }) {
+                Text(stringResource(R.string.home_fab_add_budget))
+            }
+        }
     }
 }

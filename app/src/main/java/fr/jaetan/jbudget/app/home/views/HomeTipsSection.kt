@@ -12,10 +12,7 @@ import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,6 +42,7 @@ fun HomeTipsSection(viewModel: HomeViewModel) {
         Column {
             TipsItem(viewModel, viewModel.tips[pageScope.currentPage], pagerState)
             Spacer(Modifier.height(20.dp))
+            Divider()
         }
     }
 }
