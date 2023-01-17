@@ -41,7 +41,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     //Update username dialog
     var showUpdateUsernameDialog by mutableStateOf(false)
     var username by mutableStateOf(null as String?)
-    var currentUsername by mutableStateOf(JBudget.state.currentUser!!.displayName)
+    var currentUsername by mutableStateOf(JBudget.state.currentUser?.displayName ?: "")
     var updateUsernameState by mutableStateOf(State.None)
     var updateUsernameErrorMessageRes by mutableStateOf(null as Int?)
 
@@ -53,10 +53,10 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
         JBudget.userRepository.updateUsername(username!!) {
             if (it != FirebaseResponse.Success) {
                 updateUsernameErrorMessageRes = it.messageRes
-                currentUsername = JBudget.state.currentUser!!.displayName
+                currentUsername = JBudget.state.currentUser?.displayName ?: ""
                 return@updateUsername
             }
-            currentUsername = JBudget.state.currentUser!!.displayName
+            currentUsername = JBudget.state.currentUser?.displayName ?: ""
             dismissUsernameDialog()
         }
     }
@@ -73,7 +73,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     var showUpdateEmailDialog by mutableStateOf(false)
     var email by mutableStateOf(null as String?)
     var password by mutableStateOf(null as String?)
-    var currentEmail by mutableStateOf(JBudget.state.currentUser!!.email)
+    var currentEmail by mutableStateOf(JBudget.state.currentUser?.email ?: "")
     var updateEmailState by mutableStateOf(State.None)
     var updateEmailErrorMessageRes by mutableStateOf(null as Int?)
 
@@ -89,7 +89,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
                 return@updateEmail
             }
 
-            currentEmail = JBudget.state.currentUser!!.email
+            currentEmail = JBudget.state.currentUser?.email ?: ""
             dismissUpdateEmailDialog()
         }
     }

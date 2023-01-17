@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
 
             if (!JBudget.state.isLogged) {
                 startActivity(AuthActivity.launch(this))
+                finish()
             }
 
             JBudgetTheme(JBudget.state) {

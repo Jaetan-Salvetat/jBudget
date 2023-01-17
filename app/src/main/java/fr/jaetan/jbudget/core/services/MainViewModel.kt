@@ -33,6 +33,9 @@ class MainViewModel: ViewModel() {
     suspend fun init(context: Context) {
         currentUser = FirebaseAuth.getInstance().currentUser
         initBudgets()
+        FirebaseAuth.getInstance().addAuthStateListener {
+            currentUser = it.currentUser
+        }
 
         context.settingsStore.data.collect { prefs ->
             val theme = Themes.values().find { prefs[THEME_KEY] == it.textRes.toString() }
