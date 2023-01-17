@@ -16,12 +16,12 @@ class TransactionViewModel: ViewModel() {
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
     var showBudgetDialog by mutableStateOf(false)
-    var currentBudget by mutableStateOf(JBudget.state.budgets.firstOrNull())
+    var currentBudget by mutableStateOf(null as Budget?)
     var currentCategory by mutableStateOf(null as Category?)
     val categories = mutableStateListOf<Category>()
     var amountString by mutableStateOf("")
     var categoryName by mutableStateOf("")
-    val budgets: List<Budget> get() = JBudget.state.budgets
+    val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
 
     fun updateAmount(value: String) {
         val decimalFormatter = DecimalFormat()
@@ -42,10 +42,25 @@ class TransactionViewModel: ViewModel() {
         }
     }
 
-    init {
-        currentBudget = budgets[0]
+    init { changeCurrentBudget(JBudget.state.budgets.firstOrNull()) }
+
+
+    fun changeCurrentBudget(budget: Budget?) {
+        showBudgetDropDown = false
+        getBudgetCategories(budget)
     }
 
+    private fun getBudgetCategories(budget: Budget?) {
+        if (budget == null) return
+        JBudget.categoryRepository.getBudgetCategories(budget.id) { categories, response ->
+            if (response == FirebaseResponse.Success) {
+                this.categories.clear()
+                this.categories.addAll(categories)
+                currentBudget = budget
+                currentCategory = categories.firstOrNull()
+            }
+        }
+    }
 
     fun saveCategory() {
         showCategoryInput = false

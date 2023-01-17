@@ -17,4 +17,15 @@ class CategoryRepository {
                 callback(null, FirebaseResponse.Error)
             }
     }
+
+    fun getBudgetCategories(budgetId: String?, callback: (List<Category>, FirebaseResponse) -> Unit) {
+        database.whereEqualTo("budgetId", budgetId).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(Category.fromMapList(it.result.documents), FirebaseResponse.Success)
+                    return@addOnCompleteListener
+                }
+                callback(listOf(), FirebaseResponse.Error)
+            }
+    }
 }

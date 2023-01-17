@@ -104,10 +104,7 @@ private fun TransactionSelectBudget(viewModel: TransactionViewModel) {
                                     fontWeight = if (it == viewModel.currentBudget) FontWeight.Bold else FontWeight.Normal
                                 )
                             },
-                            onClick = {
-                                viewModel.currentBudget = it
-                                viewModel.showBudgetDropDown = false
-                            }
+                            onClick = { viewModel.changeCurrentBudget(it) }
                         )
                     }
 
