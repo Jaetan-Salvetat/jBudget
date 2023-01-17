@@ -47,10 +47,9 @@ class AuthViewModel: ViewModel() {
         JBudget.authRepository.loginWithEmailAndPassword(email!!, password!!) {
             errorMessageRes = it.messageRes
 
-            when (it) {
-                FirebaseResponse.Success -> { state = State.None }
-                FirebaseResponse.BadEmailOrPassword -> state = State.Error
-                else -> errorMessageRes = R.string.sample_error
+            state = when (it) {
+                FirebaseResponse.Success -> State.None
+                else -> State.Error
             }
         }
     }
