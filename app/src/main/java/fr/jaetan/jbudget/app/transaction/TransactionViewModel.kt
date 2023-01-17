@@ -7,21 +7,21 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Category
+import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
 
 class TransactionViewModel: ViewModel() {
+    var showCategoryInput by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
-    var currentBudget by mutableStateOf(null as Budget?)
+    var showBudgetDialog by mutableStateOf(false)
+    var currentBudget by mutableStateOf(JBudget.state.budgets.firstOrNull())
     var currentCategory by mutableStateOf(null as Category?)
-    val categories = mutableStateListOf(
-        Category(name = "Category 1", budgetId = "flI6koWXohaxwNLjeftg"),
-        Category(name = "Category 2", budgetId = "flI6koWXohaxwNLjeftg"),
-        Category(name = "Category 3", budgetId = "flI6koWXohaxwNLjeftg")
-    )
-    val budgets: List<Budget> get() = JBudget.state.budgets
+    val categories = mutableStateListOf<Category>()
     var amountString by mutableStateOf("")
+    var categoryName by mutableStateOf("")
+    val budgets: List<Budget> get() = JBudget.state.budgets
 
     fun updateAmount(value: String) {
         val decimalFormatter = DecimalFormat()
@@ -46,6 +46,18 @@ class TransactionViewModel: ViewModel() {
         currentBudget = budgets[0]
     }
 
+
+    fun saveCategory() {
+        showCategoryInput = false
+        val category = Category(name = categoryName, budgetId = currentBudget!!.id)
+
+        JBudget.categoryRepository.createCategory(category) { categoryId, response ->
+            if (response == FirebaseResponse.Success) {
+                category.id = categoryId!!
+                categories.add(category)
+            }
+        }
+    }
 
     fun save() {
 

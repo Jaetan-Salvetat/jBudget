@@ -3,6 +3,7 @@ package fr.jaetan.jbudget.core.services
 import android.content.Context
 import fr.jaetan.jbudget.core.repositories.AuthRepository
 import fr.jaetan.jbudget.core.repositories.BudgetRepository
+import fr.jaetan.jbudget.core.repositories.CategoryRepository
 import fr.jaetan.jbudget.core.repositories.UserRepository
 
 class JBudget {
@@ -12,6 +13,7 @@ class JBudget {
         val authRepository = AuthRepository()
         val userRepository = UserRepository()
         val budgetRepository = BudgetRepository()
+        val categoryRepository = CategoryRepository()
 
 
         suspend fun init(context: Context) {

@@ -63,6 +63,9 @@
     <string name="new_male">Nouveau</string>
     <string name="new_female">Nouveau</string>
 
+    <string name="category_name">Nom de la catégorie</string>
+    <string name="new_category">Nouvelle catégorie</string>
+
 
     <!-- Content descriptions-->
     <string name="home_appbar_settings_descriptor">Bouton de paramètres</string>

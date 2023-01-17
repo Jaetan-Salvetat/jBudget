@@ -1,10 +1,12 @@
 package fr.jaetan.jbudget.app.transaction.view
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -12,56 +14,49 @@ import androidx.compose.material.icons.filled.Euro
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
 
 @Composable
-fun TransactionDialog(openNewBudgetDialog: () -> Unit, openNewCategoryDialog: () -> Unit, dismiss: () -> Unit) {
-    val viewModel = TransactionViewModel()
-
-    Dialog(onDismissRequest = dismiss) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))
+fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(padding)
+            .background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(20.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(20.dp)
-            ) {
-                TransactionTitle()
-                TransactionSelectBudget(viewModel, openNewBudgetDialog)
-                TransactionSelectCategory(viewModel, openNewCategoryDialog)
-                TransactionNameSection(viewModel)
-                TransactionBottomButtons(viewModel)
+            TransactionSelectBudget(viewModel)
+            TransactionSelectCategory(viewModel)
+            AnimatedVisibility(viewModel.showCategoryInput) {
+                TransactionCategoryName(viewModel)
             }
+            TransactionAmountSection(viewModel)
+            TransactionBottomButtons(viewModel)
         }
     }
 }
 
 @Composable
-private fun TransactionTitle() {
-    Row(Modifier.fillMaxWidth()) {
-        Text(
-            stringResource(R.string.new_transaction),
-            style = MaterialTheme.typography.titleLarge
-        )
-    }
-}
-
-@Composable
-private fun TransactionSelectBudget(viewModel: TransactionViewModel, openNewBudgetDialog: () -> Unit) {
+private fun TransactionSelectBudget(viewModel: TransactionViewModel) {
     val arrowRotation by animateFloatAsState(if (!viewModel.showBudgetDropDown) 0f else 180f)
 
     Column(
@@ -130,7 +125,7 @@ private fun TransactionSelectBudget(viewModel: TransactionViewModel, openNewBudg
                                 )
                             }
                         },
-                        onClick = openNewBudgetDialog
+                        onClick = { viewModel.showBudgetDialog = true }
                     )
                 }
             }
@@ -139,7 +134,7 @@ private fun TransactionSelectBudget(viewModel: TransactionViewModel, openNewBudg
 }
 
 @Composable
-private fun TransactionSelectCategory(viewModel: TransactionViewModel, openNewCategoryDialog: () -> Unit) {
+private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
     val arrowRotation by animateFloatAsState(if (!viewModel.showCategoryDropDown) 0f else 180f)
 
     Column(
@@ -209,7 +204,10 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel, openNewCa
                                 )
                             }
                         },
-                        onClick = openNewCategoryDialog
+                        onClick = {
+                            viewModel.showCategoryInput = true
+                            viewModel.showCategoryDropDown = false
+                        }
                     )
                 }
             }
@@ -219,7 +217,24 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel, openNewCa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TransactionNameSection(viewModel: TransactionViewModel) {
+private fun TransactionCategoryName(viewModel: TransactionViewModel) {
+    val focusRequester = remember { FocusRequester() }
+    SideEffect { focusRequester.requestFocus() }
+
+    OutlinedTextField(
+        value = viewModel.categoryName,
+        onValueChange = { viewModel.categoryName = it },
+        label = { Text(stringResource(R.string.category_name)) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.Transparent),
+        modifier = Modifier.focusRequester(focusRequester),
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { viewModel.saveCategory() })
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TransactionAmountSection(viewModel: TransactionViewModel) {
     OutlinedTextField(
         value = viewModel.amountString,
         onValueChange = viewModel::updateAmount,
@@ -239,7 +254,12 @@ private fun TransactionNameSection(viewModel: TransactionViewModel) {
 
 @Composable
 private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
-    Button(onClick = viewModel::save) {
+    Button(
+        onClick = viewModel::save,
+        enabled = viewModel.currentBudget != null
+                && viewModel.currentCategory != null
+                && viewModel.amountString.isNotEmpty()
+    ) {
         Text(stringResource(R.string.new_dialog_create))
     }
 }
