@@ -5,8 +5,8 @@ import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Transaction
 
-class TransactionRepository {
-    private val database = Firebase.firestore.collection("transactions")
+class CategoryRepository {
+    private val database = Firebase.firestore.collection("categories")
 
     fun getAll(budgetId: String?, callback: (List<Transaction>, FirebaseResponse) -> Unit) {
         database
@@ -17,19 +17,6 @@ class TransactionRepository {
                     return@addOnCompleteListener
                 }
                 callback(listOf(), FirebaseResponse.Error)
-            }
-    }
-
-    fun createTransaction(transaction: Transaction, callback: (String?, FirebaseResponse) -> Unit) {
-        database
-            .add(transaction.toMap())
-            .addOnSuccessListener { documentReference ->
-                callback(documentReference.id, FirebaseResponse.Success) }
-            .addOnCanceledListener {
-                callback(null, FirebaseResponse.ConnectivityError)
-            }
-            .addOnFailureListener {
-                callback(null, FirebaseResponse.Error)
             }
     }
 }
