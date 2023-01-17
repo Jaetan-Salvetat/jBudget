@@ -41,7 +41,7 @@ fun App() {
         }
         composable("${Screen.Budget.route}/{budgetId}") {
             val budgetId = it.arguments?.getString("budgetId")
-            val budgetViewModel = BudgetViewModel(navController, budgetId)
+            val budgetViewModel = BudgetViewModel(budgetId)
             BudgetScreen(budgetViewModel, navController)
         }
         composable(Screen.Transaction.route) {

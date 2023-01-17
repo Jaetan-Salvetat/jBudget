@@ -18,7 +18,7 @@ class CategoryRepository {
             }
     }
 
-    fun getBudgetCategories(budgetId: String?, callback: (List<Category>, FirebaseResponse) -> Unit) {
+    fun getAll(budgetId: String?, callback: (List<Category>, FirebaseResponse) -> Unit) {
         database.whereEqualTo("budgetId", budgetId).get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {

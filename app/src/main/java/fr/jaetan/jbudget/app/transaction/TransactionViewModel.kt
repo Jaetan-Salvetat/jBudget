@@ -52,7 +52,7 @@ class TransactionViewModel: ViewModel() {
 
     private fun getBudgetCategories(budget: Budget?) {
         if (budget == null) return
-        JBudget.categoryRepository.getBudgetCategories(budget.id) { categories, response ->
+        JBudget.categoryRepository.getAll(budget.id) { categories, response ->
             if (response == FirebaseResponse.Success) {
                 this.categories.clear()
                 this.categories.addAll(categories)

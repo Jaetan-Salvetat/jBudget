@@ -31,7 +31,7 @@
     <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
     <string name="password_reset">Réinitialisation du mot de passe</string>
     <string name="email_sent">L\'email à bien été envoyé.</string>
-
+    <string name="no_category_assigned">Non catégorisé</string>
 
     <string name="my_settings">Mes paramètres</string>
     <string name="my_data">Mes données</string>
@@ -65,6 +65,8 @@
 
     <string name="category_name">Nom de la catégorie</string>
     <string name="new_category">Nouvelle catégorie</string>
+    <string name="transaction_delete">Supprimer</string>
+    <string name="transaction_edit">Éditer</string>
 
 
     <!-- Content descriptions-->
@@ -79,6 +81,7 @@
     <string name="expand_section_descriptor">Étendre la section</string>
     <string name="previous_item_descriptor">élément précédent</string>
     <string name="next_item_descriptor">élément suivant</string>
+    <string name="more_vert_descriptor">plus d\'options</string>
 
 
     <!-- Home tips -->
