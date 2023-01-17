@@ -1,9 +1,7 @@
 package fr.jaetan.jbudget.app.home.views
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,9 +17,20 @@ import fr.jaetan.jbudget.core.models.State
 fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
     Box(modifier) {
         when (viewModel.loadingState) {
+            State.Loading -> LoadingContainer(viewModel)
             State.EmptyData -> EmptyDataContainer(Modifier.align(Alignment.Center), viewModel)
             State.None -> HomeBudgetsSection(viewModel)
             else -> {}
+        }
+    }
+}
+
+@Composable
+private fun LoadingContainer(viewModel: HomeViewModel) {
+    Column(Modifier.fillMaxSize()) {
+        HomeTipsSection(viewModel)
+        Box(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
         }
     }
 }
