@@ -15,11 +15,30 @@ import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 class AuthViewModel: ViewModel() {
     var currentScreen by mutableStateOf(AuthScreens.Login)
-    var email by mutableStateOf(null as String?)
-    var password by mutableStateOf(null as String?)
-    var username by mutableStateOf(null as String?)
+    private var _email by mutableStateOf(null as String?)
+    private var _password by mutableStateOf(null as String?)
+    private var _username by mutableStateOf(null as String?)
     var state by mutableStateOf(State.None)
     var showForgotPasswordDialog by mutableStateOf(false)
+    var email: String?
+        get() = _email
+        set(value) {
+            _email = value
+            state = State.None
+        }
+    var password: String?
+        get() = _password
+        set(value) {
+            _password = value
+            state = State.None
+        }
+    var username: String?
+        get() = _username
+        set(value) {
+            _username = value
+            state = State.None
+        }
+
     @StringRes var errorMessageRes: Int = R.string.sample_error
     val canContinue: Boolean
         get() = password?.isPassword == true
@@ -60,7 +79,6 @@ class AuthViewModel: ViewModel() {
 
             state = when (it) {
                 FirebaseResponse.Success -> State.None
-                FirebaseResponse.UserAlreadyExist -> State.Error
                 else -> State.Error
             }
         }
