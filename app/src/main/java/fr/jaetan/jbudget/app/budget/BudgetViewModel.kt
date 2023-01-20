@@ -6,23 +6,22 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.FirebaseResponse
-import fr.jaetan.jbudget.core.models.State
-import fr.jaetan.jbudget.core.models.Transaction
+import fr.jaetan.jbudget.core.models.*
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetViewModel(budgetId: String?) : ViewModel() {
     var transactions = mutableStateListOf<Transaction>()
+    var categories = mutableStateListOf<Category>()
     var transactionLoadingState by mutableStateOf(State.Loading)
     var budget by mutableStateOf(null as Budget?)
-    var expandCategories by mutableStateOf(false)
+    var showNewCategoryDialog by mutableStateOf(false)
 
     @StringRes var firebaseResponse = null as Int?
 
     init {
         getBudget(budgetId)
         getTransactions(budgetId)
+        getCategories(budgetId)
     }
 
     private fun getBudget(budgetId: String?) {
@@ -34,11 +33,18 @@ class BudgetViewModel(budgetId: String?) : ViewModel() {
             this.transactions.clear()
             this.transactions.addAll(transactions)
 
-            when  {
-                response == FirebaseResponse.Success && transactions.isEmpty() -> transactionLoadingState = State.EmptyData
-                response == FirebaseResponse.Success -> transactionLoadingState = State.None
-                else -> transactionLoadingState = State.Error
+            transactionLoadingState = when  {
+                response == FirebaseResponse.Success && transactions.isEmpty() -> State.EmptyData
+                response == FirebaseResponse.Success -> State.None
+                else -> State.Error
             }
+        }
+    }
+
+    private fun getCategories(budgetId: String?) {
+        JBudget.categoryRepository.getAll(budgetId) { categories, _ ->
+            this.categories.clear()
+            this.categories.addAll(categories)
         }
     }
 

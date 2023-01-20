@@ -64,12 +64,11 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     fun saveCategory() {
         if (categoryName.isEmpty()) return
         showCategoryInput = false
-        val category = Category(name = categoryName, budgetId = currentBudget!!.id)
+        val mutableCategory = Category(name = categoryName, budgetId = currentBudget!!.id)
 
-        JBudget.categoryRepository.createCategory(category) { categoryId, response ->
+        JBudget.categoryRepository.createCategory(mutableCategory) { category, response ->
             if (response == FirebaseResponse.Success) {
-                category.id = categoryId!!
-                categories.add(category)
+                categories.add(category!!)
             }
         }
     }

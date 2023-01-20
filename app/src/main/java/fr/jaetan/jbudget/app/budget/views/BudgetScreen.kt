@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +28,13 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         content = { BudgetContent(it, viewModel) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
+
+    NewCategoryDialog(
+        isVisible = viewModel.showNewCategoryDialog,
+        budgetId = viewModel.budget!!.id,
+        dismiss = { viewModel.showNewCategoryDialog = false },
+        onSave = { viewModel.categories.add(it) }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

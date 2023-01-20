@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -86,26 +87,31 @@ private fun BudgetDates(viewModel: BudgetViewModel) {
 
 @Composable
 private fun BudgetCategories(viewModel: BudgetViewModel) {
-    val categories = listOf(
-        stringResource(R.string.sample_budget_category_name1),
-        stringResource(R.string.sample_budget_category_name2),
-        stringResource(R.string.sample_budget_category_name2),
-        stringResource(R.string.sample_budget_category_name3),
-        stringResource(R.string.sample_budget_category_name3))
-
-    Box(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()) {
-            items(categories) { category ->
-                OutlinedButton(onClick = { /*TODO*/ }) {
-                    Text(text = category)
+            items(viewModel.categories) { category ->
+                Box(
+                    Modifier
+                        .clip(RoundedCornerShape(7.dp))
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .clickable {  }
+                ) {
+                    Text(
+                        text = category.name,
+                        modifier = Modifier.padding(15.dp, 10.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(Modifier.width(10.dp))
                 
             }
             item {
-                Spacer(modifier = Modifier.width(45.dp))
+                Spacer(Modifier.width(45.dp))
             }
         }
         Box(
@@ -120,7 +126,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
                 .align(Alignment.CenterEnd)
                 .fillMaxHeight()
         ) {
-            IconButton(onClick = { viewModel.expandCategories = !viewModel.expandCategories }) {
+            IconButton(onClick = { viewModel.showNewCategoryDialog = true }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.expand_section_descriptor)
