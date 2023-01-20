@@ -80,4 +80,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    //charts
+    implementation("com.himanshoe:charty:1.0.1")
 }

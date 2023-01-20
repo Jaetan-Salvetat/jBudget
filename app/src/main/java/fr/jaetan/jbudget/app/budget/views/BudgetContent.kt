@@ -24,11 +24,12 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
+import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
 @Composable
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
     LazyColumn(Modifier.padding(padding)) {
-        item { /* TODO GRAPHIC WIDGET */ }
+        item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
         item { BudgetCategories(viewModel) }
         items(viewModel.transactions) {
@@ -39,13 +40,16 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
 }
 
 @Composable
+private fun GraphicWidget(viewModel: BudgetViewModel) {
+    BudgetChart(transactions = viewModel.transactions)
+}
+
+@Composable
 private fun BudgetDates(viewModel: BudgetViewModel) {
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()) {
-
-
     Text(
         text = viewModel.budget!!.startDate.toText(),
         style = MaterialTheme.typography.titleMedium)
