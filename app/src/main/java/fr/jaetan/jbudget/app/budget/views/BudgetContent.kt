@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.budget.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
@@ -28,12 +30,15 @@ import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
         item { BudgetCategories(viewModel) }
+
+        stickyHeader { TransactionTitleSection() }
 
         when (viewModel.transactionLoadingState) {
             State.None -> items(viewModel.transactions) {
@@ -99,7 +104,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
                     Modifier
                         .clip(RoundedCornerShape(7.dp))
                         .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .clickable {  }
+                        .clickable { }
                 ) {
                     Text(
                         text = category.name,
@@ -136,6 +141,25 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
     }
 }
 
+
+@Composable
+private fun TransactionTitleSection() {
+    Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp, 10.dp, 10.dp, 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.my_transactions),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f)
+            )
+            IconButton(onClick = {  }) {
+                Icon(Icons.Default.FilterList, stringResource(R.string.filter_transactions_descriptor))
+            }
+        }
+    }
+}
 
 @Composable
 private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel) {

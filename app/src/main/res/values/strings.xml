@@ -69,6 +69,7 @@
     <string name="transaction_edit">Éditer</string>
 
     <string name="empty_transactions">Aucune transaction pour le moment</string>
+    <string name="my_transactions">Mes transactions</string>
 
 
     <!-- Content descriptions-->
@@ -85,6 +86,7 @@
     <string name="next_item_descriptor">élément suivant</string>
     <string name="more_vert_descriptor">plus d\'options</string>
     <string name="clear_input_descriptor">Vider le champ</string>
+    <string name="filter_transactions_descriptor">Filter les catégories</string>
 
 
     <!-- Home tips -->
