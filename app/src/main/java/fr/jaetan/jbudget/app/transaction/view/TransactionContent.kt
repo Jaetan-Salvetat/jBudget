@@ -280,6 +280,7 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
         onClick = viewModel::save,
         enabled = viewModel.currentBudget != null
                 && viewModel.amountString.isNotEmpty()
+                && viewModel.loadingState == State.None
     ) {
         if (viewModel.loadingState == State.Loading) {
             CircularProgressIndicator(Modifier.size(20.dp))
