@@ -25,16 +25,9 @@ class BudgetViewModel(budgetId: String?) : ViewModel() {
     }
 
     private fun getBudget(budgetId: String?) {
-        JBudget.budgetRepository.getBudget(budgetId) { budget, response ->
-
-            when (response) {
-                FirebaseResponse.Success -> { this.budget = budget }
-                else -> {
-                    firebaseResponse = response.messageRes
-                }
-            }
-        }
+        budget = JBudget.state.budgets.find { it.id == budgetId }
     }
+
     private fun getTransactions(budgetId: String?) {
         JBudget.transactionRepository.getAll(budgetId) { transactions, response ->
             when (response) {
