@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
 import fr.jaetan.jbudget.core.models.State
@@ -32,7 +33,7 @@ import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
+fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
@@ -43,7 +44,7 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
         when (viewModel.transactionLoadingState) {
             State.None -> items(viewModel.transactions) {
                 Divider()
-                TransactionItem(it, viewModel)
+                TransactionItem(it, viewModel, navController)
             }
             State.Loading -> item {
                 Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -162,11 +163,11 @@ private fun TransactionTitleSection() {
 }
 
 @Composable
-private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel) {
+private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
-        .clickable { }
+        .clickable { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
         .fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -203,7 +204,10 @@ private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel
                     Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_vert_descriptor))
                 }
                 DropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                    DropdownMenuItem(text = { Text(text = stringResource( R.string.transaction_edit)) }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource( R.string.transaction_edit)) },
+                        onClick = { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
+                    )
                     DropdownMenuItem(
                         text = { Text(text = stringResource( R.string.transaction_delete), color = MaterialTheme.colorScheme.errorContainer) },
                         onClick = { viewModel.removeTransaction(transaction) })
