@@ -63,8 +63,6 @@ class TransactionViewModel(
                 currentBudget = budget
                 if (categoryId != null) {
                     categories.find { it.id == categoryId }
-                } else {
-                    currentCategory = categories.firstOrNull()
                 }
             }
         }
@@ -87,7 +85,7 @@ class TransactionViewModel(
         val transaction = Transaction(
             date = Calendar.getInstance().time,
             amount = amountString.replace(",", ".").toDouble(),
-            categoryId = currentCategory!!.id,
+            categoryId = currentCategory?.id,
             budgetId = currentBudget!!.id
         )
 

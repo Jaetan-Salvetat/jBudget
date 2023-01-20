@@ -56,6 +56,18 @@ class BudgetViewModel(budgetId: String?) : ViewModel() {
         }
     }
 
+    fun getCategory(id: String?, callback: (Category?) -> Unit) {
+        if (id == null) return callback(null)
+
+        JBudget.categoryRepository.findById(id) { category, firebaseResponse ->
+            if (firebaseResponse == FirebaseResponse.Success) {
+                callback(category)
+                return@findById
+            }
+            callback(null)
+        }
+    }
+
     fun navigateToUpdateTransactionScreen(navController: NavHostController, transaction: Transaction) {
         navController.navigate("${Screen.Transaction.route}/${transaction.budgetId}/${transaction.id}/${transaction.amount}")
     }

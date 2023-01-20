@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
@@ -165,6 +166,11 @@ private fun TransactionTitleSection() {
 @Composable
 private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
     var isExpanded by remember { mutableStateOf(false) }
+    var category by remember { mutableStateOf(null as Category?) }
+
+    if (category == null) {
+        viewModel.getCategory(transaction.categoryId) { category = it }
+    }
 
     Box(modifier = Modifier
         .clickable { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
@@ -185,19 +191,12 @@ private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline))
             Spacer(Modifier.weight(1f))
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {
-                if (transaction.categoryId != null) {
-                    Text(
-                        modifier = Modifier.padding(5.dp, 2.dp),
-                        text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer)
-                } else {
-                    Text(
-                        modifier = Modifier.padding(5.dp, 2.dp),
-                        text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer)
-                }
+                Text(
+                    modifier = Modifier.padding(5.dp, 2.dp),
+                    text = if (category == null) stringResource(id = R.string.no_category_assigned)
+                    else category!!.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer)
             }
             Column {
                 IconButton(onClick = { isExpanded = true }) {

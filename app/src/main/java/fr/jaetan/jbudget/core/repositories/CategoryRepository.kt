@@ -28,4 +28,15 @@ class CategoryRepository {
                 callback(listOf(), FirebaseResponse.Error)
             }
     }
+
+    fun findById(id: String, callback: (Category?, FirebaseResponse) -> Unit) {
+        database.document(id).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(Category.fromMap(it.result), FirebaseResponse.Success)
+                    return@addOnCompleteListener
+                }
+                callback(null, FirebaseResponse.Error)
+            }
+    }
 }
