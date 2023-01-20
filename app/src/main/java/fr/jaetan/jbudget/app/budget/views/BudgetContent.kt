@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
@@ -32,9 +33,30 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
         item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
         item { BudgetCategories(viewModel) }
-        items(viewModel.transactions) {
-            Divider(modifier = Modifier.padding(vertical = 10.dp))
-            TransactionItem(it)
+
+        when (viewModel.transactionLoadingState) {
+            State.None -> items(viewModel.transactions) {
+                Divider()
+                TransactionItem(it, viewModel)
+            }
+            State.Loading -> item {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+            State.EmptyData -> item {
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(stringResource(R.string.empty_transactions))
+                    TextButton(onClick = {  }) {
+                        Text(stringResource(R.string.new_transaction))
+                    }
+                }
+            }
+            else -> item {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(stringResource(R.string.sample_error))
+                }
+            }
         }
     }
 }
@@ -71,7 +93,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
         stringResource(R.string.sample_budget_category_name3),
         stringResource(R.string.sample_budget_category_name3))
 
-    Box(Modifier.fillMaxWidth()) {
+    Box(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()) {
@@ -108,8 +130,9 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
     }
 }
 
+
 @Composable
-private fun TransactionItem(transaction: Transaction) {
+private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
@@ -118,29 +141,30 @@ private fun TransactionItem(transaction: Transaction) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 10.dp, 10.dp, 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(20.dp, 20.dp, 10.dp, 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = transaction.amount.toString(),
                 style = MaterialTheme.typography.titleLarge,
             )
+            Spacer(Modifier.width(10.dp))
             Text(
                 text = transaction.date.toText(), 
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline))
+            Spacer(Modifier.weight(1f))
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {
                 if (transaction.categoryId != null) {
                     Text(
                         modifier = Modifier.padding(5.dp, 2.dp),
                         text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer)
                 } else {
                     Text(
                         modifier = Modifier.padding(5.dp, 2.dp),
                         text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiaryContainer)
                 }
             }
@@ -149,8 +173,10 @@ private fun TransactionItem(transaction: Transaction) {
                     Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_vert_descriptor))
                 }
                 DropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                    DropdownMenuItem(text = { Text(text = stringResource( R.string.transaction_delete)) }, onClick = { /*TODO*/ })
                     DropdownMenuItem(text = { Text(text = stringResource( R.string.transaction_edit)) }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource( R.string.transaction_delete), color = MaterialTheme.colorScheme.errorContainer) },
+                        onClick = { viewModel.removeTransaction(transaction) })
                 }
             }
         }

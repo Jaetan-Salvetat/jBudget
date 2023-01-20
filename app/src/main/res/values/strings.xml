@@ -61,12 +61,14 @@
     <string name="category">Catégorie</string>
     <string name="zero">0</string>
     <string name="new_male">Nouveau</string>
-    <string name="new_female">Nouveau</string>
+    <string name="new_female">Nouvelle</string>
 
     <string name="category_name">Nom de la catégorie</string>
     <string name="new_category">Nouvelle catégorie</string>
     <string name="transaction_delete">Supprimer</string>
     <string name="transaction_edit">Éditer</string>
+
+    <string name="empty_transactions">Aucune transaction pour le moment</string>
 
 
     <!-- Content descriptions-->
