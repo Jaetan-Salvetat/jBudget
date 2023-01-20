@@ -87,6 +87,7 @@
     <string name="more_vert_descriptor">plus d\'options</string>
     <string name="clear_input_descriptor">Vider le champ</string>
     <string name="filter_transactions_descriptor">Filter les catégories</string>
+    <string name="no_category">Aucune</string>
 
 
     <!-- Home tips -->
