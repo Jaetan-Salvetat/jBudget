@@ -29,6 +29,7 @@ class MainViewModel: ViewModel() {
     val isNotificationEnabled: Boolean get() = _isNotificationEnabled
     val budgets = mutableStateListOf<Budget>()
     var currentUser by mutableStateOf(null as FirebaseUser?)
+    var budgetsLoadingState by mutableStateOf(State.Loading)
 
     suspend fun init(context: Context) {
         currentUser = FirebaseAuth.getInstance().currentUser
@@ -68,7 +69,7 @@ class MainViewModel: ViewModel() {
 
     private fun initBudgets() {
         JBudget.budgetRepository.getAll { data, response ->
-            when {
+            budgetsLoadingState = when {
                 data.isEmpty() && response == FirebaseResponse.Success -> State.EmptyData
                 response == FirebaseResponse.Success -> {
                     budgets.clear()

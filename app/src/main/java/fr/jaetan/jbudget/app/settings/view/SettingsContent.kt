@@ -54,7 +54,7 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         }
 
         //Notifications section
-        item { NotificationItem(viewModel) }
+        //item { NotificationItem(viewModel) }
         //Theme section
         item { ThemeSelector(viewModel) }
         //Disconnect section
