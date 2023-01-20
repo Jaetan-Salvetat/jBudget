@@ -15,7 +15,6 @@ import com.google.accompanist.pager.PagerState
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.views.FabItem
 import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
@@ -42,12 +41,11 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
 
     //Budgets
-    var loadingState by mutableStateOf(State.Loading)
     var selectedOldBudget by mutableStateOf(null as Budget?)
     var selectedCurrentBudgets = mutableStateListOf<Budget>()
-    private val budgets = mutableStateListOf<Budget>()
-    val currentBudgets: List<Budget> get() = budgets.filter { it.isCurrentBudget }
-    val oldBudgets: List<Budget> get() = budgets.filter { !it.isCurrentBudget }
+    val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedBy { it.startDate }
+    val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedBy { it.startDate }
+    val loadingState: State get() = JBudget.state.budgetsLoadingState
 
     fun toggleSelectedBudget(budget: Budget) {
         if (budget.isCurrentBudget) {
@@ -60,28 +58,9 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         else budget
     }
 
-    private fun initBudgets() {
-        JBudget.budgetRepository.getAll { data, response ->
-            loadingState = when {
-                data.isEmpty() && response == FirebaseResponse.Success -> State.EmptyData
-                response == FirebaseResponse.Success -> {
-                    budgets.clear()
-                    budgets.addAll(data)
-                    selectedCurrentBudgets.addAll(currentBudgets)
-                    State.None
-                }
-                else -> State.Error
-            }
-            if (budgets.isEmpty()) {
-                tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
-            }
-        }
-    }
-
     fun navigateToBudgetScreen(budgetId: String) {
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
-
 
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
@@ -90,7 +69,10 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         FabItem(
             text = R.string.home_fab_add_transaction,
             descriptor = R.string.home_fab_add_transaction_descriptor,
-            onClick = { navController.navigate(Screen.Transaction.route) },
+            onClick = {
+                navController.navigate(Screen.Transaction.route)
+                fabExpanded = false
+            },
             icon = Icons.Default.RequestQuote
         ),
         FabItem(
@@ -104,7 +86,12 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         ),
     )
 
-    init { initBudgets() }
+    init {
+        selectedCurrentBudgets.addAll(currentBudgets)
+        if (JBudget.state.budgets.isEmpty()) {
+            tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
+        }
+    }
 }
 
 data class TipsItem(@StringRes val text: Int, val action: () -> Unit)

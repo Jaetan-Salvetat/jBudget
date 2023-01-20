@@ -20,11 +20,10 @@ class TransactionRepository {
             }
     }
 
-    fun createTransaction(transaction: Transaction, callback: (String?, FirebaseResponse) -> Unit) {
-        database
-            .add(transaction.toMap())
+    fun createTransaction(transaction: Transaction, callback: (Transaction?, FirebaseResponse) -> Unit) {
+        database.add(transaction.toMap())
             .addOnSuccessListener { documentReference ->
-                callback(documentReference.id, FirebaseResponse.Success) }
+                callback(transaction.copy(id = documentReference.id), FirebaseResponse.Success) }
             .addOnCanceledListener {
                 callback(null, FirebaseResponse.ConnectivityError)
             }

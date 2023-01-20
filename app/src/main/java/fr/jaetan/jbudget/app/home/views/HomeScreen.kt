@@ -55,7 +55,6 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar(scrollBehavior: TopAppBarScrollBehavior, navController: NavHostController) {

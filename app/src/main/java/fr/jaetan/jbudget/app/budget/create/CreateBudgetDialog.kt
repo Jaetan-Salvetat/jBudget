@@ -86,7 +86,7 @@ private fun CreateBudgetFooter(viewModel: CreateBudgetViewModel) {
                 Modifier
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {
-                        dateSelector(context, viewModel.endDate!!) { viewModel.endDate = it }
+                        dateSelector(context, viewModel.endDate!!, viewModel.startDate) { viewModel.endDate = it }
                     }
             ) {
                 Text(
@@ -100,7 +100,7 @@ private fun CreateBudgetFooter(viewModel: CreateBudgetViewModel) {
                 Modifier
                     .clip(RoundedCornerShape(10.dp))
                     .clickable {
-                        dateSelector(context, viewModel.startDate) { viewModel.endDate = it }
+                        dateSelector(context, viewModel.startDate, viewModel.startDate) { viewModel.endDate = it }
                     }
             ) {
                 Text(

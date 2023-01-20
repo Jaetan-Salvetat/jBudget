@@ -33,7 +33,6 @@ import fr.jaetan.jbudget.core.services.extentions.toText
 fun HomeBudgetsSection(viewModel: HomeViewModel) {
     LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
         item { HomeTipsSection(viewModel) }
-        item { Divider() }
         items(viewModel.currentBudgets) { budget ->
             HomeBudgetsListItem(
                 budget,

@@ -14,7 +14,6 @@ data class Transaction(
 
     fun toMap(): Map<String, Any?> {
         return mapOf(
-            "id" to id,
             "date" to Timestamp(date),
             "amount" to amount,
             "categoryId" to categoryId,
