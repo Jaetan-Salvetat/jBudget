@@ -30,7 +30,10 @@ fun AppBackHandler(navController: NavHostController) {
         AlertDialog(onDismissRequest = { showQuitDialog = false }) {
             Box(Modifier.background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))) {
                 Column(Modifier.padding(20.dp)) {
-                    Text(stringResource(R.string.quit_app_dialog_text))
+                    Text(
+                        text = stringResource(R.string.quit_app_dialog_text),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                     Spacer(Modifier.height(20.dp))
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                         TextButton(onClick = { showQuitDialog = false }) {
