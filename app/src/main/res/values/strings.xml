@@ -15,6 +15,7 @@
     <string name="next">Continuer</string>
     <string name="cancel">Annuler</string>
     <string name="hide">Cacher</string>
+    <string name="quit">quitter</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
@@ -67,6 +68,8 @@
     <string name="new_category">Nouvelle catégorie</string>
     <string name="transaction_delete">Supprimer</string>
     <string name="transaction_edit">Éditer</string>
+
+    <string name="quit_app_dialog_text">Et tu sûr de vouloir quitter l\'application ?</string>
 
 
     <!-- Content descriptions-->
