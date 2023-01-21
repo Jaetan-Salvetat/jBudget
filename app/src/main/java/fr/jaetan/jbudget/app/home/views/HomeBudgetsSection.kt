@@ -28,6 +28,7 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.toText
+import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
 @Composable
 fun HomeBudgetsSection(viewModel: HomeViewModel) {
@@ -60,19 +61,19 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
         Column(
             Modifier
                 .clip(RoundedCornerShape(containerShape))
-                .clickable { viewModel.navigateToBudgetScreen(budget.id) }
+                .clickable { viewModel.toggleSelectedBudget(budget) }
                 .background(containerBackground, RoundedCornerShape(containerShape))
         ) {
-            HomeBudgetHeader(isExpanded, budget, viewModel)
+            HomeBudgetHeader(isExpanded, budget)
             AnimatedVisibility(isExpanded) {
-                HomeBudgetContent()
+                HomeBudgetContent(budget, viewModel)
             }
         }
     }
 }
 
 @Composable
-private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: HomeViewModel) {
+private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
     val arrowRotation by animateFloatAsState(if (!isExpanded) 0f else 180f)
     var dates = "(${budget.startDate.toText()}"
 
@@ -92,13 +93,11 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: Hom
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline),
                 overflow = TextOverflow.Ellipsis, maxLines = 1
             )
-            IconButton(onClick = { viewModel.toggleSelectedBudget(budget) }){
-                Icon(
-                    imageVector = Icons.Filled.KeyboardArrowDown,
-                    contentDescription = null,
-                    modifier = Modifier.rotate(arrowRotation)
-                )
-            }
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.rotate(arrowRotation)
+            )
         }
         if (isExpanded) {
             Text(
@@ -111,11 +110,18 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: Hom
 }
 
 @Composable
-private fun HomeBudgetContent() {
-    Row(
+private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
+    Column(
         Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp), horizontalArrangement = Arrangement.Center) {
-
+            .padding(bottom = 20.dp)) {
+        BudgetChart(transactions = listOf())
+        
+        TextButton(
+            onClick = { viewModel.navigateToBudgetScreen(budget.id) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.more_details))
+        }
     }
 }

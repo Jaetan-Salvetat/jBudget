@@ -46,15 +46,12 @@
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
 
-    <string name="sample_budget_category_name1">Catégorie 1</string>
-    <string name="sample_budget_category_name2">Catégorie 2</string>
-    <string name="sample_budget_category_name3">Catégorie 3</string>
-
     <string name="tips_title">Le savais-tu ?</string>
     <string name="tips_advance">%1$d sur %2$d</string>
     <string name="show_me_more">Montrez moi !</string>
     <string name="actually">maintenant</string>
     <string name="end_date">Date de fin</string>
+    <string name="more_details">Plus de détails</string>
 
     <string name="new_transaction">Nouvelle transaction</string>
     <string name="budget">Budget</string>
