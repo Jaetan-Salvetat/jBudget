@@ -31,4 +31,15 @@ class TransactionRepository {
                 callback(null, FirebaseResponse.Error)
             }
     }
+
+    fun removeTransaction(transactionId: String, callback: (FirebaseResponse) -> Unit) {
+        database.document(transactionId).delete()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(FirebaseResponse.Success)
+                    return@addOnCompleteListener
+                }
+                callback(FirebaseResponse.Error)
+            }
+    }
 }

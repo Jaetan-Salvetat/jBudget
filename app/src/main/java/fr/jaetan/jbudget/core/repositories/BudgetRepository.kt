@@ -23,16 +23,6 @@ class BudgetRepository {
             }
     }
 
-    fun getBudget(budgetId: String?, callback: (Budget?, FirebaseResponse) -> Unit) {
-        val document = database.document(budgetId ?: "")
-        document.get()
-            .addOnSuccessListener { response ->
-                callback(Budget.fromMap(response), FirebaseResponse.Success)
-            }
-            .addOnCanceledListener { callback(null, FirebaseResponse.Error) }
-            .addOnFailureListener { callback(null, FirebaseResponse.Error) }
-    }
-
     fun getAll(callback: (List<Budget>, FirebaseResponse) -> Unit) {
         database
             .whereEqualTo("userId", JBudget.state.currentUser?.uid).get()

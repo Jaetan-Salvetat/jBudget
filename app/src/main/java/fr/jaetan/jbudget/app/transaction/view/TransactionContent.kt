@@ -173,6 +173,19 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
                     expanded = viewModel.showCategoryDropDown,
                     onDismissRequest = { viewModel.showCategoryDropDown = false }
                 ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                stringResource(R.string.no_category),
+                                fontWeight = FontWeight.Normal
+                            )
+                        },
+                        onClick = {
+                            viewModel.currentCategory = null
+                            viewModel.showCategoryDropDown = false
+                        }
+                    )
+
                     viewModel.categories.forEach {
                         DropdownMenuItem(
                             text = {
@@ -266,8 +279,8 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
     Button(
         onClick = viewModel::save,
         enabled = viewModel.currentBudget != null
-                && viewModel.currentCategory != null
                 && viewModel.amountString.isNotEmpty()
+                && viewModel.loadingState == State.None
     ) {
         if (viewModel.loadingState == State.Loading) {
             CircularProgressIndicator(Modifier.size(20.dp))

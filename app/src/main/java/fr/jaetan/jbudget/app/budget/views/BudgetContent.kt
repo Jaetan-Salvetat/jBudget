@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.budget.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,32 +10,61 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.core.models.Category
+import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel) {
+fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
         item { BudgetCategories(viewModel) }
-        items(viewModel.transactions) {
-            Divider(modifier = Modifier.padding(vertical = 10.dp))
-            TransactionItem(it)
+
+        stickyHeader { TransactionTitleSection() }
+
+        when (viewModel.transactionLoadingState) {
+            State.None -> items(viewModel.transactions) {
+                Divider()
+                TransactionItem(it, viewModel, navController)
+            }
+            State.Loading -> item {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+            State.EmptyData -> item {
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(stringResource(R.string.empty_transactions))
+                    TextButton(onClick = {  }) {
+                        Text(stringResource(R.string.new_transaction))
+                    }
+                }
+            }
+            else -> item {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(stringResource(R.string.sample_error))
+                }
+            }
         }
     }
 }
@@ -64,26 +94,31 @@ private fun BudgetDates(viewModel: BudgetViewModel) {
 
 @Composable
 private fun BudgetCategories(viewModel: BudgetViewModel) {
-    val categories = listOf(
-        stringResource(R.string.sample_budget_category_name1),
-        stringResource(R.string.sample_budget_category_name2),
-        stringResource(R.string.sample_budget_category_name2),
-        stringResource(R.string.sample_budget_category_name3),
-        stringResource(R.string.sample_budget_category_name3))
-
-    Box(Modifier.fillMaxWidth()) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()) {
-            items(categories) { category ->
-                OutlinedButton(onClick = { /*TODO*/ }) {
-                    Text(text = category)
+            items(viewModel.categories) { category ->
+                Box(
+                    Modifier
+                        .clip(RoundedCornerShape(7.dp))
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .clickable { }
+                ) {
+                    Text(
+                        text = category.name,
+                        modifier = Modifier.padding(15.dp, 10.dp),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(Modifier.width(10.dp))
                 
             }
             item {
-                Spacer(modifier = Modifier.width(45.dp))
+                Spacer(Modifier.width(45.dp))
             }
         }
         Box(
@@ -98,7 +133,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
                 .align(Alignment.CenterEnd)
                 .fillMaxHeight()
         ) {
-            IconButton(onClick = { viewModel.expandCategories = !viewModel.expandCategories }) {
+            IconButton(onClick = { viewModel.showNewCategoryDialog = true }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.expand_section_descriptor)
@@ -108,49 +143,73 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
     }
 }
 
+
 @Composable
-private fun TransactionItem(transaction: Transaction) {
+private fun TransactionTitleSection() {
+    Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+        Row(
+            Modifier.fillMaxWidth().padding(20.dp, 10.dp, 10.dp, 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.my_transactions),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.weight(1f)
+            )
+            IconButton(onClick = {  }) {
+                Icon(Icons.Default.FilterList, stringResource(R.string.filter_transactions_descriptor))
+            }
+        }
+    }
+}
+
+@Composable
+private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
     var isExpanded by remember { mutableStateOf(false) }
+    var category by remember { mutableStateOf(null as Category?) }
+
+    if (category == null) {
+        viewModel.getCategory(transaction.categoryId) { category = it }
+    }
 
     Box(modifier = Modifier
-        .clickable { }
+        .clickable { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
         .fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 10.dp, 10.dp, 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(20.dp, 20.dp, 10.dp, 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = transaction.amount.toString(),
                 style = MaterialTheme.typography.titleLarge,
             )
+            Spacer(Modifier.width(10.dp))
             Text(
                 text = transaction.date.toText(), 
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline))
+            Spacer(Modifier.weight(1f))
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {
-                if (transaction.categoryId != null) {
-                    Text(
-                        modifier = Modifier.padding(5.dp, 2.dp),
-                        text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer)
-                } else {
-                    Text(
-                        modifier = Modifier.padding(5.dp, 2.dp),
-                        text = stringResource(id = R.string.no_category_assigned),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer)
-                }
+                Text(
+                    modifier = Modifier.padding(5.dp, 2.dp),
+                    text = if (category == null) stringResource(id = R.string.no_category_assigned)
+                    else category!!.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer)
             }
             Column {
                 IconButton(onClick = { isExpanded = true }) {
                     Icon(imageVector = Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_vert_descriptor))
                 }
                 DropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }) {
-                    DropdownMenuItem(text = { Text(text = stringResource( R.string.transaction_delete)) }, onClick = { /*TODO*/ })
-                    DropdownMenuItem(text = { Text(text = stringResource( R.string.transaction_edit)) }, onClick = { /*TODO*/ })
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource( R.string.transaction_edit)) },
+                        onClick = { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = stringResource( R.string.transaction_delete), color = MaterialTheme.colorScheme.errorContainer) },
+                        onClick = { viewModel.removeTransaction(transaction) })
                 }
             }
         }
