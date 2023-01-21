@@ -13,11 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.jaetan.jbudget.app.MainActivity
 import fr.jaetan.jbudget.app.auth.views.AuthScreen
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.theme.JBudgetTheme
+import fr.jaetan.jbudget.ui.widgets.AppBackHandler
 
 class AuthActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +49,11 @@ class AuthActivity: ComponentActivity() {
 @Composable
 private fun App() {
     val systemUiController = rememberSystemUiController()
+    val navController = rememberNavController()
+    val currentScreen = navController.currentBackStackEntryAsState().value?.destination
     val backgroundColor = MaterialTheme.colorScheme.background
     val darkTheme = isSystemInDarkTheme()
-    val viewModel = AuthViewModel()
+    val viewModel = AuthViewModel(currentScreen)
 
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -60,10 +65,12 @@ private fun App() {
         )
     }
 
+    AppBackHandler(navController)
+
     Surface(
         Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        AuthScreen(viewModel)
+        AuthScreen(navController, viewModel)
     }
 }
