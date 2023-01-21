@@ -153,7 +153,7 @@ private fun TransactionTitleSection() {
         ) {
             Text(
                 text = stringResource(R.string.my_transactions),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.weight(1f)
             )
             IconButton(onClick = {  }) {
