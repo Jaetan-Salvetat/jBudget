@@ -285,7 +285,13 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
         if (viewModel.loadingState == State.Loading) {
             CircularProgressIndicator(Modifier.size(20.dp))
         } else {
-            Text(stringResource(R.string.new_dialog_create))
+            Text(
+                if (viewModel.isInUpdateMode) {
+                    stringResource(R.string.new_dialog_create)
+                } else {
+                    stringResource(R.string.update)
+                }
+            )
         }
     }
 }

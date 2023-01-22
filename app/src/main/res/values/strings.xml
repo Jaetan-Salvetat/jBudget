@@ -17,6 +17,7 @@
     <string name="cancel">Annuler</string>
     <string name="hide">Cacher</string>
     <string name="quit">quitter</string>
+    <string name="update">Mettre à jour</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>

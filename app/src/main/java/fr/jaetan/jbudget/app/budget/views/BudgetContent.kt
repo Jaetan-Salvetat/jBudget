@@ -132,7 +132,11 @@ private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel
                     )
                     DropdownMenuItem(
                         text = { Text(text = stringResource( R.string.transaction_delete), color = MaterialTheme.colorScheme.errorContainer) },
-                        onClick = { viewModel.removeTransaction(transaction) })
+                        onClick = {
+                            viewModel.removeTransaction(transaction)
+                            isExpanded = false
+                        }
+                    )
                 }
             }
         }
