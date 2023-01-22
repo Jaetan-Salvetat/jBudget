@@ -46,6 +46,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedBy { it.startDate }
     val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedBy { it.startDate }
     val loadingState: State get() = JBudget.state.budgetsLoadingState
+    var budgetToRemove by mutableStateOf(null as Budget?)
 
     fun toggleSelectedBudget(budget: Budget) {
         if (budget.isCurrentBudget) {

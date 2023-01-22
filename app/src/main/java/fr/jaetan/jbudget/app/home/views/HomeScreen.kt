@@ -20,6 +20,7 @@ import fr.jaetan.jbudget.app.budget.create.CreateBudgetDialog
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.services.JBudget
+import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,6 +52,13 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
 
     if (viewModel.showNewBudgetDialog) {
         CreateBudgetDialog(navController) { viewModel.showNewBudgetDialog = false }
+    }
+
+    viewModel.budgetToRemove?.let {
+        RemoveBudgetDialog(
+            isVisible = viewModel.budgetToRemove != null,
+            budget = it
+        ) { viewModel.budgetToRemove = null }
     }
 }
 

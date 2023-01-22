@@ -67,6 +67,7 @@
 
     <string name="empty_transactions">Aucune transaction pour le moment</string>
     <string name="my_transactions">Mes transactions</string>
+    <string name="no_category">Aucune</string>
 
 
     <!-- Content descriptions-->
@@ -84,7 +85,7 @@
     <string name="more_vert_descriptor">plus d\'options</string>
     <string name="clear_input_descriptor">Vider le champ</string>
     <string name="filter_transactions_descriptor">Filter les catégories</string>
-    <string name="no_category">Aucune</string>
+    <string name="swipe_to_remove_budget_descriptor">Swipe pour supprimer le budget</string>
 
 
     <!-- Home tips -->
