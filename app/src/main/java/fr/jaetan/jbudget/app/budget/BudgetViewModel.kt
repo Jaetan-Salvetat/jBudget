@@ -16,6 +16,7 @@ class BudgetViewModel(budgetId: String?) : ViewModel() {
     var transactionLoadingState by mutableStateOf(State.Loading)
     var budget by mutableStateOf(null as Budget?)
     var showNewCategoryDialog by mutableStateOf(false)
+    var isEditable by mutableStateOf(false)
 
     @StringRes var firebaseResponse = null as Int?
 
