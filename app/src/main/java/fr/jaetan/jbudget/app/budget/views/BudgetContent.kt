@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
-import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
@@ -35,40 +34,16 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
 
         stickyHeader { TransactionTitleSection() }
 
-        when (viewModel.transactionLoadingState) {
-            State.None -> items(viewModel.transactions) {
-                Divider()
-                TransactionItem(it, viewModel, navController)
-            }
-            State.Loading -> item {
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-            State.EmptyData -> item {
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.empty_transactions))
-                    TextButton(onClick = {  }) {
-                        Text(stringResource(R.string.new_transaction))
-                    }
-                }
-            }
-            else -> item {
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.sample_error))
-                }
-            }
+        items(viewModel.transactions) {
+            Divider()
+            TransactionItem(it, viewModel, navController)
         }
     }
 }
 
 @Composable
 private fun GraphicWidget(viewModel: BudgetViewModel) {
-    when (viewModel.transactionLoadingState) {
-        State.None -> BudgetChart(transactions = viewModel.transactions, viewModel.categories)
-        State.Loading -> CircularProgressIndicator()
-        else -> Text(text = stringResource(id = R.string.sample_error), color = MaterialTheme.colorScheme.errorContainer)
-    }
+    BudgetChart(viewModel.budget!!.id, viewModel.transactions, viewModel.categories)
 }
 
 @Composable
@@ -136,7 +111,7 @@ private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel
             )
             Spacer(Modifier.width(10.dp))
             Text(
-                text = transaction.date.toText(), 
+                text = transaction.date.toText(),
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline))
             Spacer(Modifier.weight(1f))
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {

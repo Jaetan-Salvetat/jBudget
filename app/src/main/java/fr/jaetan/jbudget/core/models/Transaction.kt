@@ -23,7 +23,7 @@ data class Transaction(
     companion object {
         fun fromMapList(data: List<DocumentSnapshot>): List<Transaction> = data.map { fromMap(it) }
 
-        private fun fromMap(transaction: DocumentSnapshot): Transaction = Transaction(
+        fun fromMap(transaction: DocumentSnapshot): Transaction = Transaction(
             id = transaction.id,
             date = transaction.data?.get("date").let { (it as Timestamp).toDate() },
             amount = transaction.data?.get("amount") as Double,

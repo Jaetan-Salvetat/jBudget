@@ -26,11 +26,12 @@ import com.himanshoe.charty.pie.config.PieData
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.Transaction
+import fr.jaetan.jbudget.core.services.JBudget
 import kotlin.random.Random
 
 
 @Composable
-fun BudgetChart(transactions: List<Transaction>, categories: List<Category>, showNewCategory: Boolean = true) {
+fun BudgetChart(budgetId: String, transactions: List<Transaction>, categories: List<Category>, showNewCategory: Boolean = true) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
     val categoryPercentages = remember { getPercentages(transactions) }
@@ -102,6 +103,13 @@ fun BudgetChart(transactions: List<Transaction>, categories: List<Category>, sho
             }
         }
     }
+
+    NewCategoryDialog(
+        isVisible = showCategoryDialog,
+        budgetId = budgetId,
+        dismiss = { showCategoryDialog = false },
+        onSave = { JBudget.state.budgets.find { b -> b.id == budgetId }?.categories?.add(it) }
+    )
 }
 
 

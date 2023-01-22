@@ -51,15 +51,11 @@ fun App() {
             val transactionViewModel = TransactionViewModel(navController)
             TransactionScreen(transactionViewModel)
         }
-        composable("${Screen.Transaction.route}/{budgetId}/{categoryId}/{amount}") {
-            val budgetId = it.arguments?.getString("budgetId")
-            val categoryId = it.arguments?.getString("categoryId")
-            val amount = it.arguments?.getString("amount")
+        composable("${Screen.Transaction.route}/{transactionId}") {
+            val transactionId = it.arguments?.getString("transactionId")
             val transactionViewModel = TransactionViewModel(
                 navController = navController,
-                currentBudgetId = budgetId,
-                currentCategoryId = categoryId,
-                currentAmount = amount
+                transactionId = transactionId
             )
 
             TransactionScreen(transactionViewModel)

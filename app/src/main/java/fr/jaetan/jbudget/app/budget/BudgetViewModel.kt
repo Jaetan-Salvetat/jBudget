@@ -12,9 +12,7 @@ import fr.jaetan.jbudget.core.services.JBudget
 class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     val transactions get() = JBudget.state.budgets.find { it.id == budgetId }?.transactions ?: listOf()
     val categories get() = JBudget.state.budgets.find { it.id == budgetId }?.categories ?: listOf()
-    var transactionLoadingState by mutableStateOf(State.Loading)
     var budget by mutableStateOf(null as Budget?)
-    var showNewCategoryDialog by mutableStateOf(false)
     var isEditable by mutableStateOf(false)
 
     @StringRes var firebaseResponse = null as Int?
@@ -35,6 +33,6 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     }
 
     fun navigateToUpdateTransactionScreen(navController: NavHostController, transaction: Transaction) {
-        navController.navigate("${Screen.Transaction.route}/${transaction.budgetId}/${transaction.id}/${transaction.amount}")
+        navController.navigate("${Screen.Transaction.route}/${transaction.id}")
     }
 }

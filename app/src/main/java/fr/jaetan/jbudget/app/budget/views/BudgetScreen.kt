@@ -15,7 +15,6 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.services.JBudget
-import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,13 +31,6 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         content = { BudgetContent(it, viewModel, navController) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
-
-    NewCategoryDialog(
-        isVisible = viewModel.showNewCategoryDialog,
-        budgetId = viewModel.budget!!.id,
-        dismiss = { viewModel.showNewCategoryDialog = false },
-        onSave = { JBudget.state.budgets.find { b -> b == viewModel.budget }?.categories?.add(it) }
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

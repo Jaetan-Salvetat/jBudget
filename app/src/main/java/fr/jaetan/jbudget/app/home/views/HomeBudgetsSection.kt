@@ -171,7 +171,7 @@ private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
         if (budget.transactions.isEmpty()) {
             Text(stringResource(R.string.empty_budget))
         } else {
-            BudgetChart(budget.transactions, budget.categories, false)
+            BudgetChart(budget.id, budget.transactions, budget.categories, false)
         }
         
         TextButton(

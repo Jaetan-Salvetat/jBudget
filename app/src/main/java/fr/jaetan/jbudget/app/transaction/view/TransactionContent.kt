@@ -46,7 +46,7 @@ fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(20.dp)
         ) {
-            TransactionSelectBudget(viewModel)
+            if (!viewModel.isInUpdateMode) TransactionSelectBudget(viewModel)
             TransactionSelectCategory(viewModel)
             AnimatedVisibility(viewModel.showCategoryInput) {
                 TransactionCategoryName(viewModel)
