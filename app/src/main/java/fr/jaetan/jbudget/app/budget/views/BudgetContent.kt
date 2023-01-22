@@ -113,7 +113,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
                 Box(
                     Modifier
                         .clip(RoundedCornerShape(7.dp))
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .background(category.color ?: MaterialTheme.colorScheme.secondaryContainer)
                         .clickable { }
                 ) {
                     Text(
