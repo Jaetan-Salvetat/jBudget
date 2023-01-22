@@ -5,11 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Remove
@@ -17,16 +15,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
-import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
@@ -38,7 +32,6 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
         item { BudgetDates(viewModel) }
-        item { BudgetCategories(viewModel) }
 
         stickyHeader { TransactionTitleSection() }
 
@@ -72,7 +65,7 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
 @Composable
 private fun GraphicWidget(viewModel: BudgetViewModel) {
     when (viewModel.transactionLoadingState) {
-        State.None -> BudgetChart(transactions = viewModel.transactions)
+        State.None -> BudgetChart(transactions = viewModel.transactions, viewModel.categories)
         State.Loading -> CircularProgressIndicator()
         else -> Text(text = stringResource(id = R.string.sample_error), color = MaterialTheme.colorScheme.errorContainer)
     }
@@ -96,56 +89,6 @@ private fun BudgetDates(viewModel: BudgetViewModel) {
                 viewModel.budget!!.endDate!!.toText() else
                 stringResource(id = R.string.actually),
             style = MaterialTheme.typography.titleMedium)
-    }
-}
-
-@Composable
-private fun BudgetCategories(viewModel: BudgetViewModel) {
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp)) {
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()) {
-            items(viewModel.categories) { category ->
-                Spacer(Modifier.width(10.dp))
-                Box(
-                    Modifier
-                        .clip(RoundedCornerShape(7.dp))
-                        .background(category.color ?: MaterialTheme.colorScheme.secondaryContainer)
-                        .clickable { }
-                ) {
-                    Text(
-                        text = category.name,
-                        modifier = Modifier.padding(15.dp, 10.dp),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-            }
-            item {
-                Spacer(Modifier.width(45.dp))
-            }
-        }
-        Box(
-            Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        0.0f to Color.Transparent,
-                        0.2f to MaterialTheme.colorScheme.background.copy(0.5f),
-                        0.6f to MaterialTheme.colorScheme.background.copy(1f)
-                    )
-                )
-                .align(Alignment.CenterEnd)
-                .fillMaxHeight()
-        ) {
-            IconButton(onClick = { viewModel.showNewCategoryDialog = true }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.expand_section_descriptor)
-                )
-            }
-        }
     }
 }
 
@@ -176,11 +119,7 @@ private fun TransactionTitleSection() {
 @Composable
 private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
     var isExpanded by remember { mutableStateOf(false) }
-    var category by remember { mutableStateOf(null as Category?) }
-
-    if (category == null) {
-        viewModel.getCategory(transaction.categoryId) { category = it }
-    }
+    val category = viewModel.categories.find { it.id == transaction.categoryId }
 
     Box(modifier = Modifier
         .clickable { viewModel.navigateToUpdateTransactionScreen(navController, transaction) }
@@ -203,8 +142,7 @@ private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel
             Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {
                 Text(
                     modifier = Modifier.padding(5.dp, 2.dp),
-                    text = if (category == null) stringResource(id = R.string.no_category_assigned)
-                    else category!!.name,
+                    text = category?.name ?: stringResource(id = R.string.no_category_assigned),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onTertiaryContainer)
             }

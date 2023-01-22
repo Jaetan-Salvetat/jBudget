@@ -37,7 +37,7 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         isVisible = viewModel.showNewCategoryDialog,
         budgetId = viewModel.budget!!.id,
         dismiss = { viewModel.showNewCategoryDialog = false },
-        onSave = { viewModel.categories.add(it) }
+        onSave = { JBudget.state.budgets.find { b -> b == viewModel.budget }?.categories?.add(it) }
     )
 }
 

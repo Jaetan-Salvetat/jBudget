@@ -167,7 +167,12 @@ private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
         Modifier
             .fillMaxWidth()
             .padding(bottom = 20.dp)) {
-        BudgetChart(transactions = listOf())
+
+        if (budget.transactions.isEmpty()) {
+            Text(stringResource(R.string.empty_budget))
+        } else {
+            BudgetChart(budget.transactions, budget.categories, false)
+        }
         
         TextButton(
             onClick = { viewModel.navigateToBudgetScreen(budget.id) },

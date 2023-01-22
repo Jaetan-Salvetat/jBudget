@@ -54,13 +54,13 @@
     <string name="actually">maintenant</string>
     <string name="end_date">Date de fin</string>
     <string name="more_details">Plus de détails</string>
-
     <string name="new_transaction">Nouvelle transaction</string>
     <string name="budget">Budget</string>
     <string name="category">Catégorie</string>
     <string name="zero">0</string>
     <string name="new_male">Nouveau</string>
     <string name="new_female">Nouvelle</string>
+    <string name="empty_budget">Ce budget est vide</string>
 
     <string name="category_name">Nom de la catégorie</string>
     <string name="new_category">Nouvelle catégorie</string>
