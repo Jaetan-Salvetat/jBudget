@@ -1,6 +1,7 @@
 package fr.jaetan.jbudget.core.models
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import com.google.firebase.firestore.DocumentSnapshot
 
 data class Category(
@@ -12,7 +13,7 @@ data class Category(
     fun toMap(): Map<String, Any?> = mapOf(
         "name" to name,
         "budgetId" to budgetId,
-        "color" to color
+        "color" to color?.toArgb()?.toLong()
     )
 
     companion object {
@@ -22,7 +23,7 @@ data class Category(
             id = transaction.id,
             name = transaction.data?.get("name") as String,
             budgetId = transaction.data?.get("budgetId") as String,
-            color = transaction.data?.get("color") as Color?
+            color = Color((transaction.data?.get("color") as Long))
         )
     }
 }
