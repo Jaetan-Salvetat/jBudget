@@ -71,7 +71,11 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
 
 @Composable
 private fun GraphicWidget(viewModel: BudgetViewModel) {
-    BudgetChart(transactions = viewModel.transactions)
+    when (viewModel.transactionLoadingState) {
+        State.None -> BudgetChart(transactions = viewModel.transactions)
+        State.Loading -> CircularProgressIndicator()
+        else -> Text(text = stringResource(id = R.string.sample_error), color = MaterialTheme.colorScheme.errorContainer)
+    }
 }
 
 @Composable
@@ -80,10 +84,13 @@ private fun BudgetDates(viewModel: BudgetViewModel) {
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()) {
-    Text(
-        text = viewModel.budget!!.startDate.toText(),
-        style = MaterialTheme.typography.titleMedium)
-    Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
+
+        Text(
+            text = viewModel.budget!!.startDate.toText(),
+            style = MaterialTheme.typography.titleMedium)
+
+        Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
+
         Text(
             text = if (viewModel.budget!!.endDate != null)
                 viewModel.budget!!.endDate!!.toText() else
@@ -102,6 +109,7 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
             modifier = Modifier
                 .fillMaxWidth()) {
             items(viewModel.categories) { category ->
+                Spacer(Modifier.width(10.dp))
                 Box(
                     Modifier
                         .clip(RoundedCornerShape(7.dp))
@@ -114,8 +122,6 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
-                Spacer(Modifier.width(10.dp))
-                
             }
             item {
                 Spacer(Modifier.width(45.dp))
@@ -146,9 +152,13 @@ private fun BudgetCategories(viewModel: BudgetViewModel) {
 
 @Composable
 private fun TransactionTitleSection() {
-    Box(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .background(MaterialTheme.colorScheme.background)) {
         Row(
-            Modifier.fillMaxWidth().padding(20.dp, 10.dp, 10.dp, 10.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(20.dp, 10.dp, 10.dp, 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
