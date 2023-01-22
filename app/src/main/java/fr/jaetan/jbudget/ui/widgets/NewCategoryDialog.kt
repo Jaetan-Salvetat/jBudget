@@ -52,6 +52,7 @@ fun NewCategoryDialog(isVisible: Boolean, budgetId: String, dismiss: () -> Unit,
                         keyboardActions = KeyboardActions(onDone = { save() })
                     )
                     Modifier.height(30.dp)
+                    Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         onClick = save,
                         enabled = loadingState == State.None && name.isCategoryName
