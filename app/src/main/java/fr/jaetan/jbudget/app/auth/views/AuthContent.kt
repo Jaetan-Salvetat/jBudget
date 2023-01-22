@@ -20,6 +20,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.auth.AuthScreens
 import fr.jaetan.jbudget.app.auth.AuthViewModel
@@ -30,7 +33,7 @@ import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
+fun AuthContent(padding: PaddingValues, navController: NavHostController, viewModel: AuthViewModel) {
     val focusManager = LocalFocusManager.current
     val keyboardActions = KeyboardActions(
         onNext = { focusManager.moveFocus(FocusDirection.Down) },
@@ -63,9 +66,14 @@ fun AuthContent(padding: PaddingValues, viewModel: AuthViewModel) {
         if (viewModel.state == State.Error) ErrorContainer(viewModel.errorMessageRes)
         Spacer(Modifier.height(35.dp))
 
-        when (viewModel.currentScreen) {
-            AuthScreens.Login -> LoginView(viewModel, keyboardActions, colors)
-            AuthScreens.Register -> RegisterView(viewModel, keyboardActions, colors)
+
+        NavHost(navController, AuthScreens.Login.route) {
+            composable(AuthScreens.Login.route) {
+                LoginView(viewModel, keyboardActions, colors)
+            }
+            composable(AuthScreens.Register.route) {
+                RegisterView(viewModel, keyboardActions, colors)
+            }
         }
     }
 }

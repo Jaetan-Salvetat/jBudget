@@ -17,6 +17,7 @@ import fr.jaetan.jbudget.app.settings.view.SettingsScreen
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
 import fr.jaetan.jbudget.app.transaction.view.TransactionScreen
 import fr.jaetan.jbudget.core.models.Screen
+import fr.jaetan.jbudget.ui.widgets.AppBackHandler
 
 @Composable
 fun App() {
@@ -30,6 +31,8 @@ fun App() {
             darkIcons = !darkTheme
         )
     }
+
+    AppBackHandler(navController)
 
     NavHost(navController, Screen.Home.route) {
         composable(Screen.Home.route) {

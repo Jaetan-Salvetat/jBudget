@@ -10,11 +10,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.JBudget"
-        tools:targetApi="31">
+        tools:targetApi="33"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".app.auth.AuthActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.JBudget">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,6 @@
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.JBudget" />
     </application>
 
