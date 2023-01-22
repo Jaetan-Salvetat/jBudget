@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isCategoryName
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +32,7 @@ fun NewCategoryDialog(isVisible: Boolean, budgetId: String, dismiss: () -> Unit,
             loadingState = State.Loading
             JBudget.categoryRepository.createCategory(
                 Category(
-                name = name, budgetId = budgetId)
+                name = name, budgetId = budgetId, color = Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256), 125))
             ) { category, _ ->
                 dismiss()
                 category?.let { onSave(category) }

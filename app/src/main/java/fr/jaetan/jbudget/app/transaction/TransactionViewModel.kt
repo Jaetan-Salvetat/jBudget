@@ -4,12 +4,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.core.models.*
 import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
 import java.util.Calendar
+import kotlin.random.Random
 
 class TransactionViewModel(
     val navController: NavHostController,
@@ -71,7 +73,11 @@ class TransactionViewModel(
     fun saveCategory() {
         if (categoryName.isEmpty()) return
         showCategoryInput = false
-        val mutableCategory = Category(name = categoryName, budgetId = currentBudget!!.id)
+        val mutableCategory = Category(
+            name = categoryName,
+            budgetId = currentBudget!!.id,
+            color = Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256), 125)
+        )
 
         JBudget.categoryRepository.createCategory(mutableCategory) { category, response ->
             if (response == FirebaseResponse.Success) {
