@@ -18,7 +18,7 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
     var newBudgetState by mutableStateOf(State.None)
     var startDate: Date by mutableStateOf(Calendar.getInstance().time)
     var endDate by mutableStateOf(null as Date?)
-    var dismiss: () -> Unit
+    private var dismiss: () -> Unit
 
     init {
         this.dismiss = {
@@ -30,6 +30,7 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
     }
 
     fun createBudget(navController: NavHostController) {
+        newBudgetState = State.Loading
         val budget = Budget(
             name = newBudgetValue,
             startDate = startDate,
@@ -40,11 +41,8 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
                 FirebaseResponse.Error -> { newBudgetError = response.messageRes }
                 FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
                 else -> {
-                    JBudget.state.budgets.add(0, budget)
+                    JBudget.state.budgets.add(budget.copy(id = budgetId!!))
                     navController.navigate("${Screen.Budget.route}/$budgetId")
-                    newBudgetState = State.None
-                    newBudgetValue = ""
-                    dismiss()
                 }
             }
         }

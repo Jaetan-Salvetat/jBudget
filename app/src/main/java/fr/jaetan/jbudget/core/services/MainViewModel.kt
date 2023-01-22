@@ -1,7 +1,6 @@
 package fr.jaetan.jbudget.core.services
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,9 +40,6 @@ class MainViewModel: ViewModel() {
         context.settingsStore.data.collect { prefs ->
             val theme = Themes.values().find { prefs[THEME_KEY] == it.textRes.toString() }
             val isNotifEnabled = prefs[IS_NOTIFICATION_ENABLED]
-
-            Log.d("test", isNotifEnabled ?: "null")
-            Log.d("test", "false".toBoolean().toString())
 
             theme?.let {
                 _currentTheme = it

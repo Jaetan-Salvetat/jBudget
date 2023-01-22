@@ -7,11 +7,11 @@ import fr.jaetan.jbudget.core.models.FirebaseResponse
 class CategoryRepository {
     private val database = FirebaseFirestore.getInstance().collection("categories")
 
-    fun createCategory(category: Category, callback: (String?, FirebaseResponse) -> Unit) {
+    fun createCategory(category: Category, callback: (Category?, FirebaseResponse) -> Unit) {
         database.add(category.toMap())
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    callback(it.result.id, FirebaseResponse.Success)
+                    callback(category.copy(id = it.result.id), FirebaseResponse.Success)
                     return@addOnCompleteListener
                 }
                 callback(null, FirebaseResponse.Error)
@@ -26,6 +26,17 @@ class CategoryRepository {
                     return@addOnCompleteListener
                 }
                 callback(listOf(), FirebaseResponse.Error)
+            }
+    }
+
+    fun findById(id: String, callback: (Category?, FirebaseResponse) -> Unit) {
+        database.document(id).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(Category.fromMap(it.result), FirebaseResponse.Success)
+                    return@addOnCompleteListener
+                }
+                callback(null, FirebaseResponse.Error)
             }
     }
 }

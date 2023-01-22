@@ -11,7 +11,12 @@ import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
 import java.util.Calendar
 
-class TransactionViewModel(val navController: NavHostController): ViewModel() {
+class TransactionViewModel(
+    val navController: NavHostController,
+    currentBudgetId: String? = null,
+    currentCategoryId: String? = null,
+    currentAmount: String? = null,
+): ViewModel() {
     var showCategoryInput by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
@@ -44,19 +49,21 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     }
 
 
-    fun changeCurrentBudget(budget: Budget?) {
+    fun changeCurrentBudget(budget: Budget?, categoryId: String? = null) {
         showBudgetDropDown = false
-        getBudgetCategories(budget)
+        getBudgetCategories(budget, categoryId)
     }
 
-    private fun getBudgetCategories(budget: Budget?) {
+    private fun getBudgetCategories(budget: Budget?, categoryId: String? = null) {
         if (budget == null) return
         JBudget.categoryRepository.getAll(budget.id) { categories, response ->
             if (response == FirebaseResponse.Success) {
                 this.categories.clear()
                 this.categories.addAll(categories)
                 currentBudget = budget
-                currentCategory = categories.firstOrNull()
+                if (categoryId != null) {
+                    categories.find { it.id == categoryId }
+                }
             }
         }
     }
@@ -64,12 +71,11 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
     fun saveCategory() {
         if (categoryName.isEmpty()) return
         showCategoryInput = false
-        val category = Category(name = categoryName, budgetId = currentBudget!!.id)
+        val mutableCategory = Category(name = categoryName, budgetId = currentBudget!!.id)
 
-        JBudget.categoryRepository.createCategory(category) { categoryId, response ->
+        JBudget.categoryRepository.createCategory(mutableCategory) { category, response ->
             if (response == FirebaseResponse.Success) {
-                category.id = categoryId!!
-                categories.add(category)
+                categories.add(category!!)
             }
         }
     }
@@ -79,7 +85,7 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
         val transaction = Transaction(
             date = Calendar.getInstance().time,
             amount = amountString.replace(",", ".").toDouble(),
-            categoryId = currentCategory!!.id,
+            categoryId = currentCategory?.id,
             budgetId = currentBudget!!.id
         )
 
@@ -94,7 +100,15 @@ class TransactionViewModel(val navController: NavHostController): ViewModel() {
         categoryName = ""
     }
 
-    init { changeCurrentBudget(JBudget.state.budgets.firstOrNull()) }
+    init {
+        if (currentBudgetId != null) {
+            changeCurrentBudget(budgets.find { it.id == currentBudgetId }, currentCategoryId)
+        } else {
+            changeCurrentBudget(JBudget.state.budgets.firstOrNull())
+        }
+
+        amountString = currentAmount.orEmpty()
+    }
 
     /*private fun Double.toPriceFormat(): String {
         val nf = NumberFormat.getCurrencyInstance()

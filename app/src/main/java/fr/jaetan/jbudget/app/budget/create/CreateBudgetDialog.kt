@@ -119,7 +119,6 @@ private fun CreateBudgetButtons(navController: NavHostController, viewModel: Cre
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                viewModel.newBudgetState = State.Loading
                 viewModel.createBudget(navController)
             },
             enabled = when {

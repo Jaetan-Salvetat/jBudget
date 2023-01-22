@@ -15,7 +15,7 @@ data class Category(
     companion object {
         fun fromMapList(data: List<DocumentSnapshot>): List<Category> = data.map { fromMap(it) }
 
-        private fun fromMap(transaction: DocumentSnapshot): Category = Category(
+        fun fromMap(transaction: DocumentSnapshot): Category = Category(
             id = transaction.id,
             name = transaction.data?.get("name") as String,
             budgetId = transaction.data?.get("budgetId") as String
