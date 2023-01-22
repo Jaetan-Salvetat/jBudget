@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,7 +36,6 @@ import fr.jaetan.jbudget.ui.widgets.BudgetChart
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
-        item { BudgetDates(viewModel) }
         item { BudgetCategories(viewModel) }
 
         stickyHeader { TransactionTitleSection() }
@@ -78,26 +76,6 @@ private fun GraphicWidget(viewModel: BudgetViewModel) {
     }
 }
 
-@Composable
-private fun BudgetDates(viewModel: BudgetViewModel) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()) {
-
-        Text(
-            text = viewModel.budget!!.startDate.toText(),
-            style = MaterialTheme.typography.titleMedium)
-
-        Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
-
-        Text(
-            text = if (viewModel.budget!!.endDate != null)
-                viewModel.budget!!.endDate!!.toText() else
-                stringResource(id = R.string.actually),
-            style = MaterialTheme.typography.titleMedium)
-    }
-}
 
 @Composable
 private fun BudgetCategories(viewModel: BudgetViewModel) {

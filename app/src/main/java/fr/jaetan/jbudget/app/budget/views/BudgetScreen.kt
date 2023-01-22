@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,7 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.services.JBudget
+import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +49,7 @@ private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarSc
     LargeTopAppBar(
         title = { Text(text = viewModel.budget!!.name) },
         actions = {
+            BudgetDates(viewModel = viewModel)
             if( viewModel.isEditable ) {
                 IconButton(onClick = {
                     JBudget.budgetRepository.delete(viewModel.budget!!.id) {
@@ -78,4 +81,19 @@ private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarSc
         },
         scrollBehavior = scrollBehavior
     )
+}
+
+@Composable
+private fun BudgetDates(viewModel: BudgetViewModel) {
+    Text(
+        text = viewModel.budget!!.startDate.toText(),
+        style = MaterialTheme.typography.bodySmall)
+
+    Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
+
+    Text(
+        text = if (viewModel.budget!!.endDate != null)
+            viewModel.budget!!.endDate!!.toText() else
+            stringResource(id = R.string.actually),
+        style = MaterialTheme.typography.bodySmall)
 }
