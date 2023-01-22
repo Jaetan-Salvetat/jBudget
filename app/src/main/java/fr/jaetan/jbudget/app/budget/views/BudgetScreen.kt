@@ -2,7 +2,9 @@ package fr.jaetan.jbudget.app.budget.views
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,8 +47,25 @@ private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarSc
     LargeTopAppBar(
         title = { Text(text = viewModel.budget!!.name) },
         actions = {
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = stringResource(R.string.edit_descriptor))
+            if( viewModel.isEditable ) {
+                IconButton(onClick = {
+                    JBudget.budgetRepository.delete(viewModel.budget!!.id) {
+                        if (it == FirebaseResponse.Success) {
+                            navController.popBackStack()
+                        } else {
+                            /* TODO */
+                        }
+                    }
+                }) {
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.budget_delete))
+                }
+            }
+            IconButton(onClick = { viewModel.isEditable = !viewModel.isEditable }) {
+                if( viewModel.isEditable ) {
+                    Icon(imageVector = Icons.Default.Save, contentDescription = stringResource(R.string.edit_descriptor))
+                } else {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = stringResource(R.string.edit_descriptor))
+                }
             }
         },
         navigationIcon = {

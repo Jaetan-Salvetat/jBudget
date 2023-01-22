@@ -34,4 +34,22 @@ class BudgetRepository {
                 callback(listOf(), FirebaseResponse.Error)
             }
     }
+
+    fun delete(budgetId: String, callback: (FirebaseResponse) -> Unit) {
+        database.document(budgetId).delete().addOnCompleteListener { task ->
+            if (task.isSuccessful)
+                JBudget.transactionRepository.deleteAllBy(budgetId) { transactionDeleted ->
+                    if (transactionDeleted == FirebaseResponse.Success) {
+                        JBudget.categoryRepository.deleteAllBy(budgetId) { categoryDeleted ->
+                            if (categoryDeleted == FirebaseResponse.Success) {
+                                callback(FirebaseResponse.Success)
+                                JBudget.state.budgets.removeIf { it.id == budgetId }
+                            } else {
+                                callback(FirebaseResponse.Error)
+                            }
+                        }
+                    }
+                }
+        }
+    }
 }

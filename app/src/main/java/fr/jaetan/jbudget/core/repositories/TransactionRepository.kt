@@ -42,4 +42,20 @@ class TransactionRepository {
                 callback(FirebaseResponse.Error)
             }
     }
+
+    fun deleteAllBy(budgetId: String, callback: (FirebaseResponse) -> Unit) {
+        database.whereEqualTo("budgetId", budgetId).get().addOnCompleteListener {
+            if (it.result.documents.isEmpty()) {
+                callback(FirebaseResponse.Success)
+                return@addOnCompleteListener
+            }
+
+                it.result.documents.forEach { doc ->
+                doc.reference.delete().addOnCompleteListener { task ->
+                    if (!task.isSuccessful) callback(FirebaseResponse.Error)
+                }
+                callback(FirebaseResponse.Success)
+            }
+        }
+    }
 }
