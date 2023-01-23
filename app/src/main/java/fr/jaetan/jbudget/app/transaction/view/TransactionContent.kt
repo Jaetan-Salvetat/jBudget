@@ -286,7 +286,7 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
             CircularProgressIndicator(Modifier.size(20.dp))
         } else {
             Text(
-                if (viewModel.isInUpdateMode) {
+                if (!viewModel.isInUpdateMode) {
                     stringResource(R.string.new_dialog_create)
                 } else {
                     stringResource(R.string.update)
