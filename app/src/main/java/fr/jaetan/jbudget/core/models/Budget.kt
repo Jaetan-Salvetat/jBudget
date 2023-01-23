@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.core.models
 
+import androidx.compose.runtime.mutableStateListOf
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -12,7 +13,10 @@ data class Budget(
     val id: String = "",
     var userId: String = FirebaseAuth.getInstance().currentUser!!.uid,
     var startDate: Date = Calendar.getInstance().time,
-    var endDate: Date? = null) {
+    var endDate: Date? = null
+) {
+    val transactions = mutableStateListOf<Transaction>()
+    val categories = mutableStateListOf<Category>()
 
     val isCurrentBudget: Boolean
         get() = when {

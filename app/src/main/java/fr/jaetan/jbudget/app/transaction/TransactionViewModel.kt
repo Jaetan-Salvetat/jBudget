@@ -15,9 +15,7 @@ import kotlin.random.Random
 
 class TransactionViewModel(
     val navController: NavHostController,
-    currentBudgetId: String? = null,
-    currentCategoryId: String? = null,
-    currentAmount: String? = null,
+    private val transactionId: String? = null
 ): ViewModel() {
     var showCategoryInput by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
@@ -30,6 +28,7 @@ class TransactionViewModel(
     var categoryName by mutableStateOf("")
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
     var loadingState by mutableStateOf(State.None)
+    var isInUpdateMode by mutableStateOf(false)
 
     fun updateAmount(value: String) {
         val decimalFormatter = DecimalFormat()
@@ -63,9 +62,7 @@ class TransactionViewModel(
                 this.categories.clear()
                 this.categories.addAll(categories)
                 currentBudget = budget
-                if (categoryId != null) {
-                    categories.find { it.id == categoryId }
-                }
+                currentCategory = categories.find { it.id == categoryId }
             }
         }
     }
@@ -88,12 +85,23 @@ class TransactionViewModel(
 
     fun save() {
         loadingState = State.Loading
+
         val transaction = Transaction(
+            id = transactionId ?: "",
             date = Calendar.getInstance().time,
             amount = amountString.replace(",", ".").toDouble(),
             categoryId = currentCategory?.id,
             budgetId = currentBudget!!.id
         )
+
+
+        if (isInUpdateMode) {
+            JBudget.transactionRepository.updateTransaction(transaction) { response ->
+                if (response == FirebaseResponse.Success) navController.popBackStack()
+                loadingState = State.Error
+            }
+            return
+        }
 
         JBudget.transactionRepository.createTransaction(transaction) { _, response ->
             if (response == FirebaseResponse.Success) navController.popBackStack()
@@ -107,13 +115,15 @@ class TransactionViewModel(
     }
 
     init {
-        if (currentBudgetId != null) {
-            changeCurrentBudget(budgets.find { it.id == currentBudgetId }, currentCategoryId)
+        if (transactionId != null) {
+            isInUpdateMode = true
+            JBudget.transactionRepository.findById(transactionId) { transaction, _ ->
+                changeCurrentBudget(budgets.find { it.id == transaction?.budgetId }, transaction?.categoryId)
+                amountString = transaction?.amount?.toString().orEmpty()
+            }
         } else {
             changeCurrentBudget(JBudget.state.budgets.firstOrNull())
         }
-
-        amountString = currentAmount.orEmpty()
     }
 
     /*private fun Double.toPriceFormat(): String {

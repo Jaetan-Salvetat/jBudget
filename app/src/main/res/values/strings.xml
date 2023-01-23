@@ -17,6 +17,7 @@
     <string name="cancel">Annuler</string>
     <string name="hide">Cacher</string>
     <string name="quit">quitter</string>
+    <string name="update">Mettre à jour</string>
 
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
@@ -54,13 +55,13 @@
     <string name="actually">maintenant</string>
     <string name="end_date">Date de fin</string>
     <string name="more_details">Plus de détails</string>
-
     <string name="new_transaction">Nouvelle transaction</string>
     <string name="budget">Budget</string>
     <string name="category">Catégorie</string>
     <string name="zero">0</string>
     <string name="new_male">Nouveau</string>
     <string name="new_female">Nouvelle</string>
+    <string name="empty_budget">Ce budget est vide</string>
 
     <string name="category_name">Nom de la catégorie</string>
     <string name="new_category">Nouvelle catégorie</string>
@@ -96,4 +97,5 @@
     <string name="create_your_first_budget">Créer ton 1er budget !</string>
     <string name="can_no_specify_date">Tu peux créer un budget sans spécifier de date de fin</string>
     <string name="long_press_to_remove_tips">Tu peux Cacher un "tips" en restant appuyé sur le tips</string>
+    <string name="remove_budget_with_swipe">Tu peux supprimer un budget avec un geste du doigt de la gauche vers la droite !</string>
 </resources>

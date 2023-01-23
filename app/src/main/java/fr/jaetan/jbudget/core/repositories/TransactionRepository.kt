@@ -4,6 +4,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Transaction
+import fr.jaetan.jbudget.core.services.JBudget
 
 class TransactionRepository {
     private val database = Firebase.firestore.collection("transactions")
@@ -20,6 +21,17 @@ class TransactionRepository {
             }
     }
 
+    fun findById(id: String, callback: (Transaction?, FirebaseResponse) -> Unit) {
+        database.document(id).get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(Transaction.fromMap(it.result), FirebaseResponse.Success)
+                    return@addOnCompleteListener
+                }
+                callback(null, FirebaseResponse.Error)
+            }
+    }
+
     fun createTransaction(transaction: Transaction, callback: (Transaction?, FirebaseResponse) -> Unit) {
         database.add(transaction.toMap())
             .addOnSuccessListener { documentReference ->
@@ -29,6 +41,29 @@ class TransactionRepository {
             }
             .addOnFailureListener {
                 callback(null, FirebaseResponse.Error)
+            }
+    }
+
+    fun updateTransaction(transaction: Transaction, callback: (FirebaseResponse) -> Unit) {
+        database.document(transaction.id).set(transaction.toMap())
+            .addOnSuccessListener {
+                callback(FirebaseResponse.Success)
+                JBudget.state.budgets.forEach { budget ->
+                    if (budget.transactions.find { it == transaction } != null) {
+                        val transactions = JBudget.state.budgets.find { it == budget }?.transactions?.toList()
+
+                        transactions?.find { it.id == transaction.id }?.amount = transaction.amount
+                        transactions?.find { it.id == transaction.id }?.categoryId = transaction.categoryId
+                        JBudget.state.budgets.find { it == budget }?.transactions?.clear()
+                        JBudget.state.budgets.find { it == budget }?.transactions?.addAll(transactions as Collection<Transaction>)
+                    }
+                }
+            }
+            .addOnCanceledListener {
+                callback(FirebaseResponse.ConnectivityError)
+            }
+            .addOnFailureListener {
+                callback(FirebaseResponse.Error)
             }
     }
 
@@ -50,7 +85,7 @@ class TransactionRepository {
                 return@addOnCompleteListener
             }
 
-                it.result.documents.forEach { doc ->
+            it.result.documents.forEach { doc ->
                 doc.reference.delete().addOnCompleteListener { task ->
                     if (!task.isSuccessful) callback(FirebaseResponse.Error)
                 }

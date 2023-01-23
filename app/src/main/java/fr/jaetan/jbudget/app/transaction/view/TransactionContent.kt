@@ -46,7 +46,7 @@ fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) 
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(20.dp)
         ) {
-            TransactionSelectBudget(viewModel)
+            if (!viewModel.isInUpdateMode) TransactionSelectBudget(viewModel)
             TransactionSelectCategory(viewModel)
             AnimatedVisibility(viewModel.showCategoryInput) {
                 TransactionCategoryName(viewModel)
@@ -285,7 +285,13 @@ private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
         if (viewModel.loadingState == State.Loading) {
             CircularProgressIndicator(Modifier.size(20.dp))
         } else {
-            Text(stringResource(R.string.new_dialog_create))
+            Text(
+                if (viewModel.isInUpdateMode) {
+                    stringResource(R.string.new_dialog_create)
+                } else {
+                    stringResource(R.string.update)
+                }
+            )
         }
     }
 }

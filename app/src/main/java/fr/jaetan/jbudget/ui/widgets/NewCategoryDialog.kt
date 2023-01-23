@@ -42,7 +42,7 @@ fun NewCategoryDialog(isVisible: Boolean, budgetId: String, dismiss: () -> Unit,
         Dialog(onDismissRequest = dismiss) {
             Box(Modifier.background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))) {
                 Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.new_category))
+                    Text(stringResource(R.string.new_category), style = MaterialTheme.typography.titleLarge)
                     Spacer(Modifier.height(20.dp))
                     OutlinedTextField(
                         value = name,
@@ -51,7 +51,6 @@ fun NewCategoryDialog(isVisible: Boolean, budgetId: String, dismiss: () -> Unit,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { save() })
                     )
-                    Modifier.height(30.dp)
                     Spacer(modifier = Modifier.height(10.dp))
                     Button(
                         onClick = save,

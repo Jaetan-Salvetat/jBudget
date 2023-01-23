@@ -24,6 +24,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     // Home tips
     var showDeleteTipsButton by mutableStateOf(false)
     val tips = mutableStateListOf(
+        TipsItem(R.string.remove_budget_with_swipe) {},
         TipsItem(R.string.long_press_to_remove_tips) { showDeleteTipsButton = true },
         TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) },
         TipsItem(R.string.can_no_specify_date) {},
@@ -63,6 +64,26 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
 
+    private fun getTransactions() {
+        JBudget.state.budgets.forEach { budget ->
+            JBudget.state.budgets.find { it == budget }
+            JBudget.transactionRepository.getAll(budget.id) { transactions, _ ->
+                JBudget.state.budgets.find { it == budget }?.transactions?.clear()
+                JBudget.state.budgets.find { it == budget }?.transactions?.addAll(transactions)
+            }
+        }
+    }
+
+    private fun getCategories() {
+        JBudget.state.budgets.forEach { budget ->
+            JBudget.state.budgets.find { it == budget }
+            JBudget.categoryRepository.getAll(budget.id) { categories, _ ->
+                JBudget.state.budgets.find { it == budget }?.categories?.clear()
+                JBudget.state.budgets.find { it == budget }?.categories?.addAll(categories)
+            }
+        }
+    }
+
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
     var fabExpanded by mutableStateOf(false)
@@ -88,10 +109,14 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     )
 
     init {
-        selectedCurrentBudgets.addAll(currentBudgets)
+        currentBudgets.firstOrNull()?.let {
+            selectedCurrentBudgets.add(it)
+        }
         if (JBudget.state.budgets.isEmpty()) {
             tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
         }
+        getTransactions()
+        getCategories()
     }
 }
 

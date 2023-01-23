@@ -34,13 +34,6 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         content = { BudgetContent(it, viewModel, navController) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
-
-    NewCategoryDialog(
-        isVisible = viewModel.showNewCategoryDialog,
-        budgetId = viewModel.budget!!.id,
-        dismiss = { viewModel.showNewCategoryDialog = false },
-        onSave = { viewModel.categories.add(it) }
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
