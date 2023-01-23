@@ -29,7 +29,6 @@ import fr.jaetan.jbudget.ui.widgets.BudgetChart
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
-        item { BudgetDates(viewModel) }
 
         stickyHeader { TransactionTitleSection() }
 
