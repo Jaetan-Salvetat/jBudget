@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -46,26 +45,6 @@ private fun GraphicWidget(viewModel: BudgetViewModel) {
     BudgetChart(viewModel.budget!!.id, viewModel.transactions, viewModel.categories)
 }
 
-@Composable
-private fun BudgetDates(viewModel: BudgetViewModel) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()) {
-
-        Text(
-            text = viewModel.budget!!.startDate.toText(),
-            style = MaterialTheme.typography.titleMedium)
-
-        Icon(imageVector = Icons.Rounded.Remove, contentDescription = null)
-
-        Text(
-            text = if (viewModel.budget!!.endDate != null)
-                viewModel.budget!!.endDate!!.toText() else
-                stringResource(id = R.string.actually),
-            style = MaterialTheme.typography.titleMedium)
-    }
-}
 
 
 @Composable
