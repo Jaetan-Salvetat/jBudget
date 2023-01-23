@@ -97,4 +97,5 @@
     <string name="create_your_first_budget">Créer ton 1er budget !</string>
     <string name="can_no_specify_date">Tu peux créer un budget sans spécifier de date de fin</string>
     <string name="long_press_to_remove_tips">Tu peux Cacher un "tips" en restant appuyé sur le tips</string>
+    <string name="remove_budget_with_swipe">Tu peux supprimer un budget avec un geste du doigt de la gauche vers la droite !</string>
 </resources>
