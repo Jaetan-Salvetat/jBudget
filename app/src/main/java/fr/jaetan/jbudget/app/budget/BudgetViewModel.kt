@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.JBudget
@@ -24,11 +23,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     }
 
     fun removeTransaction(transaction: Transaction) {
-        JBudget.transactionRepository.removeTransaction(transaction.id) { response ->
-            if (response == FirebaseResponse.Success) {
-                JBudget.state.budgets.find { it.id == budgetId }?.transactions?.remove(transaction)
-            }
-        }
+        JBudget.transactionRepository.removeTransaction(transaction.id)
     }
 
     fun navigateToUpdateTransactionScreen(navController: NavHostController, transaction: Transaction) {
