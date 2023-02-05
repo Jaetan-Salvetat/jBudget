@@ -1,0 +1,18 @@
+name: Linter
+on: [push]
+jobs:
+    ktlint:
+        name: Linter
+        runs-on: ubuntu-latest
+        steps:
+            # Setup
+            - name: Clone repo
+              uses: actions/checkout@master
+              with:
+                  fetch-depth: 1
+            #Linter
+            - name: ktlint
+              uses: ScaCap/action-ktlint@master
+              with:
+                  github_token: ${{ secrets.github_token }}
+                  reporter: github-pr-review
