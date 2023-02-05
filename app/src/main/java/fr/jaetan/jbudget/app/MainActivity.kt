@@ -21,8 +21,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val context = this
-            LaunchedEffect(Unit) { JBudget.init(context) }
+            LaunchedEffect(Unit) { JBudget.initFireStore() }
 
             if (!JBudget.state.isLogged) {
                 startActivity(AuthActivity.launch(this))

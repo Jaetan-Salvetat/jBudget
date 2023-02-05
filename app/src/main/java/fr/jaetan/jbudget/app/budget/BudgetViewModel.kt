@@ -1,12 +1,14 @@
 package fr.jaetan.jbudget.app.budget
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import fr.jaetan.jbudget.core.models.*
+import fr.jaetan.jbudget.core.models.Budget
+import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.Screen
+import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetViewModel(private val budgetId: String?) : ViewModel() {
@@ -15,11 +17,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     var budget by mutableStateOf(null as Budget?)
     var isEditable by mutableStateOf(false)
 
-    @StringRes var firebaseResponse = null as Int?
-
-    init {
-        getBudget(budgetId)
-    }
+    init { getBudget(budgetId) }
 
     private fun getBudget(budgetId: String?) {
         budget = JBudget.state.budgets.find { it.id == budgetId }
@@ -27,8 +25,9 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
 
     fun removeTransaction(transaction: Transaction) {
         JBudget.transactionRepository.removeTransaction(transaction.id) { response ->
-            if (response != FirebaseResponse.Success) return@removeTransaction
-            JBudget.state.budgets.find { it.id ==  budgetId}?.transactions?.remove(transaction)
+            if (response == FirebaseResponse.Success) {
+                JBudget.state.budgets.find { it.id == budgetId }?.transactions?.remove(transaction)
+            }
         }
     }
 

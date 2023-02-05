@@ -2,11 +2,7 @@ package fr.jaetan.jbudget.core.services
 
 import android.content.Context
 import com.google.firebase.firestore.FirebaseFirestore
-import fr.jaetan.jbudget.core.repositories.AuthRepository
-import fr.jaetan.jbudget.core.repositories.BudgetRepository
-import fr.jaetan.jbudget.core.repositories.CategoryRepository
-import fr.jaetan.jbudget.core.repositories.TransactionRepository
-import fr.jaetan.jbudget.core.repositories.UserRepository
+import fr.jaetan.jbudget.core.repositories.*
 
 class JBudget {
     companion object {
@@ -20,11 +16,11 @@ class JBudget {
 
         suspend fun init(context: Context) {
             state.init(context)
-            initFirebase()
         }
 
-        private fun initFirebase() {
+        suspend fun initFireStore() {
             FirebaseFirestore.getInstance().clearPersistence()
+            budgetRepository.initListener()
         }
     }
 }

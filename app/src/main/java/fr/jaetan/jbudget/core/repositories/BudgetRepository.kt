@@ -1,13 +1,32 @@
 package fr.jaetan.jbudget.core.repositories
 
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetRepository {
     private val database = Firebase.firestore.collection("budgets")
+
+    suspend fun initListener() {
+        database
+            .whereEqualTo("userId", JBudget.state.currentUser?.uid)
+            .snapshots()
+            .collect { query ->
+                val documents = query.documents
+                JBudget.state.budgetsLoadingState = if (documents.isEmpty()) {
+                    State.EmptyData
+                } else {
+                    State.None
+                }
+
+                JBudget.state.budgets.clear()
+                JBudget.state.budgets.addAll(Budget.fromMapList(documents))
+            }
+    }
 
     fun createBudget(budget: Budget, callback: (String?, FirebaseResponse) -> Unit)  {
         database
@@ -23,18 +42,6 @@ class BudgetRepository {
             }
     }
 
-    fun getAll(callback: (List<Budget>, FirebaseResponse) -> Unit) {
-        database
-            .whereEqualTo("userId", JBudget.state.currentUser?.uid).get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    callback(Budget.fromMapList(it.result.documents), FirebaseResponse.Success)
-                    return@addOnCompleteListener
-                }
-                callback(listOf(), FirebaseResponse.Error)
-            }
-    }
-
     fun delete(budgetId: String, callback: (FirebaseResponse) -> Unit) {
         database.document(budgetId).delete().addOnCompleteListener { task ->
             if (task.isSuccessful)
@@ -43,7 +50,6 @@ class BudgetRepository {
                         JBudget.categoryRepository.deleteAllBy(budgetId) { categoryDeleted ->
                             if (categoryDeleted == FirebaseResponse.Success) {
                                 callback(FirebaseResponse.Success)
-                                JBudget.state.budgets.removeIf { it.id == budgetId }
                             } else {
                                 callback(FirebaseResponse.Error)
                             }

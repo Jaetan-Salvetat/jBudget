@@ -34,7 +34,7 @@ import kotlin.random.Random
 fun BudgetChart(budgetId: String, transactions: List<Transaction>, categories: List<Category>, showNewCategory: Boolean = true) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
-    val categoryPercentages = remember { getPercentages(transactions) }
+    val categoryPercentages = remember { getPercentages(transactions, budgetId) }
 
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         PieChart(
@@ -117,11 +117,11 @@ private data class CategoryPercentage(
     var categoryId: String?,
     var values: Double = 0.0,
     var percentage: Double = 0.0,
-    var color: Color = Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
+    var color: Color
 )
 
 
-private fun getPercentages(transactions: List<Transaction>) :List<CategoryPercentage> {
+private fun getPercentages(transactions: List<Transaction>, budgetId: String) :List<CategoryPercentage> {
     if (transactions.isEmpty()) return listOf()
 
     val percentages = mutableListOf<CategoryPercentage>()
@@ -132,7 +132,9 @@ private fun getPercentages(transactions: List<Transaction>) :List<CategoryPercen
         percentages.add(CategoryPercentage(
             categoryId = categoryId,
             values = categoryTotal,
-            percentage = (totalAmount / 100) * categoryTotal
+            percentage = (totalAmount / 100) * categoryTotal,
+            color = JBudget.state.budgets.find { it.id == budgetId }?.categories?.find { it.id == categoryId }?.color
+                ?: Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
         ))
     }
     return percentages
