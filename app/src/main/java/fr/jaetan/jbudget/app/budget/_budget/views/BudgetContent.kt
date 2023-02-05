@@ -1,4 +1,4 @@
-package fr.jaetan.jbudget.app.budget.views
+package fr.jaetan.jbudget.app.budget._budget.views
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.app.budget.BudgetViewModel
+import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart

@@ -1,4 +1,4 @@
-package fr.jaetan.jbudget.app.budget
+package fr.jaetan.jbudget.app.budget._budget
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
