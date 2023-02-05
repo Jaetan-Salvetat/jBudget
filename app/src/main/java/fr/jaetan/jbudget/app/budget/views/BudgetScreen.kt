@@ -14,10 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.BudgetViewModel
-import fr.jaetan.jbudget.core.models.FirebaseResponse
-import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.toText
-import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
+import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +32,15 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         content = { BudgetContent(it, viewModel, navController) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
+
+
+    viewModel.budgetToRemove?.let {
+        RemoveBudgetDialog(
+            isVisible = viewModel.budgetToRemove != null,
+            budget = it,
+            onRemove = { navController.popBackStack() }
+        ) { viewModel.budgetToRemove = null }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,15 +51,7 @@ private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarSc
         actions = {
             BudgetDates(viewModel = viewModel)
             if( viewModel.isEditable ) {
-                IconButton(onClick = {
-                    JBudget.budgetRepository.delete(viewModel.budget!!.id) {
-                        if (it == FirebaseResponse.Success) {
-                            navController.popBackStack()
-                        } else {
-                            /* TODO */
-                        }
-                    }
-                }) {
+                IconButton(onClick = { viewModel.budgetToRemove = viewModel.budget }) {
                     Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.budget_delete))
                 }
             }

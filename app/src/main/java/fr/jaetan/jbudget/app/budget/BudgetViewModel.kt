@@ -15,6 +15,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     val categories get() = JBudget.state.categories
     var budget by mutableStateOf(null as Budget?)
     var isEditable by mutableStateOf(false)
+    var budgetToRemove by mutableStateOf(null as Budget?)
 
     init { getBudget(budgetId) }
 
