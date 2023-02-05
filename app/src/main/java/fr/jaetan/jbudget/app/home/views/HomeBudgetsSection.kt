@@ -75,10 +75,10 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
     )
 
     if (isRemovable && swipeState.isAnimationRunning) {
-        SideEffect {
+        LaunchedEffect(Unit) {
             coroutineScope.launch {
-                swipeState.snapTo(0)
                 viewModel.budgetToRemove = budget
+                swipeState.animateTo(0)
             }
         }
     }
