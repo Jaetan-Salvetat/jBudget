@@ -47,14 +47,9 @@ class BudgetRepository {
             if (task.isSuccessful)
                 JBudget.transactionRepository.deleteAllBy(budgetId) { transactionDeleted ->
                     if (transactionDeleted == FirebaseResponse.Success) {
-                        JBudget.categoryRepository.deleteAllBy(budgetId) { categoryDeleted ->
-                            if (categoryDeleted == FirebaseResponse.Success) {
-                                callback(FirebaseResponse.Success)
-                            } else {
-                                callback(FirebaseResponse.Error)
-                            }
-                        }
+                        return@deleteAllBy callback(FirebaseResponse.Success)
                     }
+                    callback(FirebaseResponse.Error)
                 }
         }
     }
