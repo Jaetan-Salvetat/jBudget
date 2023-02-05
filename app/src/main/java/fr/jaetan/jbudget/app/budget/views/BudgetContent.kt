@@ -41,7 +41,7 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
 
 @Composable
 private fun GraphicWidget(viewModel: BudgetViewModel) {
-    BudgetChart(viewModel.budget!!.id, viewModel.transactions, viewModel.categories)
+    BudgetChart(viewModel.transactions)
 }
 
 

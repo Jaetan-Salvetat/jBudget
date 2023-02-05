@@ -24,17 +24,21 @@ import com.himanshoe.charty.pie.PieChart
 import com.himanshoe.charty.pie.config.PieConfig
 import com.himanshoe.charty.pie.config.PieData
 import fr.jaetan.jbudget.R
-import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.JBudget
 import kotlin.random.Random
 
 
 @Composable
-fun BudgetChart(budgetId: String, transactions: List<Transaction>, categories: List<Category>, showNewCategory: Boolean = true) {
+fun BudgetChart(transactions: List<Transaction>, showNewCategory: Boolean = true) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
-    val categoryPercentages = remember { getPercentages(transactions, budgetId) }
+    val categoryPercentages = remember { getPercentages(transactions) }
+    val categories = if (JBudget.state.categories.isEmpty()) {
+        listOf()
+    } else {
+        JBudget.state.categories.filter { cat -> transactions.groupBy { it.categoryId }.containsKey(cat.id) }
+    }
 
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         PieChart(
@@ -106,9 +110,7 @@ fun BudgetChart(budgetId: String, transactions: List<Transaction>, categories: L
 
     NewCategoryDialog(
         isVisible = showCategoryDialog,
-        budgetId = budgetId,
-        dismiss = { showCategoryDialog = false },
-        onSave = { JBudget.state.budgets.find { b -> b.id == budgetId }?.categories?.add(it) }
+        dismiss = { showCategoryDialog = false }
     )
 }
 
@@ -121,7 +123,7 @@ private data class CategoryPercentage(
 )
 
 
-private fun getPercentages(transactions: List<Transaction>, budgetId: String) :List<CategoryPercentage> {
+private fun getPercentages(transactions: List<Transaction>) :List<CategoryPercentage> {
     if (transactions.isEmpty()) return listOf()
 
     val percentages = mutableListOf<CategoryPercentage>()
@@ -133,7 +135,7 @@ private fun getPercentages(transactions: List<Transaction>, budgetId: String) :L
             categoryId = categoryId,
             values = categoryTotal,
             percentage = (totalAmount / 100) * categoryTotal,
-            color = JBudget.state.budgets.find { it.id == budgetId }?.categories?.find { it.id == categoryId }?.color
+            color = JBudget.state.categories.find { it.id == categoryId }?.color
                 ?: Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
         ))
     }

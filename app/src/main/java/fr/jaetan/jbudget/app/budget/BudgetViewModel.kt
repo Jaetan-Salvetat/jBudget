@@ -12,7 +12,7 @@ import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     val transactions get() = JBudget.state.budgets.find { it.id == budgetId }?.transactions ?: listOf()
-    val categories get() = JBudget.state.budgets.find { it.id == budgetId }?.categories ?: listOf()
+    val categories get() = JBudget.state.categories
     var budget by mutableStateOf(null as Budget?)
     var isEditable by mutableStateOf(false)
 

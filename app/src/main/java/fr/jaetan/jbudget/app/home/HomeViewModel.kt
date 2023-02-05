@@ -77,12 +77,11 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         }
     }
 
-    private fun getCategories() {
-        JBudget.state.budgets.forEach { budget ->
-            JBudget.state.budgets.find { it == budget }
-            JBudget.categoryRepository.getAll(budget.id) { categories, _ ->
-                JBudget.state.budgets.find { it == budget }?.categories?.clear()
-                JBudget.state.budgets.find { it == budget }?.categories?.addAll(categories)
+    private fun getCategories(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
+            JBudget.state.budgets.forEach { budget ->
+                JBudget.state.budgets.find { it == budget }
+                JBudget.categoryRepository.getAll()
             }
         }
     }
