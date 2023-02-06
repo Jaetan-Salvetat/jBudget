@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Themes
 
@@ -27,6 +27,7 @@ class MainViewModel: ViewModel() {
     val currentTheme: Themes get() = _currentTheme
     val isNotificationEnabled: Boolean get() = _isNotificationEnabled
     val budgets = mutableStateListOf<Budget>()
+    val categories = mutableStateListOf<Category>()
     var currentUser by mutableStateOf(null as FirebaseUser?)
     var budgetsLoadingState by mutableStateOf(State.Loading)
 
@@ -64,7 +65,7 @@ class MainViewModel: ViewModel() {
 
 
     private fun initBudgets() {
-        JBudget.budgetRepository.getAll { data, response ->
+        /*JBudget.budgetRepository.getAll { data, response ->
             budgetsLoadingState = when {
                 data.isEmpty() && response == FirebaseResponse.Success -> State.EmptyData
                 response == FirebaseResponse.Success -> {
@@ -74,7 +75,7 @@ class MainViewModel: ViewModel() {
                 }
                 else -> State.Error
             }
-        }
+        }*/
     }
 
     companion object {

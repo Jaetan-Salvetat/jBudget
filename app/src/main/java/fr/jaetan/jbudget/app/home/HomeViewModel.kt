@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -18,6 +19,9 @@ import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
@@ -64,23 +68,18 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
 
-    private fun getTransactions() {
-        JBudget.state.budgets.forEach { budget ->
-            JBudget.state.budgets.find { it == budget }
-            JBudget.transactionRepository.getAll(budget.id) { transactions, _ ->
-                JBudget.state.budgets.find { it == budget }?.transactions?.clear()
-                JBudget.state.budgets.find { it == budget }?.transactions?.addAll(transactions)
+    private fun getTransactions(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
+            JBudget.state.budgets.forEach { budget ->
+                JBudget.state.budgets.find { it == budget }
+                JBudget.transactionRepository.getAll(budget.id)
             }
         }
     }
 
-    private fun getCategories() {
-        JBudget.state.budgets.forEach { budget ->
-            JBudget.state.budgets.find { it == budget }
-            JBudget.categoryRepository.getAll(budget.id) { categories, _ ->
-                JBudget.state.budgets.find { it == budget }?.categories?.clear()
-                JBudget.state.budgets.find { it == budget }?.categories?.addAll(categories)
-            }
+    private fun getCategories(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
+            JBudget.categoryRepository.getAll()
         }
     }
 

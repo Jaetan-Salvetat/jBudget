@@ -7,6 +7,7 @@
     <string name="new_dialog_create">Créer</string>
     <string name="new_budget_dialog_name">Nom du budget</string>
     <string name="budget_delete">Suppression de budget</string>
+    <string name="remove">Supprimer</string>
 
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
@@ -35,6 +36,8 @@
     <string name="password_reset">Réinitialisation du mot de passe</string>
     <string name="email_sent">L\'email à bien été envoyé.</string>
     <string name="no_category_assigned">Non catégorisé</string>
+    <string name="new_category">Nouvelle catégorie</string>
+    <string name="no_categories">Il n\'y a encore aucune catégorie.</string>
 
     <string name="my_settings">Mes paramètres</string>
     <string name="my_data">Mes données</string>
@@ -48,6 +51,7 @@
     <string name="theme_system">Sytème</string>
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
+    <string name="my_categories">Mes catégories</string>
 
     <string name="tips_title">Le savais-tu ?</string>
     <string name="tips_advance">%1$d sur %2$d</string>
@@ -62,9 +66,7 @@
     <string name="new_male">Nouveau</string>
     <string name="new_female">Nouvelle</string>
     <string name="empty_budget">Ce budget est vide</string>
-
     <string name="category_name">Nom de la catégorie</string>
-    <string name="new_category">Nouvelle catégorie</string>
     <string name="transaction_delete">Supprimer</string>
     <string name="transaction_edit">Éditer</string>
 

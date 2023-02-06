@@ -41,7 +41,6 @@ class CreateBudgetViewModel(dismiss: () -> Unit): ViewModel() {
                 FirebaseResponse.Error -> { newBudgetError = response.messageRes }
                 FirebaseResponse.ConnectivityError -> { newBudgetError = response.messageRes }
                 else -> {
-                    JBudget.state.budgets.add(budget.copy(id = budgetId!!))
                     navController.navigate("${Screen.Budget.route}/$budgetId")
                 }
             }

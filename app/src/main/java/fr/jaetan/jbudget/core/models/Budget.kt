@@ -16,7 +16,6 @@ data class Budget(
     var endDate: Date? = null
 ) {
     val transactions = mutableStateListOf<Transaction>()
-    val categories = mutableStateListOf<Category>()
 
     val isCurrentBudget: Boolean
         get() = when {

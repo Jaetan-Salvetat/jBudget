@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
 import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.services.JBudget
 
 @Composable
 fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) {
@@ -186,7 +187,7 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
                         }
                     )
 
-                    viewModel.categories.forEach {
+                    JBudget.state.categories.forEach {
                         DropdownMenuItem(
                             text = {
                                 Text(

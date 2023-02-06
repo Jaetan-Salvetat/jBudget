@@ -8,8 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import fr.jaetan.jbudget.app.budget.BudgetViewModel
-import fr.jaetan.jbudget.app.budget.views.BudgetScreen
+import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
+import fr.jaetan.jbudget.app.budget._budget.views.BudgetScreen
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.app.home.views.HomeScreen
 import fr.jaetan.jbudget.app.settings.SettingsViewModel

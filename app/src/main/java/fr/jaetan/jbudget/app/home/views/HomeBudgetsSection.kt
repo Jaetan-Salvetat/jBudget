@@ -75,10 +75,10 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
     )
 
     if (isRemovable && swipeState.isAnimationRunning) {
-        SideEffect {
+        LaunchedEffect(Unit) {
             coroutineScope.launch {
-                swipeState.snapTo(0)
                 viewModel.budgetToRemove = budget
+                swipeState.animateTo(0)
             }
         }
     }
@@ -171,7 +171,7 @@ private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
         if (budget.transactions.isEmpty()) {
             Text(stringResource(R.string.empty_budget))
         } else {
-            BudgetChart(budget.id, budget.transactions, budget.categories, false)
+            BudgetChart(budget.transactions, false)
         }
         
         TextButton(

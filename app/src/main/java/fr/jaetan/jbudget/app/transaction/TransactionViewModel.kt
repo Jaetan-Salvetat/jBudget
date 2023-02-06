@@ -1,17 +1,14 @@
 package fr.jaetan.jbudget.app.transaction
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.core.models.*
 import fr.jaetan.jbudget.core.services.JBudget
 import java.text.DecimalFormat
-import java.util.Calendar
-import kotlin.random.Random
+import java.util.*
 
 class TransactionViewModel(
     val navController: NavHostController,
@@ -22,11 +19,10 @@ class TransactionViewModel(
     var showCategoryDropDown by mutableStateOf(false)
     var showBudgetDialog by mutableStateOf(false)
     var currentBudget by mutableStateOf(null as Budget?)
-    var currentCategory by mutableStateOf(null as Category?)
-    val categories = mutableStateListOf<Category>()
-    var amountString by mutableStateOf("")
-    var categoryName by mutableStateOf("")
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
+    var currentCategory by mutableStateOf(null as Category?)
+    var categoryName by mutableStateOf("")
+    var amountString by mutableStateOf("")
     var loadingState by mutableStateOf(State.None)
     var isInUpdateMode by mutableStateOf(false)
 
@@ -52,35 +48,15 @@ class TransactionViewModel(
 
     fun changeCurrentBudget(budget: Budget?, categoryId: String? = null) {
         showBudgetDropDown = false
-        getBudgetCategories(budget, categoryId)
-    }
-
-    private fun getBudgetCategories(budget: Budget?, categoryId: String? = null) {
-        if (budget == null) return
-        JBudget.categoryRepository.getAll(budget.id) { categories, response ->
-            if (response == FirebaseResponse.Success) {
-                this.categories.clear()
-                this.categories.addAll(categories)
-                currentBudget = budget
-                currentCategory = categories.find { it.id == categoryId }
-            }
-        }
+        currentBudget = budget
+        currentCategory = JBudget.state.categories.find { it.id == categoryId }
     }
 
     fun saveCategory() {
         if (categoryName.isEmpty()) return
+        val mutableCategory = Category(name = categoryName)
+        JBudget.categoryRepository.createCategory(mutableCategory) {}
         showCategoryInput = false
-        val mutableCategory = Category(
-            name = categoryName,
-            budgetId = currentBudget!!.id,
-            color = Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256), 125)
-        )
-
-        JBudget.categoryRepository.createCategory(mutableCategory) { category, response ->
-            if (response == FirebaseResponse.Success) {
-                categories.add(category!!)
-            }
-        }
     }
 
     fun save() {

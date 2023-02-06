@@ -1,58 +1,24 @@
 package fr.jaetan.jbudget.core.repositories
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.snapshots
 import fr.jaetan.jbudget.core.models.Category
-import fr.jaetan.jbudget.core.models.FirebaseResponse
+import fr.jaetan.jbudget.core.services.JBudget
 
 class CategoryRepository {
     private val database = FirebaseFirestore.getInstance().collection("categories")
 
-    fun createCategory(category: Category, callback: (Category?, FirebaseResponse) -> Unit) {
+    fun createCategory(category: Category, callback: () -> Unit) {
         database.add(category.toMap())
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    callback(category.copy(id = it.result.id), FirebaseResponse.Success)
-                    return@addOnCompleteListener
-                }
-                callback(null, FirebaseResponse.Error)
-            }
+            .addOnCompleteListener { callback() }
     }
 
-    fun getAll(budgetId: String?, callback: (List<Category>, FirebaseResponse) -> Unit) {
-        database.whereEqualTo("budgetId", budgetId).get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    callback(Category.fromMapList(it.result.documents), FirebaseResponse.Success)
-                    return@addOnCompleteListener
-                }
-                callback(listOf(), FirebaseResponse.Error)
+    suspend fun getAll() {
+        database.whereEqualTo("userId", JBudget.state.currentUser?.uid)
+            .snapshots()
+            .collect { query ->
+                JBudget.state.categories.clear()
+                JBudget.state.categories.addAll(Category.fromMapList(query.documents))
             }
-    }
-
-    fun findById(id: String, callback: (Category?, FirebaseResponse) -> Unit) {
-        database.document(id).get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    callback(Category.fromMap(it.result), FirebaseResponse.Success)
-                    return@addOnCompleteListener
-                }
-                callback(null, FirebaseResponse.Error)
-            }
-    }
-
-    fun deleteAllBy(budgetId: String, callback: (FirebaseResponse) -> Unit) {
-        database.whereEqualTo("budgetId", budgetId).get().addOnCompleteListener {
-            if (it.result.documents.isEmpty()) {
-                callback(FirebaseResponse.Success)
-                return@addOnCompleteListener
-            }
-
-            it.result.documents.forEach { doc ->
-                doc.reference.delete().addOnCompleteListener { task ->
-                    if (!task.isSuccessful) callback(FirebaseResponse.Error)
-                }
-                callback(FirebaseResponse.Success)
-            }
-        }
     }
 }
