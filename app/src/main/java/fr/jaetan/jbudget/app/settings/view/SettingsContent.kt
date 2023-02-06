@@ -2,10 +2,13 @@ package fr.jaetan.jbudget.app.settings.view
 
 import android.os.Build
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -22,14 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
+import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.Themes
 import fr.jaetan.jbudget.core.services.JBudget
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
     LazyColumn(modifier = Modifier
         .padding(padding)
-        .fillMaxWidth()) {
+        .fillMaxWidth()
+    ) {
         //User section
         //stickyHeader { SettingsListTitle(R.string.my_data) }
         item {
@@ -57,6 +63,12 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         //item { NotificationItem(viewModel) }
         //Theme section
         item { ThemeSelector(viewModel) }
+        //Categories section
+        stickyHeader { CategoriesSectionHeader(viewModel) }
+        item { EmptyCategoriesSection(viewModel) }
+        items(JBudget.state.categories) {
+            CategorySectionItem(it, viewModel)
+        }
         //Disconnect section
         item { DisconnectSection() }
     }
@@ -94,7 +106,7 @@ private fun UserItem(icon: ImageVector, @StringRes textRes: Int, subText: String
     }
 }
 
-@Composable
+/*@Composable
 private fun NotificationItem(viewModel: SettingsViewModel) {
     val context = LocalContext.current
 
@@ -134,7 +146,7 @@ private fun NotificationItem(viewModel: SettingsViewModel) {
             }
         }
     }
-}
+}*/
 
 @Composable
 private fun ThemeSelector(viewModel: SettingsViewModel) {
@@ -214,6 +226,73 @@ private fun DisconnectSection() {
             ) {
                 Text(stringResource(R.string.disconnect))
             }
+        }
+    }
+}
+
+@Composable
+private fun CategoriesSectionHeader(viewModel: SettingsViewModel) {
+    val arrowRotation by animateFloatAsState(if (!viewModel.showCategories) 0f else 180f)
+
+    Column(Modifier.fillMaxWidth()) {
+        Divider()
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clickable { viewModel.showCategories = !viewModel.showCategories }
+                .padding(horizontal = 15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Default.Category, contentDescription = null)
+            Spacer(Modifier.width(20.dp))
+            Text(
+                stringResource(R.string.my_categories),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.rotate(arrowRotation)
+            )
+        }
+    }
+}
+
+@Composable
+private fun CategorySectionItem(category: Category, viewModel: SettingsViewModel) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .animateContentSize()) {
+        if (viewModel.showCategories && JBudget.state.categories.isNotEmpty()) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp, horizontal = 20.dp)) {
+                Text(category.name)
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyCategoriesSection(viewModel: SettingsViewModel) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .animateContentSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (viewModel.showCategories && JBudget.state.categories.isEmpty()) {
+            Spacer(Modifier.height(30.dp))
+            Text(stringResource(R.string.no_categories))
+            TextButton(onClick = { viewModel.showNewCategoryDialog = true }) {
+                Text(stringResource(R.string.new_category))
+            }
+            Spacer(Modifier.height(30.dp))
         }
     }
 }

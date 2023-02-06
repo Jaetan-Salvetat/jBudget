@@ -79,10 +79,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
 
     private fun getCategories(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         viewModelScope.launch(dispatcher) {
-            JBudget.state.budgets.forEach { budget ->
-                JBudget.state.budgets.find { it == budget }
-                JBudget.categoryRepository.getAll()
-            }
+            JBudget.categoryRepository.getAll()
         }
     }
 

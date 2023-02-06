@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatchers.IO): ViewModel() {
     var showThemeDropDown by mutableStateOf(false)
+    var showCategories by mutableStateOf(false)
+    var showNewCategoryDialog by mutableStateOf(false)
 
     fun changeTheme(context: Context, theme: Themes) {
         showThemeDropDown = false
@@ -27,11 +29,11 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
         }
     }
 
-    fun notificationHandler(context: Context, isEnabled: Boolean) {
+    /*fun notificationHandler(context: Context, isEnabled: Boolean) {
         viewModelScope.launch(dispatcher) {
             JBudget.state.notificationHandler(context, isEnabled)
         }
-    }
+    }*/
 
 
     // Update password dialog
@@ -43,7 +45,6 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     var username by mutableStateOf(null as String?)
     var currentUsername by mutableStateOf(JBudget.state.currentUser?.displayName ?: "")
     var updateUsernameState by mutableStateOf(State.None)
-    var updateUsernameErrorMessageRes by mutableStateOf(null as Int?)
 
     fun updateUsername() {
         if (username?.isUsename == false || updateUsernameState == State.Loading) return
@@ -52,12 +53,11 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
 
         JBudget.userRepository.updateUsername(username!!) {
             if (it != FirebaseResponse.Success) {
-                updateUsernameErrorMessageRes = it.messageRes
                 currentUsername = JBudget.state.currentUser?.displayName ?: ""
-                return@updateUsername
+            } else {
+                currentUsername = JBudget.state.currentUser?.displayName ?: ""
+                dismissUsernameDialog()
             }
-            currentUsername = JBudget.state.currentUser?.displayName ?: ""
-            dismissUsernameDialog()
         }
     }
 
@@ -86,11 +86,10 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
             updateEmailState = State.None
             if (it != FirebaseResponse.Success) {
                 updateEmailErrorMessageRes = it.messageRes
-                return@updateEmail
+            } else {
+                currentEmail = JBudget.state.currentUser?.email ?: ""
+                dismissUpdateEmailDialog()
             }
-
-            currentEmail = JBudget.state.currentUser?.email ?: ""
-            dismissUpdateEmailDialog()
         }
     }
 
