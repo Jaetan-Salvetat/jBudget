@@ -8,17 +8,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.JBudget
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemoveBudgetDialog(isVisible: Boolean, budget: Budget, onRemove: () -> Unit = {}, dismiss: () -> Unit) {
     if (isVisible) {
         var isLoading by remember { mutableStateOf(false) }
 
-        AlertDialog(onDismissRequest = dismiss) {
+        Dialog(onDismissRequest = dismiss) {
             Column(
                 Modifier
                     .background(MaterialTheme.colorScheme.background, RoundedCornerShape(20.dp))) {
