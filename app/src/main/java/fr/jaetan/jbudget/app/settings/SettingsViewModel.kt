@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.models.Themes
@@ -21,6 +22,7 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     var showThemeDropDown by mutableStateOf(false)
     var showCategories by mutableStateOf(false)
     var showNewCategoryDialog by mutableStateOf(false)
+    var isCategoryLoading by mutableStateOf(false)
 
     fun changeTheme(context: Context, theme: Themes) {
         showThemeDropDown = false
@@ -99,5 +101,13 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
         password = null
         updateEmailErrorMessageRes = null
         updateEmailState = State.None
+    }
+
+
+    fun updateCategoryName(category: Category) {
+        isCategoryLoading = true
+        JBudget.categoryRepository.updateCategoryName(category) {
+            isCategoryLoading = false
+        }
     }
 }

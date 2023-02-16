@@ -14,11 +14,18 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -260,8 +267,13 @@ private fun CategoriesSectionHeader(viewModel: SettingsViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CategorySectionItem(category: Category, viewModel: SettingsViewModel) {
+    var categoryName by remember { mutableStateOf(category.name) }
+    val focusRequester = FocusRequester()
+    val focusManager = LocalFocusManager.current
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -270,8 +282,42 @@ private fun CategorySectionItem(category: Category, viewModel: SettingsViewModel
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp, horizontal = 20.dp)) {
-                Text(category.name)
+                    .padding(vertical = 20.dp, horizontal = 20.dp)
+            ) {
+                OutlinedTextField(
+                    value = categoryName,
+                    onValueChange = { categoryName = it },
+                    modifier = Modifier.focusRequester(focusRequester).weight(1f),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    trailingIcon = {
+                        if (viewModel.isCategoryLoading) {
+                            CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
+                        } else {
+                            IconButton(
+                                onClick = {
+                                    if (categoryName == category.name) {
+                                        focusRequester.requestFocus()
+                                        return@IconButton
+                                    }
+                                    viewModel.updateCategoryName(category.copy(name = categoryName))
+                                    focusManager.clearFocus()
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = if (categoryName == category.name) {
+                                        Icons.Default.Edit
+                                    } else {
+                                        Icons.Default.Done
+                                    },
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                )
             }
         }
     }

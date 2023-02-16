@@ -21,4 +21,9 @@ class CategoryRepository {
                 JBudget.state.categories.addAll(Category.fromMapList(query.documents))
             }
     }
+
+    fun updateCategoryName(category: Category, onComplete: () -> Unit) {
+        database.document(category.id).set(category.toMap())
+            .addOnCompleteListener { onComplete() }
+    }
 }
