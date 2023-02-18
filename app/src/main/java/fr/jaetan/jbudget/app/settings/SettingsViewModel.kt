@@ -23,6 +23,8 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
     var showCategories by mutableStateOf(false)
     var showNewCategoryDialog by mutableStateOf(false)
     var isCategoryLoading by mutableStateOf(false)
+    var editingCategory by mutableStateOf(null as Category?)
+    val categories get() = JBudget.state.categories.distinct()
 
     fun changeTheme(context: Context, theme: Themes) {
         showThemeDropDown = false
