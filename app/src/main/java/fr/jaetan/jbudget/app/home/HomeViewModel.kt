@@ -27,13 +27,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
     var showDeleteTipsButton by mutableStateOf(false)
-    val tips = mutableStateListOf(
-        TipsItem(R.string.remove_budget_with_swipe) {},
-        TipsItem(R.string.long_press_to_remove_tips) { showDeleteTipsButton = true },
-        TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) },
-        TipsItem(R.string.can_no_specify_date) {},
-        //manage default categories to settings view
-    )
+    val tips = mutableStateListOf<TipsItem>()
 
     suspend fun removeTips(pagerState: PagerState) {
         val index = pagerState.currentPage
@@ -111,9 +105,14 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         currentBudgets.firstOrNull()?.let {
             selectedCurrentBudgets.add(it)
         }
+
         if (JBudget.state.budgets.isEmpty()) {
             tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
         }
+        if (!JBudget.state.hasChangeTheme) {
+            tips.add(TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) })
+        }
+
         getTransactions()
         getCategories()
     }

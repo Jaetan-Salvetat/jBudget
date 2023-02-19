@@ -20,6 +20,7 @@ import fr.jaetan.jbudget.core.models.Themes
 
 class MainViewModel: ViewModel() {
     var currentTheme by mutableStateOf(Themes.Dark)
+    var hasChangeTheme by mutableStateOf(false)
 //    private var _isNotificationEnabled by mutableStateOf(true)
     private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(SETTINGS_KEY)
 
@@ -42,6 +43,7 @@ class MainViewModel: ViewModel() {
             theme?.let {
                 currentTheme = it
             }
+            hasChangeTheme = theme != null
             /*isNotifEnabled?.let {
                 _isNotificationEnabled = it.toBoolean()
             }*/
