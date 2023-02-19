@@ -105,7 +105,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
         Box(
             Modifier
                 .offset { IntOffset(swipeState.offset.value.roundToInt(), 0) }
-                .padding(containerPadding)
+                .padding(top = containerPadding, end = containerPadding, start = containerPadding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             Column(
@@ -163,22 +163,30 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
 
 @Composable
 private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(bottom = 20.dp)) {
+    Column(Modifier.fillMaxWidth()) {
 
         if (budget.transactions.isEmpty()) {
-            Text(stringResource(R.string.empty_budget))
+            Text(
+                stringResource(R.string.empty_budget),
+                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                modifier = Modifier.padding(start = 20.dp)
+            )
         } else {
             BudgetChart(budget.transactions, false)
         }
         
-        TextButton(
-            onClick = { viewModel.navigateToBudgetScreen(budget.id) },
-            modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
+                .clickable { viewModel.navigateToBudgetScreen(budget.id) }
+                .padding(vertical = 15.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.more_details))
+            Text(
+                text = stringResource(R.string.more_details),
+                style = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }
