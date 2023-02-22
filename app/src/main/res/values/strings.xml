@@ -74,6 +74,8 @@
     <string name="my_transactions">Mes transactions</string>
     <string name="no_category">Aucune</string>
     <string name="quit_app_dialog_text">Et tu sûr de vouloir quitter l\'application ?</string>
+    <string name="empty_transaction_create">Ta liste de transactions est vide, ajoute en une !</string>
+    <string name="empty_budget_create">Ta liste de budget est vide, ajoute en un !</string>
 
 
     <!-- Content descriptions-->

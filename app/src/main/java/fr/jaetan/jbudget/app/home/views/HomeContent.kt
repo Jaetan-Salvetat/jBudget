@@ -64,7 +64,7 @@ private fun EmptyDataContainer(viewModel: HomeViewModel) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Ta liste de budget est vide, ajoute en !")
+            Text(stringResource(R.string.empty_budget_create))
             TextButton(onClick = { viewModel.showNewBudgetDialog = true }) {
                 Text(stringResource(R.string.home_fab_add_budget))
             }

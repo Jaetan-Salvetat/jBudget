@@ -18,12 +18,6 @@ import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
-
-    if (viewModel.budget == null) {
-        /* TODO: Afficher une dialog "Budget introuvable + navigation.back */
-        return
-    }
-
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(

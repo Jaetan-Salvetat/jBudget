@@ -20,13 +20,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
+import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
+    when {
+        viewModel.transactions.isNotEmpty() -> NotEmptyBudget(padding, viewModel, navController)
+        else -> EmptyBudget(padding, navController)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun NotEmptyBudget(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
 
@@ -35,6 +44,22 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
         items(viewModel.transactions) {
             Divider()
             TransactionItem(it, viewModel, navController)
+        }
+    }
+}
+
+@Composable
+private fun EmptyBudget(padding: PaddingValues, navController: NavHostController) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(padding),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+        Text(stringResource(R.string.empty_transaction_create))
+        TextButton(onClick = { navController.navigate(Screen.Transaction.route) }) {
+            Text(stringResource(R.string.home_fab_add_transaction))
         }
     }
 }
