@@ -172,7 +172,7 @@ private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
                 modifier = Modifier.padding(start = 20.dp)
             )
         } else {
-            BudgetChart(budget.transactions, false)
+            BudgetChart(budget, false)
         }
         
         Box(

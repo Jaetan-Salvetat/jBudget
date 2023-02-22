@@ -1,11 +1,14 @@
 package fr.jaetan.jbudget.core.repositories
 
+import android.content.Context
+import android.content.Intent
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.models.toText
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetRepository {
@@ -52,5 +55,20 @@ class BudgetRepository {
                     callback(FirebaseResponse.Error)
                 }
         }
+    }
+
+    fun shareAsText(context: Context, budget: Budget) {
+        var text = "total -> ${budget.transactionTotalAmount}\n"
+
+        budget.getPercentages().forEachIndexed { index, percentage ->
+            text += "\n${percentage.toText()}"
+        }
+
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        context.startActivity(intent)
     }
 }

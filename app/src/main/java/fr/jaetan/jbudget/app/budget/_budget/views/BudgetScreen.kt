@@ -3,15 +3,18 @@ package fr.jaetan.jbudget.app.budget._budget.views
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 
@@ -38,10 +41,18 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarScrollBehavior, navController: NavHostController) {
+    val context = LocalContext.current
+
     LargeTopAppBar(
         title = { Text(text = viewModel.budget!!.name) },
         actions = {
             BudgetDates(viewModel = viewModel)
+            IconButton(onClick = { JBudget.budgetRepository.shareAsText(context, viewModel.budget!!) }) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = null
+                )
+            }
             IconButton(onClick = { viewModel.budgetToRemove = viewModel.budget }) {
                 Icon(
                     imageVector = Icons.Default.Delete,

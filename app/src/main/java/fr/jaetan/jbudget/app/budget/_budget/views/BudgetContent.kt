@@ -74,7 +74,7 @@ private fun EmptyBudget(padding: PaddingValues, navController: NavHostController
 
 @Composable
 private fun GraphicWidget(viewModel: BudgetViewModel) {
-    BudgetChart(viewModel.transactions)
+    BudgetChart(viewModel.budget!!)
 }
 
 
