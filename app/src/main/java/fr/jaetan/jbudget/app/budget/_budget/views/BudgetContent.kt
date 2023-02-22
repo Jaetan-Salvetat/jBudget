@@ -28,6 +28,7 @@ import fr.jaetan.jbudget.ui.widgets.BudgetChart
 @Composable
 fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navController: NavHostController) {
     when {
+        viewModel.budget?.isLoadingTransactions == true -> BudgetLoading()
         viewModel.transactions.isNotEmpty() -> NotEmptyBudget(padding, viewModel, navController)
         else -> EmptyBudget(padding, navController)
     }
@@ -45,6 +46,13 @@ private fun NotEmptyBudget(padding: PaddingValues, viewModel: BudgetViewModel, n
             Divider()
             TransactionItem(it, viewModel, navController)
         }
+    }
+}
+
+@Composable
+private fun BudgetLoading() {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
     }
 }
 

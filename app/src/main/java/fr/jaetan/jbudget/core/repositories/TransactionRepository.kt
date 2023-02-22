@@ -6,6 +6,7 @@ import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.JBudget
+import kotlinx.coroutines.flow.onStart
 
 class TransactionRepository {
     private val database = Firebase.firestore.collection("transactions")
@@ -14,9 +15,13 @@ class TransactionRepository {
         database
             .whereEqualTo("budgetId", budgetId)
             .snapshots()
+            .onStart {
+                JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = true
+            }
             .collect { query ->
                 JBudget.state.budgets.find { it.id == budgetId }?.transactions?.clear()
                 JBudget.state.budgets.find { it.id == budgetId }?.transactions?.addAll(Transaction.fromMapList(query.documents))
+                JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = false
             }
     }
 
