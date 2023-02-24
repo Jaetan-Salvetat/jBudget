@@ -15,6 +15,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.ReadMore
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.*
@@ -26,6 +29,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Budget
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
 import kotlinx.coroutines.launch
@@ -115,7 +120,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
                     .background(containerBackground, RoundedCornerShape(containerShape))
                     .animateContentSize()
             ) {
-                HomeBudgetHeader(isExpanded, budget)
+                HomeBudgetHeader(isExpanded, budget, viewModel)
                 if (isExpanded) {
                     HomeBudgetContent(budget, viewModel)
                 }
@@ -125,7 +130,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
 }
 
 @Composable
-private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
+private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: HomeViewModel) {
     val arrowRotation by animateFloatAsState(if (!isExpanded) 0f else 180f)
     var dates = "(${budget.startDate.toText()}"
 
@@ -145,6 +150,9 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline),
                 overflow = TextOverflow.Ellipsis, maxLines = 1
             )
+
+            HeaderMenu(budget, viewModel)
+
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
@@ -157,6 +165,33 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline),
                 overflow = TextOverflow.Ellipsis, maxLines = 1
             )
+        }
+    }
+}
+
+@Composable
+private fun HeaderMenu(budget: Budget, viewModel: HomeViewModel) {
+    var showDropDown by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    Column {
+        IconButton(onClick = { showDropDown = true }) {
+            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
+        }
+
+        if (showDropDown) {
+            DropdownMenu(expanded = showDropDown, onDismissRequest = { showDropDown = false }) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.share)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Share, contentDescription = null) },
+                    onClick = { JBudget.budgetRepository.shareAsText(context, budget) }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.more_details)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.ReadMore, contentDescription = null) },
+                    onClick = { viewModel.navigateToBudgetScreen(budget.id) }
+                )
+            }
         }
     }
 }
