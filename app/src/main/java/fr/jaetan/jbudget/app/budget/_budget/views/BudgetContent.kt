@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
+import fr.jaetan.jbudget.app.budget._budget.FilterOrder
+import fr.jaetan.jbudget.app.budget._budget.FilterType
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
@@ -40,11 +43,11 @@ private fun NotEmptyBudget(padding: PaddingValues, viewModel: BudgetViewModel, n
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
 
-        stickyHeader { TransactionTitleSection() }
+        stickyHeader { HistoryHeader(viewModel) }
 
         items(viewModel.transactions) {
             Divider()
-            TransactionItem(it, viewModel, navController)
+            HistoryItem(it, viewModel, navController)
         }
     }
 }
@@ -77,10 +80,8 @@ private fun GraphicWidget(viewModel: BudgetViewModel) {
     BudgetChart(viewModel.budget!!)
 }
 
-
-
 @Composable
-private fun TransactionTitleSection() {
+private fun HistoryHeader(viewModel: BudgetViewModel) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.background)) {
@@ -95,15 +96,76 @@ private fun TransactionTitleSection() {
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.weight(1f)
             )
-            IconButton(onClick = {  }) {
-                Icon(Icons.Default.FilterList, stringResource(R.string.filter_transactions_descriptor))
-            }
+            FilterButton(viewModel)
         }
     }
 }
 
 @Composable
-private fun TransactionItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
+private fun FilterButton(viewModel: BudgetViewModel) {
+    Column {
+        IconButton(onClick = { viewModel.showDropDownFilter = true }) {
+            Icon(Icons.Default.FilterList, stringResource(R.string.filter_transactions_descriptor))
+        }
+        
+        DropdownMenu(
+            expanded = viewModel.showDropDownFilter, 
+            onDismissRequest = { viewModel.showDropDownFilter = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text("Trier par dates") },
+                onClick = { viewModel.filterTypeHandler(FilterType.Date) },
+                trailingIcon = {
+                    if (viewModel.filterType == FilterType.Date) {
+                        Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    }
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Trier par dépenses") },
+                onClick = { viewModel.filterTypeHandler(FilterType.Spent) },
+                trailingIcon = {
+                    if (viewModel.filterType == FilterType.Spent) {
+                        Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    }
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Trier par catégorie") },
+                onClick = { viewModel.filterTypeHandler(FilterType.Category) },
+                trailingIcon = {
+                    if (viewModel.filterType == FilterType.Category) {
+                        Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    }
+                }
+            )
+
+            Divider()
+
+            DropdownMenuItem(
+                text = { Text("Ordre croissant") },
+                onClick = { viewModel.filterOrderHandler(FilterOrder.Ascending) },
+                trailingIcon = {
+                    if (viewModel.filterOrder == FilterOrder.Ascending) {
+                        Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    }
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Ordre décroissant") },
+                onClick = { viewModel.filterOrderHandler(FilterOrder.Descending) },
+                trailingIcon = {
+                    if (viewModel.filterOrder == FilterOrder.Descending) {
+                        Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun HistoryItem(transaction: Transaction, viewModel: BudgetViewModel, navController: NavHostController) {
     var isExpanded by remember { mutableStateOf(false) }
     val category = viewModel.categories.find { it.id == transaction.categoryId }
 
