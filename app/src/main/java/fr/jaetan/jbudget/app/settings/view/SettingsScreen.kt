@@ -27,7 +27,6 @@ fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewMode
 
     ForgotPasswordDialog(viewModel.showResetPasswordDialog) { viewModel.showResetPasswordDialog = false }
     UpdateEmailDialog(viewModel)
-    UpdateUsernameDialog(viewModel)
     NewCategoryDialog(viewModel.showNewCategoryDialog) { viewModel.showNewCategoryDialog = false }
 }
 

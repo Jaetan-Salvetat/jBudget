@@ -55,13 +55,6 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         }
         item {
             UserItem(
-                Icons.Filled.Person,
-                R.string.update_my_username,
-                viewModel.currentUsername
-            ) { viewModel.showUpdateUsernameDialog = true }
-        }
-        item {
-            UserItem(
                 Icons.Filled.Lock,
                 R.string.update_my_password
             ) { viewModel.showResetPasswordDialog = true }

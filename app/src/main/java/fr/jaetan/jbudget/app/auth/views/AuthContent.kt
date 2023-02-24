@@ -29,7 +29,6 @@ import fr.jaetan.jbudget.app.auth.AuthViewModel
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
-import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,16 +117,6 @@ private fun RegisterView(viewModel: AuthViewModel, keyboardActions: KeyboardActi
             labelRes = R.string.email,
             supportingText = R.string.bad_email,
             showSupportingText = viewModel.email?.isEmail == false,
-            keyboardActions = keyboardActions,
-            colors = colors
-        )
-
-        Input(
-            value = viewModel.username.orEmpty(),
-            onChange = { viewModel.username = it },
-            labelRes = R.string.username,
-            supportingText = R.string.bad_username,
-            showSupportingText = viewModel.username?.isUsename == false,
             keyboardActions = keyboardActions,
             colors = colors
         )

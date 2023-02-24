@@ -13,7 +13,6 @@ import fr.jaetan.jbudget.core.models.Themes
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
-import fr.jaetan.jbudget.core.services.extentions.isUsename
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,36 +41,6 @@ class SettingsViewModel(private val dispatcher: CoroutineDispatcher = Dispatcher
 
     // Update password dialog
     var showResetPasswordDialog by mutableStateOf(false)
-
-
-    //Update username dialog
-    var showUpdateUsernameDialog by mutableStateOf(false)
-    var username by mutableStateOf(null as String?)
-    var currentUsername by mutableStateOf(JBudget.state.currentUser?.displayName ?: "")
-    var updateUsernameState by mutableStateOf(State.None)
-
-    fun updateUsername() {
-        if (username?.isUsename == false || updateUsernameState == State.Loading) return
-
-        updateUsernameState = State.Loading
-
-        JBudget.userRepository.updateUsername(username!!) {
-            if (it != FirebaseResponse.Success) {
-                currentUsername = JBudget.state.currentUser?.displayName ?: ""
-            } else {
-                currentUsername = JBudget.state.currentUser?.displayName ?: ""
-                dismissUsernameDialog()
-            }
-        }
-    }
-
-    fun dismissUsernameDialog() {
-        showUpdateUsernameDialog = false
-        username = null
-        updateUsernameState = State.None
-        updateEmailErrorMessageRes = null
-    }
-
 
     // Update email dialog
     var showUpdateEmailDialog by mutableStateOf(false)
