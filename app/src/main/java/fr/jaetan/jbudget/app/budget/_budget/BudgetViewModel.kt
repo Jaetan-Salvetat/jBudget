@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.Transaction
+import fr.jaetan.jbudget.core.models.category
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetViewModel(private val budgetId: String?) : ViewModel() {
@@ -59,8 +60,8 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     }
 
     private fun filterByCategory(): List<Transaction> = when (filterOrder) {
-        FilterOrder.Ascending -> _transactions.sortedBy { it.categoryId }
-        else -> _transactions.sortedByDescending { it.categoryId }
+        FilterOrder.Ascending -> _transactions.sortedBy { it.category.name }
+        else -> _transactions.sortedByDescending { it.category.name }
     }
 
     private fun filterByDate(): List<Transaction> = when (filterOrder) {
