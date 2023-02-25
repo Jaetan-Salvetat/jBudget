@@ -19,7 +19,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     var budgetToRemove by mutableStateOf(null as Budget?)
     var budgetToEdit by mutableStateOf(null as Budget?)
     var showDropDownFilter by mutableStateOf(false)
-    var filterType by mutableStateOf(FilterType.None)
+    var filterType by mutableStateOf(FilterType.Date)
     var filterOrder by mutableStateOf(FilterOrder.Ascending)
 
     init { getBudget(budgetId) }
@@ -37,11 +37,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     }
 
     fun filterTypeHandler(type: FilterType) {
-        filterType = if (type == filterType) {
-            FilterType.None
-        } else {
-            type
-        }
+        filterType = type
     }
 
     fun filterOrderHandler(order: FilterOrder) {
@@ -52,7 +48,6 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
         FilterType.Category -> filterByCategory()
         FilterType.Date -> filterByDate()
         FilterType.Spent -> filterBySpent()
-        else -> _transactions
     }
 
     private fun filterBySpent(): List<Transaction> = when (filterOrder) {
@@ -72,7 +67,6 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
 }
 
 enum class FilterType {
-    None,
     Spent,
     Category,
     Date
