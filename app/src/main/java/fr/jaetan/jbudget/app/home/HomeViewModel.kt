@@ -38,8 +38,8 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     //Budgets
     var selectedOldBudget by mutableStateOf(null as Budget?)
     var selectedCurrentBudgets = mutableStateListOf<Budget>()
-    val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedBy { it.startDate }
-    val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedBy { it.startDate }
+    val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedByDescending { it.startDate }
+    val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedByDescending { it.startDate }
     val loadingState: State get() = JBudget.state.budgetsLoadingState
     var budgetToRemove by mutableStateOf(null as Budget?)
     var budgetToEdit by mutableStateOf(null as Budget?)
@@ -60,7 +60,7 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     }
 
     fun navigateToTransactionScreen(budgetId: String) {
-        navController.navigate("${Screen.Transaction.route}/$budgetId")
+        navController.navigate("${Screen.Transaction.route}/budget/$budgetId")
     }
 
     //FAB

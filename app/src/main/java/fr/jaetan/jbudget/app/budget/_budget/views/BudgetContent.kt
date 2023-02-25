@@ -184,7 +184,7 @@ private fun HistoryItem(transaction: Transaction, viewModel: BudgetViewModel, na
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = transaction.amount.toString(),
+                text = "${transaction.amount}€",
                 style = MaterialTheme.typography.titleLarge,
             )
             Spacer(Modifier.width(10.dp))
