@@ -38,7 +38,7 @@ import fr.jaetan.jbudget.core.models.Budget
 
 
 @Composable
-fun BudgetChart(budget: Budget) {
+fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
     val categoryPercentages = remember { budget.getPercentages() }
@@ -88,23 +88,25 @@ fun BudgetChart(budget: Budget) {
                 Spacer(Modifier.width(45.dp))
             }
         }
-        Box(
-            Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        0.0f to Color.Transparent,
-                        0.2f to MaterialTheme.colorScheme.background.copy(0.5f),
-                        0.6f to MaterialTheme.colorScheme.background.copy(1f)
+        if (showNewCategory) {
+            Box(
+                Modifier
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            0.0f to Color.Transparent,
+                            0.2f to MaterialTheme.colorScheme.background.copy(0.5f),
+                            0.6f to MaterialTheme.colorScheme.background.copy(1f)
+                        )
                     )
-                )
-                .align(Alignment.CenterEnd)
-                .fillMaxHeight()
-        ) {
-            IconButton(onClick = { showCategoryDialog = true }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.expand_section_descriptor)
-                )
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+            ) {
+                IconButton(onClick = { showCategoryDialog = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.expand_section_descriptor)
+                    )
+                }
             }
         }
     }

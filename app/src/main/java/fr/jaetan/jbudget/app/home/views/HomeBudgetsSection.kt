@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
@@ -48,7 +49,7 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeBudgetsSection(viewModel: HomeViewModel) {
     LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
-        item { HomeTipsSection(viewModel) }
+        //item { HomeTipsSection(viewModel) }
         items(viewModel.currentBudgets) { budget ->
             HomeBudgetsListItem(
                 budget,
@@ -190,6 +191,15 @@ private fun HeaderMenu(budget: Budget, viewModel: HomeViewModel) {
                     text = { Text(stringResource(R.string.more_details)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.ReadMore, contentDescription = null) },
                     onClick = { viewModel.navigateToBudgetScreen(budget.id) }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.remove)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) },
+                    onClick = { viewModel.budgetToRemove = budget },
+                    colors = MenuDefaults.itemColors(
+                        textColor = MaterialTheme.colorScheme.error,
+                        leadingIconColor = MaterialTheme.colorScheme.error
+                    )
                 )
             }
         }

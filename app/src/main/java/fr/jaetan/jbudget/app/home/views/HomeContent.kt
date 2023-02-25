@@ -14,18 +14,18 @@ import fr.jaetan.jbudget.core.models.State
 fun HomeContent(viewModel: HomeViewModel, modifier: Modifier) {
     Box(modifier) {
         when (viewModel.loadingState) {
-            State.Loading -> LoadingContainer(viewModel)
+            State.Loading -> LoadingContainer()
             State.EmptyData -> EmptyDataContainer(viewModel)
             State.None -> HomeBudgetsSection(viewModel)
-            else -> ErrorContainer(viewModel)
+            else -> ErrorContainer()
         }
     }
 }
 
 @Composable
-private fun LoadingContainer(viewModel: HomeViewModel) {
+private fun LoadingContainer() {
     Column(Modifier.fillMaxSize()) {
-        HomeTipsSection(viewModel)
+        //HomeTipsSection(viewModel)
         Box(
             Modifier
                 .fillMaxWidth()
@@ -38,9 +38,9 @@ private fun LoadingContainer(viewModel: HomeViewModel) {
 }
 
 @Composable
-private fun ErrorContainer(viewModel: HomeViewModel) {
+private fun ErrorContainer() {
     Column(Modifier.fillMaxWidth()) {
-        HomeTipsSection(viewModel)
+        //HomeTipsSection(viewModel)
         Box(
             Modifier
                 .weight(1f)
@@ -56,7 +56,7 @@ private fun ErrorContainer(viewModel: HomeViewModel) {
 @Composable
 private fun EmptyDataContainer(viewModel: HomeViewModel) {
     Column(Modifier.fillMaxSize()) {
-        HomeTipsSection(viewModel)
+        //HomeTipsSection(viewModel)
         Column(
             Modifier
                 .fillMaxWidth()
