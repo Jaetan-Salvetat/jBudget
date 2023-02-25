@@ -48,7 +48,10 @@ private fun CreateBudgetHeader(viewModel: CreateBudgetViewModel) {
     Column {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            stringResource(R.string.new_dialog_name), style = MaterialTheme.typography.titleLarge)
+            text = if (viewModel.isInEditMode) stringResource(R.string.edit_budget)
+                    else stringResource(R.string.new_dialog_name),
+            style = MaterialTheme.typography.titleLarge
+        )
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
             value = viewModel.newBudgetValue,

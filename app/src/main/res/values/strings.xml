@@ -9,6 +9,7 @@
     <string name="budget_delete">Suppression de budget</string>
     <string name="remove">Supprimer</string>
     <string name="edit">Modifier</string>
+    <string name="edit_budget">Modifier le budget</string>
 
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
