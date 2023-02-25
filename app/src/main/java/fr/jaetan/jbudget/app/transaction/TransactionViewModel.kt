@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.transaction
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -92,6 +93,8 @@ class TransactionViewModel(
     }
 
     init {
+        Log.d("testt", transactionId.toString())
+        Log.d("testt", budget?.name.toString())
         if (transactionId != null && budget == null) {
             isInUpdateMode = true
             JBudget.transactionRepository.findById(transactionId) { transaction, _ ->

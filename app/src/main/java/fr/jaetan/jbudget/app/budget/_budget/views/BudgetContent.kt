@@ -98,7 +98,7 @@ private fun HistoryHeader(viewModel: BudgetViewModel, navController: NavHostCont
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.weight(1f)
             )
-            IconButton(onClick = { navController.navigate("${Screen.Transaction.route}/${viewModel.budget?.id}") }) {
+            IconButton(onClick = { navController.navigate("${Screen.Transaction.route}/budget/${viewModel.budget?.id}") }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
             FilterButton(viewModel)

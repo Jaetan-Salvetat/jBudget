@@ -34,7 +34,6 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
         content = { BudgetContent(it, viewModel, navController) },
         topBar = { BudgetAppBar(viewModel, scrollBehavior, navController) })
 
-
     viewModel.budgetToRemove?.let {
         RemoveBudgetDialog(
             isVisible = viewModel.budgetToRemove != null,

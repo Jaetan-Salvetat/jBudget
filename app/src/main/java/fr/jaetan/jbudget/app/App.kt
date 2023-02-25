@@ -58,7 +58,7 @@ fun App() {
 
             TransactionScreen(transactionViewModel)
         }
-        composable("${Screen.Transaction.route}/{budgetId}") { nav ->
+        composable("${Screen.Transaction.route}/budget/{budgetId}") { nav ->
             val budgetId = nav.arguments?.getString("budgetId")
             val budget = JBudget.state.budgets.find { it.id == budgetId }
             val transactionViewModel = TransactionViewModel(
