@@ -32,6 +32,29 @@ class UserRepository {
         }
     }
 
+    fun removeAccount(password: String, callback: (FirebaseResponse) -> Unit) {
+        reAuthenticate(password) { res ->
+            callback(res)
+            if (res != FirebaseResponse.Success) {
+                return@reAuthenticate
+            }
+
+            JBudget.state.currentUser?.delete()
+                ?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("testt", "removed")
+                    } else {
+                        Log.d("testt:isCanceled", it.isCanceled.toString())
+                        Log.d("testt:exception", it.exception?.message.toString())
+                    }
+                }
+            JBudget.categoryRepository.removeAll()
+            JBudget.budgetRepository.removeAll()
+            JBudget.state.budgets.forEach {
+                JBudget.transactionRepository.removeAll(it.transactions)
+            }
+        }
+    }
 
     private fun reAuthenticate(password: String, callback: (FirebaseResponse) -> Unit) {
         val credential = EmailAuthProvider.getCredential(JBudget.state.currentUser!!.email!!, password)

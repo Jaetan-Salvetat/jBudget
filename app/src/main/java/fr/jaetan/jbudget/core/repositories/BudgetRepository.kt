@@ -57,6 +57,12 @@ class BudgetRepository {
         }
     }
 
+    fun removeAll() {
+        JBudget.state.budgets.forEach {
+            database.document(it.id).delete()
+        }
+    }
+
     fun shareAsText(context: Context, budget: Budget) {
         var text = "total -> ${budget.transactionTotalAmount}\n"
 

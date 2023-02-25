@@ -65,6 +65,13 @@ class TransactionRepository {
         database.document(transactionId).delete()
     }
 
+    fun removeAll(transactions: List<Transaction>) {
+        transactions.forEach {
+            database.document(it.id).delete()
+        }
+
+    }
+
     fun deleteAllBy(budgetId: String, callback: (FirebaseResponse) -> Unit) {
         database.whereEqualTo("budgetId", budgetId).get().addOnCompleteListener {
             if (it.result.documents.isEmpty()) {

@@ -26,4 +26,10 @@ class CategoryRepository {
         database.document(category.id).set(category.toMap())
             .addOnCompleteListener { onComplete() }
     }
+
+    fun removeAll() {
+        JBudget.state.categories.forEach {
+            database.document(it.id).delete()
+        }
+    }
 }

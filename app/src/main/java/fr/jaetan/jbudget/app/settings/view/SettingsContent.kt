@@ -72,6 +72,7 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         }
         //Disconnect section
         item { DisconnectSection() }
+        item { RemoveAccountSection(viewModel) }
     }
 }
 
@@ -218,14 +219,36 @@ private fun DisconnectSection() {
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)) {
             Spacer(Modifier.height(15.dp))
-            OutlinedButton(
+            Button(
                 onClick = { JBudget.authRepository.disconnect() },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                )
+            ) {
+                Text(stringResource(R.string.disconnect))
+            }
+        }
+    }
+}
+
+@Composable
+private fun RemoveAccountSection(viewModel: SettingsViewModel) {
+    Column {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp)) {
+            Spacer(Modifier.height(15.dp))
+            TextButton(
+                onClick = { viewModel.showRemoveAccountDialog = true },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text(stringResource(R.string.disconnect))
+                Text(stringResource(R.string.remove_my_account))
             }
         }
     }
