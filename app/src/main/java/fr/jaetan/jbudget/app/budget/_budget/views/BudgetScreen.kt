@@ -57,7 +57,7 @@ private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarSc
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(id = R.string.budget_delete),
-                    tint = MaterialTheme.colorScheme.errorContainer
+                    tint = MaterialTheme.colorScheme.error
                 )
             }
         },
