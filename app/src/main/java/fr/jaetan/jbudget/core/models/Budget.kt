@@ -12,8 +12,8 @@ import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.roundTo2Decimal
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.util.*
-import kotlin.random.Random
+import java.util.Calendar
+import java.util.Date
 
 data class Budget(
     var name: String,
@@ -60,10 +60,9 @@ data class Budget(
                 values = categoryTotal,
                 percentage = (categoryTotal * 100) / transactionTotalAmount,
                 color = JBudget.state.categories.find { it.id == categoryId }?.color
-                    ?: Color(Random.nextInt(256), Random.nextInt(256), Random.nextInt(256))
             ))
         }
-        return percentages
+        return percentages.sortedBy { it.category?.name }
     }
 
     companion object {
@@ -84,7 +83,7 @@ data class CategoryPercentage(
     var category: Category?,
     var values: Double,
     var percentage: Double,
-    var color: Color
+    var color: Color?
 )
 
 fun CategoryPercentage.toText(): String = "${category?.name ?: "Non catégorisé"} -> $values (${percentage.roundTo2Decimal()}%)"

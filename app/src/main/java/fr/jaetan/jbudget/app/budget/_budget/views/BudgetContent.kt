@@ -187,7 +187,10 @@ private fun HistoryItem(transaction: Transaction, viewModel: BudgetViewModel, na
                 text = transaction.date.toText(),
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline))
             Spacer(Modifier.weight(1f))
-            Box(modifier = Modifier.background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(25.dp))) {
+            Box(
+                modifier = Modifier
+                    .background(category?.color ?: MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(25.dp))
+            ) {
                 Text(
                     modifier = Modifier.padding(7.dp, 3.dp),
                     text = category?.name ?: stringResource(id = R.string.no_category_assigned),

@@ -1,6 +1,5 @@
 package fr.jaetan.jbudget.core.repositories
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
 import fr.jaetan.jbudget.core.models.Category
@@ -18,7 +17,6 @@ class CategoryRepository {
         database.whereEqualTo("userId", JBudget.state.currentUser?.uid)
             .snapshots()
             .collect { query ->
-                Log.d("testt:categoryRepository.initListener()", query.documents.size.toString())
                 JBudget.state.categories.clear()
                 JBudget.state.categories.addAll(Category.fromMapList(query.documents))
             }

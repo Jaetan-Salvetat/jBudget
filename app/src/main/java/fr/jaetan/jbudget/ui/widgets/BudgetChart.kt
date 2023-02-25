@@ -35,20 +35,13 @@ import com.himanshoe.charty.pie.config.PieConfig
 import com.himanshoe.charty.pie.config.PieData
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.Budget
-import fr.jaetan.jbudget.core.services.JBudget
 
 
 @Composable
-fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
+fun BudgetChart(budget: Budget) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
     val categoryPercentages = remember { budget.getPercentages() }
-    val transactions = budget.transactions
-    val categories = if (JBudget.state.categories.isEmpty()) {
-        listOf()
-    } else {
-        JBudget.state.categories.filter { cat -> transactions.groupBy { it.categoryId }.containsKey(cat.id) }
-    }
 
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         PieChart(
@@ -59,7 +52,7 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
                 textColor = MaterialTheme.colorScheme.onBackground
             ),
             pieData = categoryPercentages.map {
-                PieData(it.percentage.toFloat(), it.color)
+                PieData(it.percentage.toFloat(), it.color ?: MaterialTheme.colorScheme.secondaryContainer)
             },
             onSectionClicked = { _, _ -> showPercentage = !showPercentage }
         )
@@ -74,18 +67,18 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(categories) { category ->
+            items(categoryPercentages) { categoryPercentage ->
                 Spacer(Modifier.width(10.dp))
                 Box(
                     Modifier
                         .clip(RoundedCornerShape(7.dp))
                         .background(
-                            category.color ?: MaterialTheme.colorScheme.secondaryContainer
+                            categoryPercentage.color ?: MaterialTheme.colorScheme.secondaryContainer
                         )
                         .clickable { }
                 ) {
                     Text(
-                        text = category.name,
+                        text = categoryPercentage.category?.name ?: stringResource(R.string.no_category_assigned),
                         modifier = Modifier.padding(15.dp, 10.dp),
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -95,25 +88,23 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
                 Spacer(Modifier.width(45.dp))
             }
         }
-        if (showNewCategory) {
-            Box(
-                Modifier
-                    .background(
-                        brush = Brush.horizontalGradient(
-                            0.0f to Color.Transparent,
-                            0.2f to MaterialTheme.colorScheme.background.copy(0.5f),
-                            0.6f to MaterialTheme.colorScheme.background.copy(1f)
-                        )
+        Box(
+            Modifier
+                .background(
+                    brush = Brush.horizontalGradient(
+                        0.0f to Color.Transparent,
+                        0.2f to MaterialTheme.colorScheme.background.copy(0.5f),
+                        0.6f to MaterialTheme.colorScheme.background.copy(1f)
                     )
-                    .align(Alignment.CenterEnd)
-                    .fillMaxHeight()
-            ) {
-                IconButton(onClick = { showCategoryDialog = true }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.expand_section_descriptor)
-                    )
-                }
+                )
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight()
+        ) {
+            IconButton(onClick = { showCategoryDialog = true }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.expand_section_descriptor)
+                )
             }
         }
     }
