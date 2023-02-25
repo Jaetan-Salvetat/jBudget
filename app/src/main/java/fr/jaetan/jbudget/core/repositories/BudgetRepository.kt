@@ -28,6 +28,10 @@ class BudgetRepository {
 
                 JBudget.state.budgets.clear()
                 JBudget.state.budgets.addAll(Budget.fromMapList(documents))
+
+                documents.forEach {
+                    JBudget.transactionRepository.getAll(it.id)
+                }
             }
     }
 
@@ -42,6 +46,13 @@ class BudgetRepository {
             }
             .addOnFailureListener {
                 callback(null, FirebaseResponse.Error)
+            }
+    }
+
+    fun edit(budget: Budget, callback: (FirebaseResponse) -> Unit) {
+        database.document(budget.id).set(budget.toMap())
+            .addOnCompleteListener {
+                callback(if (it.isSuccessful) FirebaseResponse.Success else FirebaseResponse.Error)
             }
     }
 
@@ -66,8 +77,8 @@ class BudgetRepository {
     fun shareAsText(context: Context, budget: Budget) {
         var text = "total -> ${budget.transactionTotalAmount}\n"
 
-        budget.getPercentages().forEachIndexed { index, percentage ->
-            text += "\n${percentage.toText()}"
+        budget.getPercentages().forEach {
+            text += "\n${it.toText()}"
         }
 
         val intent = Intent().apply {

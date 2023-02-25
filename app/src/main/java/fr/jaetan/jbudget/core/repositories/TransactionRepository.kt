@@ -25,6 +25,19 @@ class TransactionRepository {
             }
     }
 
+    fun getAll(budgetId: String) {
+        JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = true
+        database.whereEqualTo("budgetId", budgetId).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    JBudget.state.budgets.find { it.id == budgetId }?.transactions?.clear()
+                    JBudget.state.budgets.find { it.id == budgetId }
+                        ?.transactions?.addAll(Transaction.fromMapList(task.result.documents))
+                    JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = false
+                }
+            }
+    }
+
     fun findById(id: String, callback: (Transaction?, FirebaseResponse) -> Unit) {
         database.document(id).get()
             .addOnCompleteListener {

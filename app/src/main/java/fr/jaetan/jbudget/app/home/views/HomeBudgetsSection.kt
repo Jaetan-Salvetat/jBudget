@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ReadMore
@@ -58,10 +59,10 @@ fun HomeBudgetsSection(viewModel: HomeViewModel) {
                 viewModel
             )
         }
-        if (viewModel.oldBudgets.isNotEmpty()) {
-            item { Divider() }
-            items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
+        if (viewModel.oldBudgets.isNotEmpty() && viewModel.currentBudgets.isNotEmpty()) {
+            item { Divider(Modifier.padding(top = 20.dp)) }
         }
+        items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
         item { Spacer(Modifier.height(100.dp)) }
     }
 }
@@ -186,22 +187,42 @@ private fun HeaderMenu(budget: Budget, viewModel: HomeViewModel) {
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.share)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.Share, contentDescription = null) },
-                    onClick = { JBudget.budgetRepository.shareAsText(context, budget) }
+                    onClick = {
+                        JBudget.budgetRepository.shareAsText(context, budget)
+                        showDropDown = false
+                    }
                 )
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.new_transaction)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
-                    onClick = { viewModel.navigateToTransactionScreen(budget.id) }
+                    onClick = {
+                        viewModel.navigateToTransactionScreen(budget.id)
+                        showDropDown = false
+                    }
                 )
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.more_details)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.ReadMore, contentDescription = null) },
-                    onClick = { viewModel.navigateToBudgetScreen(budget.id) }
+                    onClick = {
+                        viewModel.navigateToBudgetScreen(budget.id)
+                        showDropDown = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.edit)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Edit, contentDescription = null) },
+                    onClick = {
+                        viewModel.budgetToEdit = budget
+                        showDropDown = false
+                    }
                 )
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.remove)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) },
-                    onClick = { viewModel.budgetToRemove = budget },
+                    onClick = {
+                        viewModel.budgetToRemove = budget
+                        showDropDown = false
+                    },
                     colors = MenuDefaults.itemColors(
                         textColor = MaterialTheme.colorScheme.error,
                         leadingIconColor = MaterialTheme.colorScheme.error

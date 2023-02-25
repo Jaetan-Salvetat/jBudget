@@ -34,5 +34,5 @@ data class Transaction(
     }
 }
 
-val Transaction.category: Category
-    get() = JBudget.state.categories.find { it.id == categoryId }!!
+val Transaction.category: Category?
+    get() = JBudget.state.categories.find { it.id == categoryId }

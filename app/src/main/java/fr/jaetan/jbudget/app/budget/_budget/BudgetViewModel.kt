@@ -17,6 +17,7 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     val transactions get() = getTransactionsFiltered()
     var budget by mutableStateOf(null as Budget?)
     var budgetToRemove by mutableStateOf(null as Budget?)
+    var budgetToEdit by mutableStateOf(null as Budget?)
     var showDropDownFilter by mutableStateOf(false)
     var filterType by mutableStateOf(FilterType.None)
     var filterOrder by mutableStateOf(FilterOrder.Ascending)
@@ -60,8 +61,8 @@ class BudgetViewModel(private val budgetId: String?) : ViewModel() {
     }
 
     private fun filterByCategory(): List<Transaction> = when (filterOrder) {
-        FilterOrder.Ascending -> _transactions.sortedBy { it.category.name }
-        else -> _transactions.sortedByDescending { it.category.name }
+        FilterOrder.Ascending -> _transactions.sortedBy { it.category?.name }
+        else -> _transactions.sortedByDescending { it.category?.name }
     }
 
     private fun filterByDate(): List<Transaction> = when (filterOrder) {

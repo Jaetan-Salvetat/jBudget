@@ -8,6 +8,7 @@
     <string name="new_budget_dialog_name">Nom du budget</string>
     <string name="budget_delete">Suppression de budget</string>
     <string name="remove">Supprimer</string>
+    <string name="edit">Modifier</string>
 
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
