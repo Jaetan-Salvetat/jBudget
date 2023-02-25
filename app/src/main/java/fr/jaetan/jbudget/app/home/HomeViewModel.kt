@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -19,9 +18,6 @@ import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
@@ -62,21 +58,6 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
 
-    private fun getTransactions(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        viewModelScope.launch(dispatcher) {
-            JBudget.state.budgets.forEach { budget ->
-                JBudget.state.budgets.find { it == budget }
-                JBudget.transactionRepository.getAll(budget.id)
-            }
-        }
-    }
-
-    private fun getCategories(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        viewModelScope.launch(dispatcher) {
-            JBudget.categoryRepository.getAll()
-        }
-    }
-
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
     var fabExpanded by mutableStateOf(false)
@@ -112,9 +93,6 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         if (!JBudget.state.hasChangeTheme) {
             tips.add(TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) })
         }
-
-        getTransactions()
-        getCategories()
     }
 }
 

@@ -18,9 +18,8 @@ class JBudget {
             state.init(context)
         }
 
-        suspend fun initFireStore() {
+        fun initFireStore() {
             FirebaseFirestore.getInstance().clearPersistence()
-            budgetRepository.initListener()
         }
     }
 }

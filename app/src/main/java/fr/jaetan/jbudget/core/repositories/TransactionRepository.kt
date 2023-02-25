@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.onStart
 class TransactionRepository {
     private val database = Firebase.firestore.collection("transactions")
 
-    suspend fun getAll(budgetId: String?) {
+    suspend fun initListener(budgetId: String?) {
         database
             .whereEqualTo("budgetId", budgetId)
             .snapshots()

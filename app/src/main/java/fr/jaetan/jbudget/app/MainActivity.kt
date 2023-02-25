@@ -22,7 +22,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LaunchedEffect(Unit) { JBudget.init(this@MainActivity) }
-            LaunchedEffect(Unit) { JBudget.initFireStore() }
+            JBudget.initFireStore()
+
+            LaunchedEffect(Unit) { JBudget.budgetRepository.initListener() }
+            LaunchedEffect(Unit) { JBudget.categoryRepository.initListener() }
+            JBudget.state.budgets.forEach {
+                LaunchedEffect(Unit) { JBudget.transactionRepository.initListener(it.id) }
+            }
 
             if (!JBudget.state.isLogged) {
                 startActivity(AuthActivity.launch(this))
