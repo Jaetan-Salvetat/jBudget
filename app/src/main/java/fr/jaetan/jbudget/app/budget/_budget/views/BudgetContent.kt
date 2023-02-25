@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.MoreVert
@@ -23,6 +24,7 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget._budget.BudgetViewModel
 import fr.jaetan.jbudget.app.budget._budget.FilterOrder
 import fr.jaetan.jbudget.app.budget._budget.FilterType
+import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.extentions.toText
@@ -33,7 +35,7 @@ fun BudgetContent(padding: PaddingValues, viewModel: BudgetViewModel, navControl
     when {
         viewModel.budget?.isLoadingTransactions == true -> BudgetLoading()
         viewModel.transactions.isNotEmpty() -> NotEmptyBudget(padding, viewModel, navController)
-        else -> EmptyBudget(padding, navController)
+        else -> EmptyBudget(padding, viewModel.budget, navController)
     }
 }
 
@@ -43,7 +45,7 @@ private fun NotEmptyBudget(padding: PaddingValues, viewModel: BudgetViewModel, n
     LazyColumn(Modifier.padding(padding)) {
         item { GraphicWidget(viewModel = viewModel) }
 
-        stickyHeader { HistoryHeader(viewModel) }
+        stickyHeader { HistoryHeader(viewModel, navController) }
 
         items(viewModel.transactions) {
             Divider()
@@ -60,7 +62,7 @@ private fun BudgetLoading() {
 }
 
 @Composable
-private fun EmptyBudget(padding: PaddingValues, navController: NavHostController) {
+private fun EmptyBudget(padding: PaddingValues, budget: Budget?, navController: NavHostController) {
     Column(
         Modifier
             .fillMaxSize()
@@ -69,7 +71,7 @@ private fun EmptyBudget(padding: PaddingValues, navController: NavHostController
         horizontalAlignment = Alignment.CenterHorizontally
         ) {
         Text(stringResource(R.string.empty_transaction_create))
-        TextButton(onClick = { navController.navigate(Screen.Transaction.route) }) {
+        TextButton(onClick = { navController.navigate("${Screen.Transaction.route}/${budget?.id}") }) {
             Text(stringResource(R.string.home_fab_add_transaction))
         }
     }
@@ -81,7 +83,7 @@ private fun GraphicWidget(viewModel: BudgetViewModel) {
 }
 
 @Composable
-private fun HistoryHeader(viewModel: BudgetViewModel) {
+private fun HistoryHeader(viewModel: BudgetViewModel, navController: NavHostController) {
     Box(modifier = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.background)) {
@@ -96,6 +98,9 @@ private fun HistoryHeader(viewModel: BudgetViewModel) {
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.weight(1f)
             )
+            IconButton(onClick = { navController.navigate("${Screen.Transaction.route}/${viewModel.budget?.id}") }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
             FilterButton(viewModel)
         }
     }

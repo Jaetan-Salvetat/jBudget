@@ -58,6 +58,10 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
 
+    fun navigateToTransactionScreen(budgetId: String) {
+        navController.navigate("${Screen.Transaction.route}/$budgetId")
+    }
+
     //FAB
     var showNewBudgetDialog by mutableStateOf(false)
     var fabExpanded by mutableStateOf(false)

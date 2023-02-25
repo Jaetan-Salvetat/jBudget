@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -186,6 +187,11 @@ private fun HeaderMenu(budget: Budget, viewModel: HomeViewModel) {
                     text = { Text(stringResource(R.string.share)) },
                     leadingIcon = { Icon(imageVector = Icons.Default.Share, contentDescription = null) },
                     onClick = { JBudget.budgetRepository.shareAsText(context, budget) }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.new_transaction)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+                    onClick = { viewModel.navigateToTransactionScreen(budget.id) }
                 )
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.more_details)) },
