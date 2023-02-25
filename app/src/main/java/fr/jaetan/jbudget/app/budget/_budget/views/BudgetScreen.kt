@@ -21,7 +21,7 @@ import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -43,7 +43,7 @@ fun BudgetScreen(viewModel: BudgetViewModel, navController: NavHostController) {
 private fun BudgetAppBar(viewModel: BudgetViewModel, scrollBehavior: TopAppBarScrollBehavior, navController: NavHostController) {
     val context = LocalContext.current
 
-    LargeTopAppBar(
+    TopAppBar(
         title = { Text(text = viewModel.budget!!.name) },
         actions = {
             BudgetDates(viewModel = viewModel)
