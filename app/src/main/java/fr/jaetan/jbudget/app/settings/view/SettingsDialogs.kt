@@ -5,19 +5,29 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.app.auth.views.PasswordInput
 import fr.jaetan.jbudget.app.settings.SettingsViewModel
+import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
-import fr.jaetan.jbudget.core.services.extentions.isUsename
 import fr.jaetan.jbudget.ui.widgets.OutlinedTextFieldPassword
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,64 +105,92 @@ fun UpdateEmailDialog(viewModel: SettingsViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateUsernameDialog(viewModel: SettingsViewModel) {
-    val focusManager = LocalFocusManager.current
-    val keyboardActions = KeyboardActions(
-        onNext = { focusManager.moveFocus(FocusDirection.Down) },
-        onDone = {
-            viewModel.updateEmail()
-            focusManager.clearFocus()
-        }
-    )
+fun RemoveAccountDialog(viewModel: SettingsViewModel) {
+    var password by rememberSaveable { mutableStateOf("") }
+    var isLoading by rememberSaveable {  mutableStateOf(false) }
+    var showError by rememberSaveable { mutableStateOf(false) }
+    var showErrorBadPassword by rememberSaveable { mutableStateOf(false) }
 
-    if (viewModel.showUpdateUsernameDialog) {
+    val dismiss = {
+        isLoading = false
+        showError = false
+        showErrorBadPassword = false
+        password = ""
+        viewModel.showRemoveAccountDialog = false
+    }
+
+    val removeAccount = {
+        showError = false
+        isLoading = true
+        if (!password.isPassword) {
+            showError = true
+            isLoading = false
+        } else {
+            JBudget.userRepository.removeAccount(password) {
+                isLoading = false
+                if (it == FirebaseResponse.Success) {
+                    dismiss()
+                } else {
+                    showErrorBadPassword = true
+                }
+            }
+        }
+    }
+
+    if (viewModel.showRemoveAccountDialog) {
         AlertDialog(
-            onDismissRequest = viewModel::dismissUsernameDialog,
+            onDismissRequest = { dismiss() },
             confirmButton = {
-                TextButton(
-                    onClick = viewModel::updateUsername,
-                    enabled = viewModel.username?.isUsename == true
-                            && viewModel.updateUsernameState != State.Loading
-                ) {
-                    if (viewModel.updateUsernameState == State.Loading) {
-                        CircularProgressIndicator(Modifier.size(20.dp))
+                TextButton(onClick = { removeAccount() }, enabled = !isLoading) {
+                    if (isLoading) {
+                        CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(15.dp))
                     } else {
-                        Text(stringResource(R.string.next))
+                        Text(stringResource(R.string.remove))
                     }
                 }
             },
             dismissButton = {
-                TextButton(onClick = viewModel::dismissUsernameDialog) {
+                TextButton(onClick = { dismiss() }, enabled = !isLoading) {
                     Text(stringResource(R.string.cancel))
                 }
             },
             title = {
-                Text(stringResource(R.string.update_my_username))
+                Text(stringResource(R.string.remove_my_account))
             },
             text = {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(40.dp)) {
-                        viewModel.updateEmailErrorMessageRes?.let{
-                            Text(
-                                stringResource(it),
-                                color = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                    }
-
-                    OutlinedTextField(
-                        value = viewModel.username.orEmpty(),
-                        onValueChange = { viewModel.username = it },
-                        label = { Text(stringResource(R.string.new_username)) },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        keyboardActions = keyboardActions
+                    Text(
+                        text = if (showErrorBadPassword) {
+                            stringResource(R.string.incorrect_password)
+                        } else {
+                            ""
+                        },
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.error,
+                            fontStyle = FontStyle.Italic
+                        )
                     )
-                    
-                    Spacer(Modifier.height(20.dp))
+
+                    PasswordInput(
+                        value = password,
+                        onChange = { password = it },
+                        keyboardActions = KeyboardActions(),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.Transparent
+                        ),
+                        showSupportingText = showError
+                    )
+
+                    Spacer(Modifier.height(15.dp))
+
+                    Text(
+                        text = stringResource(R.string.remove_account_sub_message),
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.outline,
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 11.sp
+                        )
+                    )
                 }
             }
         )

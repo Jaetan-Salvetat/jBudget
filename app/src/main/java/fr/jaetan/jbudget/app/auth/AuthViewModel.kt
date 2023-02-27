@@ -12,13 +12,11 @@ import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.isEmail
 import fr.jaetan.jbudget.core.services.extentions.isPassword
-import fr.jaetan.jbudget.core.services.extentions.isUsename
 
 class AuthViewModel(navDestination: NavDestination?): ViewModel() {
     val currentScreen = AuthScreens.values().find { navDestination?.route == it.route } ?: AuthScreens.Login
     private var _email by mutableStateOf(null as String?)
     private var _password by mutableStateOf(null as String?)
-    private var _username by mutableStateOf(null as String?)
     var state by mutableStateOf(State.None)
     var showForgotPasswordDialog by mutableStateOf(false)
     var email: String?
@@ -33,18 +31,11 @@ class AuthViewModel(navDestination: NavDestination?): ViewModel() {
             _password = value
             state = State.None
         }
-    var username: String?
-        get() = _username
-        set(value) {
-            _username = value
-            state = State.None
-        }
 
     @StringRes var errorMessageRes: Int = R.string.sample_error
     val canContinue: Boolean
         get() = password?.isPassword == true
             && email?.isEmail == true
-            && (username?.isUsename == true || currentScreen == AuthScreens.Login)
             && state == State.None
 
     fun auth() {
@@ -66,7 +57,7 @@ class AuthViewModel(navDestination: NavDestination?): ViewModel() {
     }
 
     private fun register() {
-        JBudget.authRepository.registerWithEmailAndPassword(email!!, username!!, password!!) {
+        JBudget.authRepository.registerWithEmailAndPassword(email!!, password!!) {
             errorMessageRes = it.messageRes
 
             state = when (it) {

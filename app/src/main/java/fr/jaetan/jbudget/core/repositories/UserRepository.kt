@@ -3,26 +3,11 @@ package fr.jaetan.jbudget.core.repositories
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.services.JBudget
 
 class UserRepository {
     private val auth = FirebaseAuth.getInstance()
-
-    fun updateUsername(username: String, callback: (FirebaseResponse) -> Unit) {
-        val profileChangeRequest = userProfileChangeRequest {
-            displayName = username
-        }
-
-        auth.currentUser?.updateProfile(profileChangeRequest)
-            ?.addOnCompleteListener {
-                callback(FirebaseResponse.Success)
-                JBudget.state.currentUser = auth.currentUser
-            }
-            ?.addOnCanceledListener { callback(FirebaseResponse.Error) }
-            ?.addOnFailureListener { callback(FirebaseResponse.Error) }
-    }
 
     fun updateEmail(email: String, password: String, callback: (FirebaseResponse) -> Unit) {
         reAuthenticate(password) { res ->
@@ -47,6 +32,29 @@ class UserRepository {
         }
     }
 
+    fun removeAccount(password: String, callback: (FirebaseResponse) -> Unit) {
+        reAuthenticate(password) { res ->
+            callback(res)
+            if (res != FirebaseResponse.Success) {
+                return@reAuthenticate
+            }
+
+            JBudget.state.currentUser?.delete()
+                ?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("testt", "removed")
+                    } else {
+                        Log.d("testt:isCanceled", it.isCanceled.toString())
+                        Log.d("testt:exception", it.exception?.message.toString())
+                    }
+                }
+            JBudget.categoryRepository.removeAll()
+            JBudget.budgetRepository.removeAll()
+            JBudget.state.budgets.forEach {
+                JBudget.transactionRepository.removeAll(it.transactions)
+            }
+        }
+    }
 
     private fun reAuthenticate(password: String, callback: (FirebaseResponse) -> Unit) {
         val credential = EmailAuthProvider.getCredential(JBudget.state.currentUser!!.email!!, password)

@@ -1,11 +1,14 @@
 package fr.jaetan.jbudget.core.repositories
 
+import android.content.Context
+import android.content.Intent
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.State
+import fr.jaetan.jbudget.core.models.toText
 import fr.jaetan.jbudget.core.services.JBudget
 
 class BudgetRepository {
@@ -25,6 +28,10 @@ class BudgetRepository {
 
                 JBudget.state.budgets.clear()
                 JBudget.state.budgets.addAll(Budget.fromMapList(documents))
+
+                documents.forEach {
+                    JBudget.transactionRepository.getAll(it.id)
+                }
             }
     }
 
@@ -42,6 +49,13 @@ class BudgetRepository {
             }
     }
 
+    fun edit(budget: Budget, callback: (FirebaseResponse) -> Unit) {
+        database.document(budget.id).set(budget.toMap())
+            .addOnCompleteListener {
+                callback(if (it.isSuccessful) FirebaseResponse.Success else FirebaseResponse.Error)
+            }
+    }
+
     fun delete(budgetId: String, callback: (FirebaseResponse) -> Unit) {
         database.document(budgetId).delete().addOnCompleteListener { task ->
             if (task.isSuccessful)
@@ -52,5 +66,26 @@ class BudgetRepository {
                     callback(FirebaseResponse.Error)
                 }
         }
+    }
+
+    fun removeAll() {
+        JBudget.state.budgets.forEach {
+            database.document(it.id).delete()
+        }
+    }
+
+    fun shareAsText(context: Context, budget: Budget) {
+        var text = "total -> ${budget.transactionTotalAmount}\n"
+
+        budget.getPercentages().forEach {
+            text += "\n${it.toText()}"
+        }
+
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, text)
+        }
+        context.startActivity(intent)
     }
 }

@@ -2,6 +2,7 @@ package fr.jaetan.jbudget.core.models
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import fr.jaetan.jbudget.core.services.JBudget
 import java.util.*
 
 data class Transaction(
@@ -32,3 +33,6 @@ data class Transaction(
         )
     }
 }
+
+val Transaction.category: Category?
+    get() = JBudget.state.categories.find { it.id == categoryId }

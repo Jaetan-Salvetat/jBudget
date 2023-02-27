@@ -5,18 +5,26 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -47,13 +55,6 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         }
         item {
             UserItem(
-                Icons.Filled.Person,
-                R.string.update_my_username,
-                viewModel.currentUsername
-            ) { viewModel.showUpdateUsernameDialog = true }
-        }
-        item {
-            UserItem(
                 Icons.Filled.Lock,
                 R.string.update_my_password
             ) { viewModel.showResetPasswordDialog = true }
@@ -66,11 +67,12 @@ fun SettingsContent(padding: PaddingValues, viewModel: SettingsViewModel) {
         //Categories section
         stickyHeader { CategoriesSectionHeader(viewModel) }
         item { EmptyCategoriesSection(viewModel) }
-        items(JBudget.state.categories) {
-            CategorySectionItem(it, viewModel)
+        items(viewModel.categories.size) {
+            CategorySectionItem(viewModel.categories[it], viewModel)
         }
         //Disconnect section
         item { DisconnectSection() }
+        item { RemoveAccountSection(viewModel) }
     }
 }
 
@@ -217,11 +219,12 @@ private fun DisconnectSection() {
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp)) {
             Spacer(Modifier.height(15.dp))
-            OutlinedButton(
+            Button(
                 onClick = { JBudget.authRepository.disconnect() },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colorScheme.error
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    containerColor = MaterialTheme.colorScheme.errorContainer
                 )
             ) {
                 Text(stringResource(R.string.disconnect))
@@ -231,10 +234,34 @@ private fun DisconnectSection() {
 }
 
 @Composable
+private fun RemoveAccountSection(viewModel: SettingsViewModel) {
+    Column {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp)) {
+            Spacer(Modifier.height(15.dp))
+            TextButton(
+                onClick = { viewModel.showRemoveAccountDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text(stringResource(R.string.remove_my_account))
+            }
+        }
+    }
+}
+
+@Composable
 private fun CategoriesSectionHeader(viewModel: SettingsViewModel) {
     val arrowRotation by animateFloatAsState(if (!viewModel.showCategories) 0f else 180f)
 
-    Column(Modifier.fillMaxWidth()) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)) {
         Divider()
         Row(
             Modifier
@@ -251,6 +278,9 @@ private fun CategoriesSectionHeader(viewModel: SettingsViewModel) {
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f)
             )
+            IconButton(onClick = { viewModel.showNewCategoryDialog = true }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
@@ -262,16 +292,64 @@ private fun CategoriesSectionHeader(viewModel: SettingsViewModel) {
 
 @Composable
 private fun CategorySectionItem(category: Category, viewModel: SettingsViewModel) {
+    var categoryName by remember { mutableStateOf("") }
+    val focusRequester = FocusRequester()
+
     Column(
         Modifier
             .fillMaxWidth()
             .animateContentSize()) {
         if (viewModel.showCategories && JBudget.state.categories.isNotEmpty()) {
+
+            Divider(Modifier.padding(horizontal = 20.dp))
+
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp, horizontal = 20.dp)) {
-                Text(category.name)
+                    .clickable {
+                        viewModel.editingCategory = category
+                        categoryName = category.name
+                    }
+                    .padding(vertical = 20.dp, horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (viewModel.editingCategory == category) {
+                    BasicTextField(
+                        value = categoryName,
+                        onValueChange = { categoryName = it },
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                        singleLine = true,
+                        modifier = Modifier
+                            .focusRequester(focusRequester)
+                            .weight(1f),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground)
+                    )
+
+                    IconButton(
+                        onClick = {
+                            viewModel.updateCategoryName(category.copy(name = categoryName))
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = null
+                        )
+                    }
+
+                    SideEffect {
+                        focusRequester.requestFocus()
+                    }
+                } else {
+                    Text(category.name, modifier = Modifier.weight(1f))
+                    if (viewModel.isCategoryLoading && viewModel.editingCategory == category) {
+                        CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         }
     }

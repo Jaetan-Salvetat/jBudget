@@ -8,6 +8,8 @@
     <string name="new_budget_dialog_name">Nom du budget</string>
     <string name="budget_delete">Suppression de budget</string>
     <string name="remove">Supprimer</string>
+    <string name="edit">Modifier</string>
+    <string name="edit_budget">Modifier le budget</string>
 
     <string name="login">Connexion</string>
     <string name="register">Inscription</string>
@@ -32,12 +34,14 @@
     <string name="bad_password">Ton mot de passe doit contenir au moins 8 caractères.</string>
     <string name="bad_username">Ton nom d\'utilisateur doit contenir au moins 3 caractères.</string>
     <string name="user_already_exist">Un utilisateur existe déjà avec cette email ou ce nom d\'utilisateur.</string>
+    <string name="incorrect_password">Mot de passe incorrect</string>
     <string name="bad_email_or_password">Email ou mot de passe incorrect.</string>
     <string name="password_reset">Réinitialisation du mot de passe</string>
     <string name="email_sent">L\'email à bien été envoyé.</string>
     <string name="no_category_assigned">Non catégorisé</string>
     <string name="new_category">Nouvelle catégorie</string>
     <string name="no_categories">Il n\'y a encore aucune catégorie.</string>
+    <string name="remove_account_sub_message">Supprimer ton compte est une action iréverssible.</string>
 
     <string name="my_settings">Mes paramètres</string>
     <string name="my_data">Mes données</string>
@@ -74,6 +78,9 @@
     <string name="my_transactions">Mes transactions</string>
     <string name="no_category">Aucune</string>
     <string name="quit_app_dialog_text">Et tu sûr de vouloir quitter l\'application ?</string>
+    <string name="empty_transaction_create">Ta liste de transactions est vide, ajoute en une !</string>
+    <string name="empty_budget_create">Ta liste de budget est vide, ajoute en un !</string>
+    <string name="share">Partager</string>
 
 
     <!-- Content descriptions-->
@@ -97,7 +104,4 @@
     <!-- Home tips -->
     <string name="change_app_theme">Personalise le thème de l\'application dans les paramètres</string>
     <string name="create_your_first_budget">Créer ton 1er budget !</string>
-    <string name="can_no_specify_date">Tu peux créer un budget sans spécifier de date de fin</string>
-    <string name="long_press_to_remove_tips">Tu peux Cacher un "tips" en restant appuyé sur le tips</string>
-    <string name="remove_budget_with_swipe">Tu peux supprimer un budget avec un geste du doigt de la gauche vers la droite !</string>
 </resources>

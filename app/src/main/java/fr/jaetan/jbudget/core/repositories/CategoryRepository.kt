@@ -13,12 +13,23 @@ class CategoryRepository {
             .addOnCompleteListener { callback() }
     }
 
-    suspend fun getAll() {
+    suspend fun initListener() {
         database.whereEqualTo("userId", JBudget.state.currentUser?.uid)
             .snapshots()
             .collect { query ->
                 JBudget.state.categories.clear()
                 JBudget.state.categories.addAll(Category.fromMapList(query.documents))
             }
+    }
+
+    fun updateCategoryName(category: Category, onComplete: () -> Unit) {
+        database.document(category.id).set(category.toMap())
+            .addOnCompleteListener { onComplete() }
+    }
+
+    fun removeAll() {
+        JBudget.state.categories.forEach {
+            database.document(it.id).delete()
+        }
     }
 }

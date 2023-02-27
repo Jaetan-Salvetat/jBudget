@@ -17,16 +17,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
+import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.dateSelector
 
 
 @Composable
-fun CreateBudgetDialog(navController: NavHostController, dismiss: () -> Unit) {
-    val viewModel = CreateBudgetViewModel(dismiss)
+fun CreateBudgetDialog(budget: Budget? = null, dismiss: () -> Unit) {
+    val viewModel = CreateBudgetViewModel(budget, dismiss)
 
     Dialog(onDismissRequest = dismiss) {
         Column (horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +36,7 @@ fun CreateBudgetDialog(navController: NavHostController, dismiss: () -> Unit) {
         ) {
             CreateBudgetHeader(viewModel)
             CreateBudgetFooter(viewModel)
-            CreateBudgetButtons(navController, viewModel)
+            CreateBudgetButtons(viewModel)
         }
     }
 }
@@ -48,7 +48,10 @@ private fun CreateBudgetHeader(viewModel: CreateBudgetViewModel) {
     Column {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            stringResource(R.string.new_dialog_name), style = MaterialTheme.typography.titleLarge)
+            text = if (viewModel.isInEditMode) stringResource(R.string.edit_budget)
+                    else stringResource(R.string.new_dialog_name),
+            style = MaterialTheme.typography.titleLarge
+        )
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
             value = viewModel.newBudgetValue,
@@ -114,12 +117,13 @@ private fun CreateBudgetFooter(viewModel: CreateBudgetViewModel) {
 }
 
 @Composable
-private fun CreateBudgetButtons(navController: NavHostController, viewModel: CreateBudgetViewModel) {
+private fun CreateBudgetButtons(viewModel: CreateBudgetViewModel) {
     Column {
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = {
-                viewModel.createBudget(navController)
+                if (viewModel.isInEditMode) viewModel.editBudget()
+                else viewModel.createBudget()
             },
             enabled = when {
                 viewModel.newBudgetState == State.Loading -> false

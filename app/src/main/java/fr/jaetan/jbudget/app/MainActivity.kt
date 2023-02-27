@@ -21,7 +21,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            LaunchedEffect(Unit) { JBudget.initFireStore() }
+            LaunchedEffect(Unit) { JBudget.init(this@MainActivity) }
+            JBudget.initFireStore()
+
+            LaunchedEffect(Unit) { JBudget.budgetRepository.initListener() }
+            LaunchedEffect(Unit) { JBudget.categoryRepository.initListener() }
+            JBudget.state.budgets.forEach {
+                LaunchedEffect(Unit) { JBudget.transactionRepository.initListener(it.id) }
+            }
 
             if (!JBudget.state.isLogged) {
                 startActivity(AuthActivity.launch(this))

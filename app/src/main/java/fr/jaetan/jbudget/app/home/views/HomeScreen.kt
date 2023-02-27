@@ -19,14 +19,13 @@ import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.budget.create.CreateBudgetDialog
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Screen
-import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.widgets.RemoveBudgetDialog
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val backgroundAnimation by animateColorAsState(
         targetValue =  if (viewModel.fabExpanded) MaterialTheme.colorScheme.scrim.copy(alpha = .5f) else Color.Transparent
     )
@@ -50,8 +49,11 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
         )
     }
 
-    if (viewModel.showNewBudgetDialog) {
-        CreateBudgetDialog(navController) { viewModel.showNewBudgetDialog = false }
+    if (viewModel.showNewBudgetDialog || viewModel.budgetToEdit != null) {
+        CreateBudgetDialog(viewModel.budgetToEdit) {
+            viewModel.showNewBudgetDialog = false
+            viewModel.budgetToEdit = null
+        }
     }
 
     viewModel.budgetToRemove?.let {
@@ -62,12 +64,11 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavHostController) {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppBar(scrollBehavior: TopAppBarScrollBehavior, navController: NavHostController) {
-    LargeTopAppBar(
-        title = { Text(text = stringResource(R.string.home_welcome, JBudget.state.currentUser!!.displayName!!)) },
+    TopAppBar(
+        title = {},
         scrollBehavior = scrollBehavior,
         actions = {
             IconButton(onClick = { navController.navigate(Screen.Settings.route) }) {

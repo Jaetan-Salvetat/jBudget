@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -19,21 +18,12 @@ import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.models.Screen
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 class HomeViewModel(private val navController: NavHostController) : ViewModel() {
     // Home tips
     var showDeleteTipsButton by mutableStateOf(false)
-    val tips = mutableStateListOf(
-        TipsItem(R.string.remove_budget_with_swipe) {},
-        TipsItem(R.string.long_press_to_remove_tips) { showDeleteTipsButton = true },
-        TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) },
-        TipsItem(R.string.can_no_specify_date) {},
-        //manage default categories to settings view
-    )
+    val tips = mutableStateListOf<TipsItem>()
 
     suspend fun removeTips(pagerState: PagerState) {
         val index = pagerState.currentPage
@@ -48,10 +38,11 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
     //Budgets
     var selectedOldBudget by mutableStateOf(null as Budget?)
     var selectedCurrentBudgets = mutableStateListOf<Budget>()
-    val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedBy { it.startDate }
-    val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedBy { it.startDate }
+    val currentBudgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }.sortedByDescending { it.startDate }
+    val oldBudgets: List<Budget> get() = JBudget.state.budgets.filter { !it.isCurrentBudget }.sortedByDescending { it.startDate }
     val loadingState: State get() = JBudget.state.budgetsLoadingState
     var budgetToRemove by mutableStateOf(null as Budget?)
+    var budgetToEdit by mutableStateOf(null as Budget?)
 
     fun toggleSelectedBudget(budget: Budget) {
         if (budget.isCurrentBudget) {
@@ -68,19 +59,8 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         navController.navigate("${Screen.Budget.route}/$budgetId")
     }
 
-    private fun getTransactions(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        viewModelScope.launch(dispatcher) {
-            JBudget.state.budgets.forEach { budget ->
-                JBudget.state.budgets.find { it == budget }
-                JBudget.transactionRepository.getAll(budget.id)
-            }
-        }
-    }
-
-    private fun getCategories(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        viewModelScope.launch(dispatcher) {
-            JBudget.categoryRepository.getAll()
-        }
+    fun navigateToTransactionScreen(budgetId: String) {
+        navController.navigate("${Screen.Transaction.route}/budget/$budgetId")
     }
 
     //FAB
@@ -111,11 +91,13 @@ class HomeViewModel(private val navController: NavHostController) : ViewModel() 
         currentBudgets.firstOrNull()?.let {
             selectedCurrentBudgets.add(it)
         }
+
         if (JBudget.state.budgets.isEmpty()) {
             tips.add(0, TipsItem(R.string.create_your_first_budget) { showNewBudgetDialog = true })
         }
-        getTransactions()
-        getCategories()
+        if (!JBudget.state.hasChangeTheme) {
+            tips.add(TipsItem(R.string.change_app_theme) { navController.navigate(Screen.Settings.route) })
+        }
     }
 }
 

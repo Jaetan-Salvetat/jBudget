@@ -13,8 +13,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.ReadMore
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.material3.*
@@ -26,6 +32,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -35,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.home.HomeViewModel
 import fr.jaetan.jbudget.core.models.Budget
+import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.core.services.extentions.toText
 import fr.jaetan.jbudget.ui.widgets.BudgetChart
 import kotlinx.coroutines.launch
@@ -43,7 +51,7 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeBudgetsSection(viewModel: HomeViewModel) {
     LazyColumn(contentPadding = PaddingValues(bottom = 100.dp)) {
-        item { HomeTipsSection(viewModel) }
+        //item { HomeTipsSection(viewModel) }
         items(viewModel.currentBudgets) { budget ->
             HomeBudgetsListItem(
                 budget,
@@ -51,10 +59,10 @@ fun HomeBudgetsSection(viewModel: HomeViewModel) {
                 viewModel
             )
         }
-        if (viewModel.oldBudgets.isNotEmpty()) {
-            item { Divider() }
-            items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
+        if (viewModel.oldBudgets.isNotEmpty() && viewModel.currentBudgets.isNotEmpty()) {
+            item { Divider(Modifier.padding(top = 20.dp)) }
         }
+        items(viewModel.oldBudgets) { HomeBudgetsListItem(it, viewModel.selectedOldBudget == it, viewModel) }
         item { Spacer(Modifier.height(100.dp)) }
     }
 }
@@ -105,7 +113,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
         Box(
             Modifier
                 .offset { IntOffset(swipeState.offset.value.roundToInt(), 0) }
-                .padding(containerPadding)
+                .padding(top = containerPadding, end = containerPadding, start = containerPadding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             Column(
@@ -115,7 +123,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
                     .background(containerBackground, RoundedCornerShape(containerShape))
                     .animateContentSize()
             ) {
-                HomeBudgetHeader(isExpanded, budget)
+                HomeBudgetHeader(isExpanded, budget, viewModel)
                 if (isExpanded) {
                     HomeBudgetContent(budget, viewModel)
                 }
@@ -125,7 +133,7 @@ private fun HomeBudgetsListItem(budget: Budget, isExpanded: Boolean, viewModel: 
 }
 
 @Composable
-private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
+private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget, viewModel: HomeViewModel) {
     val arrowRotation by animateFloatAsState(if (!isExpanded) 0f else 180f)
     var dates = "(${budget.startDate.toText()}"
 
@@ -145,6 +153,9 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
                 style = MaterialTheme.typography.labelLarge.copy(fontStyle = FontStyle.Italic, color = MaterialTheme.colorScheme.outline),
                 overflow = TextOverflow.Ellipsis, maxLines = 1
             )
+
+            HeaderMenu(budget, viewModel)
+
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = null,
@@ -162,23 +173,92 @@ private fun HomeBudgetHeader(isExpanded: Boolean, budget: Budget) {
 }
 
 @Composable
+private fun HeaderMenu(budget: Budget, viewModel: HomeViewModel) {
+    var showDropDown by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    Column {
+        IconButton(onClick = { showDropDown = true }) {
+            Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
+        }
+
+        if (showDropDown) {
+            DropdownMenu(expanded = showDropDown, onDismissRequest = { showDropDown = false }) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.share)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Share, contentDescription = null) },
+                    onClick = {
+                        JBudget.budgetRepository.shareAsText(context, budget)
+                        showDropDown = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.new_transaction)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+                    onClick = {
+                        viewModel.navigateToTransactionScreen(budget.id)
+                        showDropDown = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.more_details)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.ReadMore, contentDescription = null) },
+                    onClick = {
+                        viewModel.navigateToBudgetScreen(budget.id)
+                        showDropDown = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.edit)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Edit, contentDescription = null) },
+                    onClick = {
+                        viewModel.budgetToEdit = budget
+                        showDropDown = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.remove)) },
+                    leadingIcon = { Icon(imageVector = Icons.Default.Delete, contentDescription = null) },
+                    onClick = {
+                        viewModel.budgetToRemove = budget
+                        showDropDown = false
+                    },
+                    colors = MenuDefaults.itemColors(
+                        textColor = MaterialTheme.colorScheme.error,
+                        leadingIconColor = MaterialTheme.colorScheme.error
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun HomeBudgetContent(budget: Budget, viewModel: HomeViewModel) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(bottom = 20.dp)) {
+    Column(Modifier.fillMaxWidth()) {
 
         if (budget.transactions.isEmpty()) {
-            Text(stringResource(R.string.empty_budget))
+            Text(
+                stringResource(R.string.empty_budget),
+                style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+                modifier = Modifier.padding(start = 20.dp)
+            )
         } else {
-            BudgetChart(budget.transactions, false)
+            BudgetChart(budget, false)
         }
         
-        TextButton(
-            onClick = { viewModel.navigateToBudgetScreen(budget.id) },
-            modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp))
+                .clickable { viewModel.navigateToBudgetScreen(budget.id) }
+                .padding(vertical = 15.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Text(stringResource(R.string.more_details))
+            Text(
+                text = stringResource(R.string.more_details),
+                style = MaterialTheme.typography.labelLarge.copy(color = MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }

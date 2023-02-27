@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.transaction
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import java.text.DecimalFormat
 import java.util.*
 
 class TransactionViewModel(
+    budget: Budget? = null,
     val navController: NavHostController,
     private val transactionId: String? = null
 ): ViewModel() {
@@ -18,7 +20,7 @@ class TransactionViewModel(
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
     var showBudgetDialog by mutableStateOf(false)
-    var currentBudget by mutableStateOf(null as Budget?)
+    var currentBudget by mutableStateOf(budget)
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
     var currentCategory by mutableStateOf(null as Category?)
     var categoryName by mutableStateOf("")
@@ -91,13 +93,15 @@ class TransactionViewModel(
     }
 
     init {
-        if (transactionId != null) {
+        Log.d("testt", transactionId.toString())
+        Log.d("testt", budget?.name.toString())
+        if (transactionId != null && budget == null) {
             isInUpdateMode = true
             JBudget.transactionRepository.findById(transactionId) { transaction, _ ->
                 changeCurrentBudget(budgets.find { it.id == transaction?.budgetId }, transaction?.categoryId)
                 amountString = transaction?.amount?.toString().orEmpty()
             }
-        } else {
+        } else if (budget == null) {
             changeCurrentBudget(JBudget.state.budgets.firstOrNull())
         }
     }

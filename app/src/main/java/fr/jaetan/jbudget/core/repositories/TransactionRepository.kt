@@ -6,17 +6,35 @@ import com.google.firebase.ktx.Firebase
 import fr.jaetan.jbudget.core.models.FirebaseResponse
 import fr.jaetan.jbudget.core.models.Transaction
 import fr.jaetan.jbudget.core.services.JBudget
+import kotlinx.coroutines.flow.onStart
 
 class TransactionRepository {
     private val database = Firebase.firestore.collection("transactions")
 
-    suspend fun getAll(budgetId: String?) {
+    suspend fun initListener(budgetId: String?) {
         database
             .whereEqualTo("budgetId", budgetId)
             .snapshots()
+            .onStart {
+                JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = true
+            }
             .collect { query ->
                 JBudget.state.budgets.find { it.id == budgetId }?.transactions?.clear()
                 JBudget.state.budgets.find { it.id == budgetId }?.transactions?.addAll(Transaction.fromMapList(query.documents))
+                JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = false
+            }
+    }
+
+    fun getAll(budgetId: String) {
+        JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = true
+        database.whereEqualTo("budgetId", budgetId).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    JBudget.state.budgets.find { it.id == budgetId }?.transactions?.clear()
+                    JBudget.state.budgets.find { it.id == budgetId }
+                        ?.transactions?.addAll(Transaction.fromMapList(task.result.documents))
+                    JBudget.state.budgets.find { it.id == budgetId }?.isLoadingTransactions = false
+                }
             }
     }
 
@@ -58,6 +76,13 @@ class TransactionRepository {
 
     fun removeTransaction(transactionId: String) {
         database.document(transactionId).delete()
+    }
+
+    fun removeAll(transactions: List<Transaction>) {
+        transactions.forEach {
+            database.document(it.id).delete()
+        }
+
     }
 
     fun deleteAllBy(budgetId: String, callback: (FirebaseResponse) -> Unit) {

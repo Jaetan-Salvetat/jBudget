@@ -20,7 +20,6 @@ import fr.jaetan.jbudget.app.MainActivity
 import fr.jaetan.jbudget.app.auth.views.AuthScreen
 import fr.jaetan.jbudget.core.services.JBudget
 import fr.jaetan.jbudget.ui.theme.JBudgetTheme
-import fr.jaetan.jbudget.ui.widgets.AppBackHandler
 
 class AuthActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,8 +63,6 @@ private fun App() {
             color = backgroundColor
         )
     }
-
-    AppBackHandler(navController)
 
     Surface(
         Modifier.fillMaxSize(),
