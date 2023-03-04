@@ -71,7 +71,7 @@ private fun EmptyBudget(padding: PaddingValues, budget: Budget?, navController: 
         horizontalAlignment = Alignment.CenterHorizontally
         ) {
         Text(stringResource(R.string.empty_transaction_create))
-        TextButton(onClick = { navController.navigate("${Screen.Transaction.route}/${budget?.id}") }) {
+        TextButton(onClick = { navController.navigate("${Screen.Transaction.route}/budget/${budget?.id}") }) {
             Text(stringResource(R.string.home_fab_add_transaction))
         }
     }
