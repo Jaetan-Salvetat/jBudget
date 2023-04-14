@@ -21,7 +21,10 @@
     <string name="hide">Cacher</string>
     <string name="quit">quitter</string>
     <string name="update">Mettre à jour</string>
-
+    <string name="payship_title">Rentré d\'argent: </string>
+    <string name="payship">Rentré d\'argent</string>
+    <string name="total_amount">Total dépensé: </string>
+    <string name="total_remaining">Total restant: </string>
     <string name="navigate_to_register">Tu ne possède pas encore de compte ?</string>
     <string name="navigate_to_login">Tu possède déjà un compte ?</string>
     <string name="forgot_password">Mot de passe oublié ?</string>

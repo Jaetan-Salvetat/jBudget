@@ -2,8 +2,10 @@ package fr.jaetan.jbudget.ui.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,9 +45,13 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
     var showCategoryDialog by remember { mutableStateOf(false) }
     val categoryPercentages = remember { budget.getPercentages() }
 
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         PieChart(
-            modifier = Modifier.fillMaxWidth(.5f),
+            modifier = Modifier.fillMaxWidth(.4f),
             config = PieConfig(
                 isDonut = true,
                 expandDonutOnClick = true,
@@ -56,6 +62,37 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
             },
             onSectionClicked = { _, _ -> showPercentage = !showPercentage }
         )
+
+        Column {
+            Row {
+                Text(stringResource(R.string.payship_title))
+                Text(
+                    text = budget.payship.toString(),
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+            }
+
+            Row {
+                Text(stringResource(R.string.total_amount))
+                Text(
+                    text = budget.transactionTotalAmount.toString(),
+                    modifier = Modifier.padding(start = 5.dp),
+                )
+            }
+
+            Row {
+                Text(stringResource(R.string.total_remaining))
+                Text(
+                    text = (budget.payship - budget.transactionTotalAmount).toString(),
+                    modifier = Modifier.padding(start = 5.dp),
+                    color = if (budget.transactionTotalAmount > budget.payship) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
+                )
+            }
+        }
     }
 
     Box(

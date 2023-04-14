@@ -20,7 +20,8 @@ data class Budget(
     val id: String = "",
     var userId: String = FirebaseAuth.getInstance().currentUser!!.uid,
     var startDate: Date = Calendar.getInstance().time,
-    var endDate: Date? = null
+    var endDate: Date? = null,
+    var payship: Double = .0
 ) {
     val transactions = mutableStateListOf<Transaction>()
     var isLoadingTransactions by mutableStateOf(false)
@@ -35,13 +36,13 @@ data class Budget(
             else -> false
         }
 
-
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "name" to name,
             "userId" to userId,
             "startDate" to  Timestamp(startDate),
-            "endDate" to if (endDate == null) null else Timestamp(endDate!!)
+            "endDate" to if (endDate == null) null else Timestamp(endDate!!),
+            "payship" to payship
         )
     }
 
@@ -73,7 +74,8 @@ data class Budget(
             name = budget.data?.get("name") as String,
             userId = budget.data?.get("userId") as String,
             startDate = budget.data?.get("startDate").let { (it as Timestamp).toDate() },
-            endDate = budget.data?.get("endDate")?.let { (it as Timestamp).toDate() }
+            endDate = budget.data?.get("endDate")?.let { (it as Timestamp).toDate() },
+            payship = budget.data?.get("payship") as Double? ?: .0
         )
     }
 }
