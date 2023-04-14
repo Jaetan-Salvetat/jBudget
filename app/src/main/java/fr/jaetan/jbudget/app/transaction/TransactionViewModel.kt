@@ -16,14 +16,13 @@ class TransactionViewModel(
     val navController: NavHostController,
     private val transactionId: String? = null
 ): ViewModel() {
-    var showCategoryInput by mutableStateOf(false)
+    var showCategoryDialog by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
     var showBudgetDialog by mutableStateOf(false)
     var currentBudget by mutableStateOf(budget)
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
     var currentCategory by mutableStateOf(null as Category?)
-    var categoryName by mutableStateOf("")
     var amountString by mutableStateOf("")
     var loadingState by mutableStateOf(State.None)
     var isInUpdateMode by mutableStateOf(false)
@@ -54,13 +53,6 @@ class TransactionViewModel(
         currentCategory = JBudget.state.categories.find { it.id == categoryId }
     }
 
-    fun saveCategory() {
-        if (categoryName.isEmpty()) return
-        val mutableCategory = Category(name = categoryName)
-        JBudget.categoryRepository.createCategory(mutableCategory) {}
-        showCategoryInput = false
-    }
-
     fun save() {
         loadingState = State.Loading
 
@@ -85,11 +77,6 @@ class TransactionViewModel(
             if (response == FirebaseResponse.Success) navController.popBackStack()
             loadingState = State.Error
         }
-    }
-
-    fun clearCategoryName() {
-        showCategoryInput = false
-        categoryName = ""
     }
 
     init {
