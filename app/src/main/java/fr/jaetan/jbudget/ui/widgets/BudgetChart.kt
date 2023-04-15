@@ -42,6 +42,7 @@ import com.himanshoe.charty.pie.config.PieData
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.Budget
 import fr.jaetan.jbudget.core.services.extentions.inc
+import fr.jaetan.jbudget.core.services.extentions.roundTo2Decimal
 import kotlin.math.roundToInt
 
 @Composable
@@ -78,7 +79,7 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
             Row {
                 Text(stringResource(R.string.total_amount))
                 Text(
-                    text = budget.transactionTotalAmount.toString().plus("€"),
+                    text = budget.transactionTotalAmount.roundTo2Decimal().plus("€"),
                     modifier = Modifier.padding(start = 5.dp),
                 )
             }
@@ -86,7 +87,7 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
             Row {
                 Text(stringResource(R.string.total_remaining))
                 Text(
-                    text = (budget.payship - budget.transactionTotalAmount).toString().plus("€"),
+                    text = (budget.payship - budget.transactionTotalAmount).roundTo2Decimal().plus("€"),
                     modifier = Modifier.padding(start = 5.dp),
                     color = if (budget.transactionTotalAmount > budget.payship) {
                         MaterialTheme.colorScheme.error
