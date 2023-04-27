@@ -1,37 +1,32 @@
 package fr.jaetan.jbudget.app.transaction.view
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Euro
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Paid
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
+import fr.jaetan.jbudget.core.models.Category
 import fr.jaetan.jbudget.core.models.State
 import fr.jaetan.jbudget.core.services.JBudget
 
@@ -49,9 +44,6 @@ fun TransactionContent(padding: PaddingValues, viewModel: TransactionViewModel) 
         ) {
             if (!viewModel.isInUpdateMode) TransactionSelectBudget(viewModel)
             TransactionSelectCategory(viewModel)
-            AnimatedVisibility(viewModel.showCategoryInput) {
-                TransactionCategoryName(viewModel)
-            }
             TransactionAmountSection(viewModel)
             TransactionBottomButtons(viewModel)
         }
@@ -135,6 +127,7 @@ private fun TransactionSelectBudget(viewModel: TransactionViewModel) {
 
 @Composable
 private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
+    val context = LocalContext.current
     val arrowRotation by animateFloatAsState(if (!viewModel.showCategoryDropDown) 0f else 180f)
 
     Column(
@@ -202,6 +195,29 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
                         )
                     }
 
+                    DropdownMenuItem(
+                        text = {
+                            Row {
+                                Icon(
+                                    imageVector = Icons.Default.Paid,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(Modifier.width(10.dp))
+                                Text(
+                                    stringResource(R.string.payship),
+                                    fontWeight = FontWeight.Normal,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        },
+                        onClick = {
+                            viewModel.currentCategory = Category(
+                                name = context.getString(R.string.payship)
+                            )
+                            viewModel.showCategoryDropDown = false
+                        }
+                    )
 
                     DropdownMenuItem(
                         text = {
@@ -218,7 +234,7 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
                             }
                         },
                         onClick = {
-                            viewModel.showCategoryInput = true
+                            viewModel.showCategoryDialog = true
                             viewModel.showCategoryDropDown = false
                         }
                     )
@@ -226,33 +242,6 @@ private fun TransactionSelectCategory(viewModel: TransactionViewModel) {
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TransactionCategoryName(viewModel: TransactionViewModel) {
-    val focusRequester = remember { FocusRequester() }
-    SideEffect { focusRequester.requestFocus() }
-
-    OutlinedTextField(
-        value = viewModel.categoryName,
-        onValueChange = { viewModel.categoryName = it },
-        label = { Text(stringResource(R.string.category_name)) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.Transparent),
-        modifier = Modifier
-            .focusRequester(focusRequester)
-            .fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { viewModel.saveCategory() }),
-        trailingIcon = {
-            IconButton(onClick = { viewModel.clearCategoryName() }) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = stringResource(R.string.clear_input_descriptor)
-                )
-            }
-        }
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -277,8 +266,9 @@ private fun TransactionAmountSection(viewModel: TransactionViewModel) {
 
 @Composable
 private fun TransactionBottomButtons(viewModel: TransactionViewModel) {
+    val context = LocalContext.current
     Button(
-        onClick = viewModel::save,
+        onClick = { viewModel.save(context) },
         enabled = viewModel.currentBudget != null
                 && viewModel.amountString.isNotEmpty()
                 && viewModel.loadingState == State.None

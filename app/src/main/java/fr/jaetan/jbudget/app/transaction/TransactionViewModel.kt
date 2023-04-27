@@ -1,5 +1,6 @@
 package fr.jaetan.jbudget.app.transaction
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,14 +17,13 @@ class TransactionViewModel(
     val navController: NavHostController,
     private val transactionId: String? = null
 ): ViewModel() {
-    var showCategoryInput by mutableStateOf(false)
+    var showCategoryDialog by mutableStateOf(false)
     var showBudgetDropDown by mutableStateOf(false)
     var showCategoryDropDown by mutableStateOf(false)
     var showBudgetDialog by mutableStateOf(false)
     var currentBudget by mutableStateOf(budget)
     val budgets: List<Budget> get() = JBudget.state.budgets.filter { it.isCurrentBudget }
     var currentCategory by mutableStateOf(null as Category?)
-    var categoryName by mutableStateOf("")
     var amountString by mutableStateOf("")
     var loadingState by mutableStateOf(State.None)
     var isInUpdateMode by mutableStateOf(false)
@@ -54,15 +54,13 @@ class TransactionViewModel(
         currentCategory = JBudget.state.categories.find { it.id == categoryId }
     }
 
-    fun saveCategory() {
-        if (categoryName.isEmpty()) return
-        val mutableCategory = Category(name = categoryName)
-        JBudget.categoryRepository.createCategory(mutableCategory) {}
-        showCategoryInput = false
-    }
-
-    fun save() {
+    fun save(context: Context) {
         loadingState = State.Loading
+
+        if (context.getString(fr.jaetan.jbudget.R.string.payship) == currentCategory?.name) {
+            addPayship()
+            return
+        }
 
         val transaction = Transaction(
             id = transactionId ?: "",
@@ -87,9 +85,15 @@ class TransactionViewModel(
         }
     }
 
-    fun clearCategoryName() {
-        showCategoryInput = false
-        categoryName = ""
+    private fun addPayship() {
+        val budget = currentBudget?.copy(
+            payship = currentBudget?.payship?.plus(amountString.replace(",", ".").toDouble()) ?: 0.0
+        )
+
+        JBudget.budgetRepository.edit(budget!!) { response ->
+            if (response == FirebaseResponse.Success) navController.popBackStack()
+            loadingState = State.Error
+        }
     }
 
     init {

@@ -1,9 +1,12 @@
 package fr.jaetan.jbudget.ui.widgets
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,33 +32,71 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.himanshoe.charty.pie.PieChart
 import com.himanshoe.charty.pie.config.PieConfig
 import com.himanshoe.charty.pie.config.PieData
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.core.models.Budget
-
+import fr.jaetan.jbudget.core.services.extentions.inc
+import fr.jaetan.jbudget.core.services.extentions.roundTo2Decimal
+import kotlin.math.roundToInt
 
 @Composable
 fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
     var showPercentage by remember { mutableStateOf(false) }
     var showCategoryDialog by remember { mutableStateOf(false) }
-    val categoryPercentages = remember { budget.getPercentages() }
+    val categoryPercentages = remember { budget.getPercentages().sortedByDescending { it.percentage } }
 
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         PieChart(
-            modifier = Modifier.fillMaxWidth(.5f),
+            modifier = Modifier.fillMaxWidth(.4f),
             config = PieConfig(
-                isDonut = true,
-                expandDonutOnClick = true,
-                textColor = MaterialTheme.colorScheme.onBackground
+                isDonut = false,
+                expandDonutOnClick = true
             ),
             pieData = categoryPercentages.map {
                 PieData(it.percentage.toFloat(), it.color ?: MaterialTheme.colorScheme.secondaryContainer)
             },
-            onSectionClicked = { _, _ -> showPercentage = !showPercentage }
         )
+
+        Column {
+            Row {
+                Text(stringResource(R.string.payship_title))
+                Text(
+                    text = budget.payship.toString().plus("€"),
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+            }
+
+            Row {
+                Text(stringResource(R.string.total_amount))
+                Text(
+                    text = budget.transactionTotalAmount.roundTo2Decimal().plus("€"),
+                    modifier = Modifier.padding(start = 5.dp),
+                )
+            }
+
+            Row {
+                Text(stringResource(R.string.total_remaining))
+                Text(
+                    text = (budget.payship - budget.transactionTotalAmount).roundTo2Decimal().plus("€"),
+                    modifier = Modifier.padding(start = 5.dp),
+                    color = if (budget.transactionTotalAmount > budget.payship) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onBackground
+                    }
+                )
+            }
+        }
     }
 
     Box(
@@ -69,19 +110,29 @@ fun BudgetChart(budget: Budget, showNewCategory: Boolean = true) {
         ) {
             items(categoryPercentages) { categoryPercentage ->
                 Spacer(Modifier.width(10.dp))
-                Box(
+                Row(
                     Modifier
                         .clip(RoundedCornerShape(7.dp))
                         .background(
                             categoryPercentage.color ?: MaterialTheme.colorScheme.secondaryContainer
                         )
-                        .clickable { }
+                        .padding(15.dp, 10.dp)
+                        .clickable { showPercentage++ },
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = categoryPercentage.category?.name ?: stringResource(R.string.no_category_assigned),
-                        modifier = Modifier.padding(15.dp, 10.dp),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontWeight = FontWeight.Bold,
                     )
+                    AnimatedVisibility(showPercentage) {
+                        Text(
+                            "(${categoryPercentage.percentage.roundToInt()}%)",
+                            modifier = Modifier.padding(start = 5.dp),
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 14.sp
+                        )
+                    }
                 }
             }
             item {

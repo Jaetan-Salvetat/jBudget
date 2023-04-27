@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import fr.jaetan.jbudget.R
 import fr.jaetan.jbudget.app.transaction.TransactionViewModel
+import fr.jaetan.jbudget.ui.widgets.NewCategoryDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -17,6 +18,10 @@ fun TransactionScreen(viewModel: TransactionViewModel) {
         topBar = { TransactionAppBar(viewModel.navController) },
         content = { TransactionContent(it, viewModel) }
     )
+
+    NewCategoryDialog(isVisible = viewModel.showCategoryDialog) {
+        viewModel.showCategoryDialog = false
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
